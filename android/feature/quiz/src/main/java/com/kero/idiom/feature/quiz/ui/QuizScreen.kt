@@ -30,6 +30,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.kero.idiom.core.components.HanjiBackground
 import com.kero.idiom.core.components.IdiomBaseCard
 import com.kero.idiom.core.components.IdiomPrimaryButton
 import com.kero.idiom.domain.model.QuizType
@@ -57,96 +58,110 @@ fun QuizScreen(
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background
     ) { paddingValues ->
-        Box(
+        HanjiBackground(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(24.dp)
         ) {
-            if (state.isLoading) {
-                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-            } else {
-                state.quiz?.let { quiz ->
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(24.dp),
-                        modifier = Modifier.align(Alignment.Center)
-                    ) {
-                        // Header info
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 32.dp, vertical = 48.dp)
+            ) {
+                if (state.isLoading) {
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                } else {
+                    state.quiz?.let { quiz ->
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center,
+                            modifier = Modifier.fillMaxSize()
                         ) {
-                            Text(
-                                text = when(quiz.type) {
-                                    QuizType.FILL_BLANK -> "빈칸에 들어갈 글자는?"
-                                    QuizType.MEANING_TO_WORD -> "뜻에 알맞은 사자성어는?"
-                                    QuizType.HANJA_TO_HANGUL -> "한자를 읽어보세요."
-                                },
-                                style = MaterialTheme.typography.labelMedium,
-                                color = MaterialTheme.colorScheme.secondary
-                            )
-
-                            Text(
-                                text = "${state.currentQuizIndex} / ${state.maxQuizzes}",
-                                style = MaterialTheme.typography.labelMedium,
-                                color = MaterialTheme.colorScheme.secondary,
-                                fontWeight = FontWeight.Bold
-                            )
-                        }
-
-                        // Quiz Card
-                        IdiomBaseCard(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(220.dp)
-                        ) {
-                            Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
+                            // Header info
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
                                 Text(
-                                    text = quiz.questionText,
-                                    style = if (quiz.type == QuizType.MEANING_TO_WORD) 
-                                        MaterialTheme.typography.titleLarge 
-                                        else MaterialTheme.typography.displayLarge,
-                                    textAlign = TextAlign.Center,
-                                    modifier = Modifier.padding(16.dp)
+                                    text = when(quiz.type) {
+                                        QuizType.FILL_BLANK -> "빈칸에 들어갈 글자는?"
+                                        QuizType.MEANING_TO_WORD -> "뜻에 알맞은 사자성어는?"
+                                        QuizType.HANJA_TO_HANGUL -> "한자를 읽어보세요."
+                                    },
+                                    style = MaterialTheme.typography.labelMedium,
+                                    color = MaterialTheme.colorScheme.secondary,
+                                    letterSpacing = 2.sp
+                                )
+
+                                Text(
+                                    text = "${state.currentQuizIndex} / ${state.maxQuizzes}",
+                                    style = MaterialTheme.typography.labelMedium,
+                                    color = MaterialTheme.colorScheme.secondary,
+                                    fontWeight = FontWeight.Bold
                                 )
                             }
-                        }
 
-                        // Hint Text
-                        Text(
-                            text = quiz.hintText,
-                            style = MaterialTheme.typography.bodyLarge,
-                            textAlign = TextAlign.Center,
-                            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.6f)
-                        )
+                            Spacer(modifier = Modifier.height(40.dp))
 
-                        Spacer(modifier = Modifier.height(16.dp))
-
-                        // Options
-                        LazyVerticalGrid(
-                            columns = GridCells.Fixed(2),
-                            horizontalArrangement = Arrangement.spacedBy(12.dp),
-                            verticalArrangement = Arrangement.spacedBy(12.dp),
-                            contentPadding = PaddingValues(bottom = 16.dp)
-                        ) {
-                            items(quiz.options) { option ->
-                                IdiomPrimaryButton(
-                                    text = option,
-                                    onClick = { viewModel.processIntent(QuizIntent.SubmitAnswer(option)) },
-                                    enabled = state.isAnswerCorrect == null
-                                )
+                            // Quiz Card
+                            IdiomBaseCard(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(280.dp)
+                            ) {
+                                Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
+                                    Text(
+                                        text = quiz.questionText,
+                                        style = if (quiz.type == QuizType.MEANING_TO_WORD) 
+                                            MaterialTheme.typography.titleLarge 
+                                            else MaterialTheme.typography.displayLarge,
+                                        textAlign = TextAlign.Center,
+                                        modifier = Modifier.padding(24.dp)
+                                    )
+                                }
                             }
+
+                            Spacer(modifier = Modifier.height(32.dp))
+
+                            // Hint Text
+                            Text(
+                                text = quiz.hintText,
+                                style = MaterialTheme.typography.bodyLarge,
+                                textAlign = TextAlign.Center,
+                                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
+                                letterSpacing = 1.sp
+                            )
+
+                            Spacer(modifier = Modifier.height(48.dp))
+
+                            // Options
+                            LazyVerticalGrid(
+                                columns = GridCells.Fixed(2),
+                                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                                verticalArrangement = Arrangement.spacedBy(16.dp),
+                                contentPadding = PaddingValues(bottom = 24.dp)
+                            ) {
+                                items(quiz.options) { option ->
+                                    IdiomPrimaryButton(
+                                        text = option,
+                                        onClick = { viewModel.processIntent(QuizIntent.SubmitAnswer(option)) },
+                                        enabled = state.isAnswerCorrect == null
+                                    )
+                                }
+                            }
+                            
+                            Spacer(modifier = Modifier.height(24.dp))
+
+                            // Current Score
+                            Text(
+                                text = "SCORE: ${state.score}",
+                                style = MaterialTheme.typography.labelLarge,
+                                fontWeight = FontWeight.ExtraBold,
+                                letterSpacing = 3.sp,
+                                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f)
+                            )
                         }
-                        
-                        // Current Score
-                        Text(
-                            text = "SCORE: ${state.score}",
-                            style = MaterialTheme.typography.labelLarge,
-                            fontWeight = FontWeight.Bold,
-                            letterSpacing = 2.sp
-                        )
                     }
                 }
             }

@@ -18,10 +18,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.kero.idiom.core.components.HanjiBackground
 import com.kero.idiom.core.components.IdiomBaseCard
 import com.kero.idiom.core.components.IdiomPrimaryButton
 import com.kero.idiom.feature.result.contract.ResultIntent
@@ -53,61 +53,69 @@ fun ResultScreen(
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background
     ) { paddingValues ->
-        Box(
+        HanjiBackground(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(24.dp)
         ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
-                modifier = Modifier.align(Alignment.Center)
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 32.dp, vertical = 48.dp)
             ) {
-                Text(
-                    text = "QUIZ COMPLETED",
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.secondary,
-                    letterSpacing = 2.sp
-                )
-
-                Spacer(modifier = Modifier.height(32.dp))
-
-                IdiomBaseCard(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(200.dp)
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxSize()
                 ) {
-                    Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text(
-                                text = "Your Score",
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.6f)
-                            )
-                            Text(
-                                text = "${state.score}",
-                                style = MaterialTheme.typography.displayLarge,
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.primary
-                            )
+                    Text(
+                        text = "QUIZ COMPLETED",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.secondary,
+                        letterSpacing = 4.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+
+                    Spacer(modifier = Modifier.height(48.dp))
+
+                    IdiomBaseCard(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(240.dp)
+                    ) {
+                        Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                Text(
+                                    text = "Final Score",
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
+                                    letterSpacing = 2.sp
+                                )
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Text(
+                                    text = "${state.score}",
+                                    style = MaterialTheme.typography.displayLarge.copy(fontSize = 72.sp),
+                                    fontWeight = FontWeight.Black,
+                                    color = MaterialTheme.colorScheme.primary
+                                )
+                            }
                         }
                     }
+
+                    Spacer(modifier = Modifier.height(64.dp))
+
+                    IdiomPrimaryButton(
+                        text = "TRY AGAIN",
+                        onClick = { viewModel.processIntent(ResultIntent.OnRetryClick) }
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    IdiomPrimaryButton(
+                        text = "BACK TO HOME",
+                        onClick = { viewModel.processIntent(ResultIntent.OnHomeClick) }
+                    )
                 }
-
-                Spacer(modifier = Modifier.height(48.dp))
-
-                IdiomPrimaryButton(
-                    text = "RETRY",
-                    onClick = { viewModel.processIntent(ResultIntent.OnRetryClick) }
-                )
-
-                Spacer(modifier = Modifier.height(12.dp))
-
-                IdiomPrimaryButton(
-                    text = "GO HOME",
-                    onClick = { viewModel.processIntent(ResultIntent.OnHomeClick) }
-                )
             }
         }
     }
