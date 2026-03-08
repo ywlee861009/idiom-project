@@ -3,19 +3,18 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("com.google.dagger.hilt.android")
     id("org.jetbrains.kotlin.plugin.serialization")
+    alias(libs.plugins.compose.compiler)
     kotlin("kapt")
 }
 
 android {
     namespace = "com.kero.idiom.feature.quiz"
-    compileSdk = 34
+    compileSdk = 35
+    buildFeatures { compose = true }
 
     kotlin {
         jvmToolchain(17)
     }
-
-    buildFeatures { compose = true }
-    composeOptions { kotlinCompilerExtensionVersion = "1.5.8" }
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17

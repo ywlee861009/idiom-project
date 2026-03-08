@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.kero.idiom.domain"
-    compileSdk = 34
+    compileSdk = 35
 
     kotlin {
         jvmToolchain(17)

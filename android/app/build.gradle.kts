@@ -3,12 +3,13 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.compose.compiler)
     kotlin("kapt")
 }
 
 android {
     namespace = "com.kero.idiom"
-    compileSdk = 34
+    compileSdk = 35
 
     kotlinOptions {
         jvmTarget = "17"
@@ -21,13 +22,12 @@ android {
     defaultConfig {
         applicationId = "com.kero.idiom"
         minSdk = 26
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     buildFeatures { compose = true }
-    composeOptions { kotlinCompilerExtensionVersion = "1.5.8" }
 }
 
 dependencies {
