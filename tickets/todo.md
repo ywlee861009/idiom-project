@@ -1,6 +1,8 @@
-# 🎫 Development Tickets
+# 📋 To Do Tickets (백로그)
 
-## [To Do]
+아직 시작하지 않은 작업 목록입니다. 우선순위에 따라 `in-progress.md`로 이동할 수 있습니다.
+
+---
 
 ### ID-01: Android Project Scaffolding
 - **Description**: Jetpack Compose 기반의 Kotlin 프로젝트 초기 셋업.
@@ -13,10 +15,3 @@
     - Jetpack Compose, Material 3 라이브러리 사용.
     - MVVM 패턴을 위한 폴더 구조 (data, domain, ui) 사전에 고민.
 - **Priority**: High
-
-### ID-02: Create Idiom Data Set (JSON)
-- **Description**: 최소 20개의 사자성어 데이터를 포함하는 JSON 파일 생성.
-- **Acceptance Criteria**:
-    - [ ] `assets/idioms.json` 파일 생성.
-    - [ ] `word`, `meaning`, `hanja`, `difficulty` 필드를 포함한 리스트 구성.
-- **Priority**: Medium
