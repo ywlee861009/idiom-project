@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -72,15 +73,28 @@ fun QuizScreen(
                         modifier = Modifier.align(Alignment.Center)
                     ) {
                         // Header info
-                        Text(
-                            text = when(quiz.type) {
-                                QuizType.FILL_BLANK -> "빈칸에 들어갈 글자는?"
-                                QuizType.MEANING_TO_WORD -> "뜻에 알맞은 사자성어는?"
-                                QuizType.HANJA_TO_HANGUL -> "한자를 읽어보세요."
-                            },
-                            style = MaterialTheme.typography.labelMedium,
-                            color = MaterialTheme.colorScheme.secondary
-                        )
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = when(quiz.type) {
+                                    QuizType.FILL_BLANK -> "빈칸에 들어갈 글자는?"
+                                    QuizType.MEANING_TO_WORD -> "뜻에 알맞은 사자성어는?"
+                                    QuizType.HANJA_TO_HANGUL -> "한자를 읽어보세요."
+                                },
+                                style = MaterialTheme.typography.labelMedium,
+                                color = MaterialTheme.colorScheme.secondary
+                            )
+
+                            Text(
+                                text = "${state.currentQuizIndex} / ${state.maxQuizzes}",
+                                style = MaterialTheme.typography.labelMedium,
+                                color = MaterialTheme.colorScheme.secondary,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
 
                         // Quiz Card
                         IdiomBaseCard(

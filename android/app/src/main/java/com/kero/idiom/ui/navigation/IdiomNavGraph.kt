@@ -27,7 +27,19 @@ fun IdiomNavGraph() {
         }
         composable<Destination.Result> { backStackEntry ->
             val result = backStackEntry.toRoute<Destination.Result>()
-            ResultScreen(score = result.score)
+            ResultScreen(
+                score = result.score,
+                onNavigateToQuiz = {
+                    navController.navigate(Destination.Quiz) {
+                        popUpTo(Destination.Quiz) { inclusive = true }
+                    }
+                },
+                onNavigateToHome = {
+                    navController.navigate(Destination.Quiz) {
+                        popUpTo(Destination.Quiz) { inclusive = true }
+                    }
+                }
+            )
         }
     }
 }

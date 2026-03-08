@@ -39,13 +39,21 @@ class QuizViewModel @Inject constructor(
     }
 
     private fun loadNextQuiz() {
+        if (_state.value.currentQuizIndex >= _state.value.maxQuizzes) {
+            viewModelScope.launch {
+                _effect.send(QuizSideEffect.NavigateToResult(_state.value.score))
+            }
+            return
+        }
+
         viewModelScope.launch {
             _state.update { it.copy(isLoading = true, isAnswerCorrect = null) }
             val quiz = getRandomQuizUseCase()
             _state.update {
                 it.copy(
                     isLoading = false,
-                    quiz = quiz
+                    quiz = quiz,
+                    currentQuizIndex = it.currentQuizIndex + 1
                 )
             }
         }

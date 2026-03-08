@@ -6,6 +6,8 @@ data class QuizState(
     val isLoading: Boolean = false,
     val quiz: Quiz? = null,
     val score: Int = 0,
+    val currentQuizIndex: Int = 0,
+    val maxQuizzes: Int = 5, // 테스트를 위해 5개로 설정
     val isAnswerCorrect: Boolean? = null
 )
 

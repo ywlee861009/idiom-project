@@ -17,7 +17,8 @@
 ## 3. 현재 진행 상황 (Current Status - 2026-03-08)
 - [x] **Phase 0**: 아이디어 구체화 및 마스터 가이드 구축 완료.
 - [x] **Phase 1 (Data)**: 200개 사자성어 데이터셋 구축 완료 (`ID-02`).
-- [ ] **Phase 2 (Scaffolding)**: 안드로이드 프로젝트 구조 및 멀티모듈 셋업 진행 예정 (`ID-01`).
+- [x] **Phase 2 (Scaffolding)**: 안드로이드 프로젝트 구조 및 멀티모듈 셋업 완료 (`ID-01`).
+- [x] **Phase 3 (Core Implementation)**: 도메인 모델, 데이터 파싱, 퀴즈 엔진 알고리즘 및 메인 퀴즈 화면 구현 완료 (`ID-03`, `ID-04`, `ID-05`, `ID-06`, `ID-07`, `ID-08`).
 
 ## 4. 필수 참조 문서 (Core Documents)
 상세한 맥락 파악을 위해 다음 순서로 문서를 읽으십시오:
@@ -25,16 +26,15 @@
 2.  **`REQUIREMENTS.md`**: 상세 기능 명세 및 디자인 가이드.
 3.  **`ROADMAP.md`**: 전체 개발 마일스톤 및 일정.
 4.  **`tickets/`**: 
-    - `todo.md`: 현재 대기 중인 티켓 (ID-01, 03, 04, 05).
-    - `done.md`: 완료된 티켓 히스토리 (ID-02).
+    - `todo.md`: 현재 대기 중인 티켓 (ID-09, ID-10).
+    - `done.md`: 완료된 티켓 히스토리 (ID-01 ~ ID-08).
 5.  **`GUIDE_FOR_ANDROID.md`**: 개발자 케로의 설계 철학 및 멀티모듈 구조 상세.
 
 ---
 
 ## 🚀 다음 작업 (Next Action)
-- **ID-01: Android Project Scaffolding** 작업을 시작해야 합니다.
-- 패키지 명: `com.kero.idiom`
-- 설계: 멀티모듈 구조 (`:app`, `:core`, `:domain`, `:data`, `:feature`)
+- **ID-09: Result Screen Enhancement** (결과 화면 고도화)
+- **ID-10: Local Data Storage Integration** (최고 점수 저장 및 로컬 연동)
 
 ---
 *Last Sync: 2026-03-08*  

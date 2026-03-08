@@ -1,10 +1,10 @@
 # 📋 To Do Tickets (백로그)
 
-새로운 단계: 3종 혼합 퀴즈 시스템 구축. 담당자는 **Android 개발자 케로**입니다.
+새로운 단계: 결과 화면 고도화 및 로컬 저장소 연동. 담당자는 **Android 개발자 케로**입니다.
 
 ---
 
-### ID-07: Advanced Design System Construction (The Calm Ink)
+### ID-10: Local Data Storage Integration
 - **Assignee**: Android Developer (Kero)
-- **Description**: PM 마크가 제안한 'The Calm Ink' 컨셉의 컬러 팔레트 적용.
+- **Description**: Jetpack DataStore를 사용하여 최고 점수(High Score)를 로컬에 저장하고, 결과 화면에서 표시.
 - **Priority**: Medium

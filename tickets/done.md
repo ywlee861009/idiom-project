@@ -4,6 +4,18 @@
 
 ---
 
+### ID-09: Result Screen Enhancement
+- **Description**: 'The Calm Ink' 디자인 시스템을 적용하여 결과 화면을 구현. 퀴즈 종료 후 최종 점수와 '다시 하기', '홈으로' 버튼을 포함.
+- **Completed Date**: 2026-03-08
+- **Build Verified**: [x] `./gradlew assembleDebug` SUCCESS
+- **Results**:
+    - [x] `ResultContract`, `ResultViewModel` (MVI) 구현 완료.
+    - [x] 'The Calm Ink' 팔레트 및 `IdiomBaseCard`, `IdiomPrimaryButton` 적용.
+    - [x] 퀴즈 종료 시 자동 이동 및 다시 하기/홈 이동 네비게이션 연동 완료.
+- **Priority**: High
+
+---
+
 ### ID-08: Multi-Type Mixed Quiz System Development
 - **Description**: 3가지 유형(빈칸 채우기, 뜻 맞히기, 한자 읽기)의 퀴즈 혼합 시스템 구축.
 - **Completed Date**: 2026-03-08
