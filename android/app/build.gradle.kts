@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.hilt.android)
-    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.kotlin.serialization) // 적용 확인
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.ksp)
 }
@@ -42,5 +42,6 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.hilt.android)
+    implementation(libs.kotlinx.serialization.json) // 추가
     ksp(libs.hilt.compiler)
 }
