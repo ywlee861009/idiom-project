@@ -15,3 +15,8 @@ dependencyResolutionManagement {
 
 rootProject.name = "IdiomQuiz"
 include(":app")
+include(":core")
+include(":data")
+include(":domain")
+include(":feature:quiz")
+include(":feature:result")
