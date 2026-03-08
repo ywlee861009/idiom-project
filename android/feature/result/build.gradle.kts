@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.kero.idiom.feature.quiz"
+    namespace = "com.kero.idiom.feature.result"
     compileSdk = 34
 
     kotlin {

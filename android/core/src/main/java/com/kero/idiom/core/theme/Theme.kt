@@ -1,4 +1,4 @@
-package com.kero.idiom.ui.theme
+package com.kero.idiom.core.theme
 
 import android.app.Activity
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -13,16 +13,12 @@ import androidx.core.view.WindowCompat
 
 private val DarkColorScheme = darkColorScheme(
     primary = AccentBlue,
-    secondary = MediumGrey,
-    tertiary = LightGrey,
     background = DeepNavy,
     surface = DeepNavy
 )
 
 private val LightColorScheme = lightColorScheme(
     primary = Primary,
-    secondary = Secondary,
-    tertiary = LightGrey,
     background = Background,
     surface = Surface
 )

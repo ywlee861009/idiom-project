@@ -9,6 +9,15 @@ plugins {
 android {
     namespace = "com.kero.idiom"
     compileSdk = 34
+
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+
+    kotlin {
+        jvmToolchain(17)
+    }
+
     defaultConfig {
         applicationId = "com.kero.idiom"
         minSdk = 26

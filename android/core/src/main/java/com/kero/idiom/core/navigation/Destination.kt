@@ -1,4 +1,4 @@
-package com.kero.idiom.ui.navigation
+package com.kero.idiom.core.navigation
 
 import kotlinx.serialization.Serializable
 

@@ -1,4 +1,4 @@
-package com.kero.idiom.ui.theme
+package com.kero.idiom.core.theme
 
 import androidx.compose.ui.graphics.Color
 
@@ -8,7 +8,6 @@ val LightGrey = Color(0xFFE1E2E4)
 val MediumGrey = Color(0xFF8E9196)
 val AccentBlue = Color(0xFFD1E4FF)
 
-// Minimalist Palette
 val Primary = DeepNavy
 val Secondary = MediumGrey
 val Background = SoftWhite
