@@ -21,7 +21,7 @@
 ---
 
 ## 1. 기술 스택 (Technical Stack)
-- **Language**: Kotlin 1.9.22
+- **Language**: Kotlin 2.1.10
 - **UI Framework**: Jetpack Compose (Modern Toolkit)
 - **Architecture**: MVI (Model-View-Intent) + Clean Architecture
 - **Navigation**: Navigation 2.8.7 (Type-safe Navigation)
@@ -44,8 +44,17 @@
 2. `libs.versions.toml` 기반으로 Gradle Sync를 수행합니다.
 3. `app` 모듈을 실행합니다.
 
-## 4. 개발 티켓 관리 (Task Tracking)
-상세한 개발 진행 상황은 **`ANDROID_TICKETS.md`**에서 관리합니다.
+## 4. 개발 가이드라인 (Development Rules)
+- **Build-First Reporting (🚨필수)**: 모든 코드 수정 또는 라이브러리 업데이트 후에는 반드시 실제 빌드(또는 Gradle Sync)를 수행하여 성공 여부를 확인해야 합니다. 사용자에게는 빌드 성공이 확인된 상태에서만 작업 완료를 보고합니다.
+- **Type-safe Navigation**: 모든 화면 이동은 `core` 모듈에 정의된 `Destination` 클래스를 통해 타입 세이프하게 수행합니다.
+- **Unidirectional Data Flow**: UI 상태 변경은 반드시 ViewModel을 통한 `State` 업데이트로만 이루어져야 합니다.
+- **Material 3**: 디자인 컨셉인 'Extreme Minimalism'을 유지하기 위해 M3 컴포넌트와 `core` 모듈의 테마 설정을 준수합니다.
+- **Modularization**: 새로운 기능을 추가할 때는 `:feature:xxx` 모듈을 생성하여 독립성을 유지합니다.
+
+## 5. 주요 파일 위치
+- **의존성 관리**: `android/gradle/libs.versions.toml`
+- **전역 테마**: `android/core/src/main/java/com/kero/idiom/core/theme/`
+- **사자성어 데이터**: `android/data/src/main/assets/idioms.json`
 
 ---
 *새로운 환경에서 나를 만나면 "안녕 케로, `GUIDE_FOR_ANDROID.md` 읽고 작업 이어가자!"라고 말해줘.*
