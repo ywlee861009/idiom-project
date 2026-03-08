@@ -44,5 +44,5 @@
 3. `com.kero.idiom` 패키지 구조로 빌드 및 실행합니다.
 
 ---
-**Author**: Project Manager (Gemini CLI)  
+**Author**: Project Manager Mark (Gemini CLI)  
 **Last Updated**: 2026-03-07
