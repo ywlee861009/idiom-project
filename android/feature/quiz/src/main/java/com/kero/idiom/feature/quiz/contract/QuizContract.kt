@@ -11,7 +11,7 @@ data class QuizState(
 
 sealed interface QuizIntent {
     data object LoadNextQuiz : QuizIntent
-    data class SubmitAnswer(val answerChar: Char) : QuizIntent // 정답 한 글자 입력
+    data class SubmitAnswer(val answer: String) : QuizIntent // String으로 변경
 }
 
 sealed interface QuizSideEffect {

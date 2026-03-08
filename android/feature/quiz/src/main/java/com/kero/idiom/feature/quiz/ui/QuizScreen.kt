@@ -24,11 +24,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kero.idiom.core.components.IdiomBaseCard
 import com.kero.idiom.core.components.IdiomPrimaryButton
+import com.kero.idiom.domain.model.QuizType
 import com.kero.idiom.feature.quiz.contract.QuizIntent
 import com.kero.idiom.feature.quiz.contract.QuizSideEffect
 import com.kero.idiom.feature.quiz.viewmodel.QuizViewModel
@@ -65,58 +68,71 @@ fun QuizScreen(
                 state.quiz?.let { quiz ->
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(32.dp),
+                        verticalArrangement = Arrangement.spacedBy(24.dp),
                         modifier = Modifier.align(Alignment.Center)
                     ) {
-                        // Score Header
+                        // Header info
                         Text(
-                            text = "Score: ${state.score}",
-                            style = MaterialTheme.typography.labelLarge,
-                            color = MaterialTheme.colorScheme.primary
+                            text = when(quiz.type) {
+                                QuizType.FILL_BLANK -> "빈칸에 들어갈 글자는?"
+                                QuizType.MEANING_TO_WORD -> "뜻에 알맞은 사자성어는?"
+                                QuizType.HANJA_TO_HANGUL -> "한자를 읽어보세요."
+                            },
+                            style = MaterialTheme.typography.labelMedium,
+                            color = MaterialTheme.colorScheme.secondary
+                        )
+
+                        // Quiz Card
+                        IdiomBaseCard(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(220.dp)
+                        ) {
+                            Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
+                                Text(
+                                    text = quiz.questionText,
+                                    style = if (quiz.type == QuizType.MEANING_TO_WORD) 
+                                        MaterialTheme.typography.titleLarge 
+                                        else MaterialTheme.typography.displayLarge,
+                                    textAlign = TextAlign.Center,
+                                    modifier = Modifier.padding(16.dp)
+                                )
+                            }
+                        }
+
+                        // Hint Text
+                        Text(
+                            text = quiz.hintText,
+                            style = MaterialTheme.typography.bodyLarge,
+                            textAlign = TextAlign.Center,
+                            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.6f)
                         )
 
                         Spacer(modifier = Modifier.height(16.dp))
 
-                        // Quiz Content
-                        IdiomBaseCard(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(200.dp)
-                        ) {
-                            Box(contentAlignment = Alignment.Center) {
-                                Text(
-                                    text = quiz.questionWord,
-                                    style = MaterialTheme.typography.displayLarge,
-                                    textAlign = TextAlign.Center
-                                )
-                            }
-                        }
-
-                        // Meaning Hint
-                        Text(
-                            text = quiz.originalIdiom.meaning,
-                            style = MaterialTheme.typography.bodyLarge,
-                            textAlign = TextAlign.Center,
-                            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
-                        )
-
-                        Spacer(modifier = Modifier.height(32.dp))
-
-                        // Options Grid
+                        // Options
                         LazyVerticalGrid(
                             columns = GridCells.Fixed(2),
-                            horizontalArrangement = Arrangement.spacedBy(16.dp),
-                            verticalArrangement = Arrangement.spacedBy(16.dp),
+                            horizontalArrangement = Arrangement.spacedBy(12.dp),
+                            verticalArrangement = Arrangement.spacedBy(12.dp),
                             contentPadding = PaddingValues(bottom = 16.dp)
                         ) {
-                            items(quiz.options) { char ->
+                            items(quiz.options) { option ->
                                 IdiomPrimaryButton(
-                                    text = char.toString(),
-                                    onClick = { viewModel.processIntent(QuizIntent.SubmitAnswer(char)) },
-                                    enabled = state.isAnswerCorrect == null // 정답 처리 중엔 버튼 비활성화
+                                    text = option,
+                                    onClick = { viewModel.processIntent(QuizIntent.SubmitAnswer(option)) },
+                                    enabled = state.isAnswerCorrect == null
                                 )
                             }
                         }
+                        
+                        // Current Score
+                        Text(
+                            text = "SCORE: ${state.score}",
+                            style = MaterialTheme.typography.labelLarge,
+                            fontWeight = FontWeight.Bold,
+                            letterSpacing = 2.sp
+                        )
                     }
                 }
             }

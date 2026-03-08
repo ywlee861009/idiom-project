@@ -34,7 +34,7 @@ class QuizViewModel @Inject constructor(
     fun processIntent(intent: QuizIntent) {
         when (intent) {
             is QuizIntent.LoadNextQuiz -> loadNextQuiz()
-            is QuizIntent.SubmitAnswer -> checkAnswer(intent.answerChar)
+            is QuizIntent.SubmitAnswer -> checkAnswer(intent.answer)
         }
     }
 
@@ -51,9 +51,9 @@ class QuizViewModel @Inject constructor(
         }
     }
 
-    private fun checkAnswer(answerChar: Char) {
+    private fun checkAnswer(answer: String) {
         val currentQuiz = _state.value.quiz ?: return
-        val isCorrect = currentQuiz.answerChar == answerChar
+        val isCorrect = currentQuiz.answer == answer
 
         if (isCorrect) {
             _state.update { 
@@ -64,16 +64,14 @@ class QuizViewModel @Inject constructor(
             }
             viewModelScope.launch {
                 _effect.send(QuizSideEffect.ShowToast("정답입니다!"))
-                delay(1000) // 정답 확인 시간
+                delay(1000)
                 loadNextQuiz()
             }
         } else {
             _state.update { it.copy(isAnswerCorrect = false) }
             viewModelScope.launch {
-                _effect.send(QuizSideEffect.ShowToast("오답입니다!"))
-                // 오답 시에도 다음 문제로 넘어갈지, 기회를 줄지는 기획에 따라 다름.
-                // 여기서는 일단 1초 뒤 다음 문제로 넘어가는 것으로 구현.
-                delay(1000)
+                _effect.send(QuizSideEffect.ShowToast("오답입니다! 정답: ${currentQuiz.answer}"))
+                delay(1500)
                 loadNextQuiz() 
             }
         }
