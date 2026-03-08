@@ -1,18 +1,15 @@
 pluginManagement {
     repositories {
+        mavenCentral() // 최신 플러그인을 위해 최상단 배치
         google()
-        mavenCentral()
         gradlePluginPortal()
     }
-}
-plugins {
-    id("org.gradle.toolchains.foojay-resolver-convention") version "0.10.0"
 }
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
-        google()
         mavenCentral()
+        google()
     }
 }
 
