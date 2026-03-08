@@ -20,4 +20,5 @@ android {
 
 dependencies {
     implementation(libs.kotlinx.serialization.json)
+    implementation("javax.inject:javax.inject:1")
 }
