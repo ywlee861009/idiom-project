@@ -4,13 +4,30 @@
 
 ---
 
+### ID-06: Main Quiz Screen Implementation
+- **Description**: ID-04(알고리즘), ID-07(디자인) 결과물을 결합한 실제 퀴즈 화면 구현.
+- **Completed Date**: 2026-03-08
+- **Build Verified**: [x] `./gradlew assembleDebug` SUCCESS
+- **Results**:
+    - [x] MVI Pattern: `QuizViewModel` 상태 관리 및 UseCase 연동.
+    - [x] UI: 'The Calm Ink' 테마가 적용된 `QuizScreen` 구현.
+    - [x] Navigation: `IdiomNavGraph`에 퀴즈 화면 연결 완료.
+- **Priority**: Medium
+
+---
+
+### ID-07: Advanced Design System Construction (The Calm Ink)
+- **Description**: 'The Calm Ink' 컨셉의 컬러 팔레트를 기반으로 디자인 시스템 고도화.
+- **Completed Date**: 2026-03-08
+- **Build Verified**: [x] `./gradlew :core:assembleDebug` SUCCESS
+- **Priority**: High
+
+---
+
 ### ID-04: Quiz Engine Algorithm
 - **Description**: 퀴즈 생성 및 정답 판별 로직 구현.
 - **Completed Date**: 2026-03-08
 - **Build Verified**: [x] `./gradlew :domain:assembleDebug` SUCCESS
-- **Results**:
-    - [x] 4글자 중 랜덤 비우기 및 오답 생성 알고리즘 구현.
-    - [x] `GetRandomQuizUseCase` 도메인 레이어 구현 완료.
 - **Priority**: Medium
 
 ---
@@ -19,9 +36,6 @@
 - **Description**: 미니멀리즘 디자인 컨셉을 반영한 공통 UI 컴포넌트 개발.
 - **Completed Date**: 2026-03-08
 - **Build Verified**: [x] `./gradlew :core:assembleDebug` SUCCESS
-- **Results**:
-    - [x] 'Extreme Minimalism' 테마 설정 완료.
-    - [x] `IdiomBaseCard`, `IdiomPrimaryButton` 컴포넌트 구현 완료.
 - **Priority**: High
 
 ---

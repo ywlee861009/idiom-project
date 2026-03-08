@@ -1,17 +1,17 @@
 package com.kero.idiom.feature.quiz.contract
 
-import com.kero.idiom.domain.model.Idiom // 추후 생성
+import com.kero.idiom.domain.model.Quiz
 
 data class QuizState(
     val isLoading: Boolean = false,
-    val currentIdiom: Idiom? = null,
+    val quiz: Quiz? = null,
     val score: Int = 0,
     val isAnswerCorrect: Boolean? = null
 )
 
 sealed interface QuizIntent {
     data object LoadNextQuiz : QuizIntent
-    data class SubmitAnswer(val answer: String) : QuizIntent
+    data class SubmitAnswer(val answerChar: Char) : QuizIntent // 정답 한 글자 입력
 }
 
 sealed interface QuizSideEffect {

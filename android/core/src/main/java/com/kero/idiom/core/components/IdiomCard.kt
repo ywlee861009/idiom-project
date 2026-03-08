@@ -1,5 +1,6 @@
 package com.kero.idiom.core.components
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -16,11 +17,12 @@ fun IdiomBaseCard(
 ) {
     Card(
         modifier = modifier,
-        shape = RoundedCornerShape(24.dp), // 부드러운 라운딩
+        shape = RoundedCornerShape(12.dp), // 조금 더 단단한 느낌
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
+            containerColor = MaterialTheme.colorScheme.background // Soft White
         ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp) // Flat Design
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary), // Deep Navy Border
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     ) {
         content()
     }

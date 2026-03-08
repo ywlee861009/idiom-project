@@ -24,10 +24,10 @@ fun IdiomPrimaryButton(
             .fillMaxWidth()
             .height(56.dp),
         enabled = enabled,
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(8.dp), // 덜 둥글게, 더 진중하게
         colors = ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            contentColor = MaterialTheme.colorScheme.onPrimary
+            containerColor = MaterialTheme.colorScheme.primary, // Deep Navy
+            contentColor = MaterialTheme.colorScheme.onPrimary // Soft White
         )
     ) {
         Text(
