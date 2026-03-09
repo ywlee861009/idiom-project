@@ -30,13 +30,3 @@
 - **Description**: 어르신들을 위한 64sp급 대형 폰트 및 명조체(Serif) 테마 전면 적용. 모든 UI 컴포넌트의 여백과 높이를 커진 폰트에 맞춰 재조정.
 - **Priority**: High
 
----
-
-### ID-24: Premium App Icon Design (The Calm Ink)
-- **Assignee**: Designer (Jenny)
-- **Description**: 'The Calm Ink' 디자인 시스템을 응축한 앱 아이콘 제작. 
-    - **Size**: 1024 x 1024 px (정방형).
-    - **Concept**: Extreme Minimalism. 한지 배경(#F9F7F2) + 먹색(#2C2C2C) 심볼.
-    - **Technical**: 안드로이드 적응형 아이콘(Adaptive Icon) 구조를 고려하여 배경(Background)과 전경(Foreground) 레이어의 분리가 용이한 디자인.
-    - **Deliverable**: `design/icon_master.png` 또는 관련 디자인 자산.
-- **Priority**: High

@@ -26,6 +26,11 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var repository: IdiomRepository
 
+    @Deprecated("Deprecated in Java")
+    override fun onBackPressed() {
+        finish()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {

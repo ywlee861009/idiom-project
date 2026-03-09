@@ -1,0 +1,10 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- The Calm Ink: Foreground Layer (Minimalist Symbol) -->
+  <!-- A minimalist representation of a 'Book' or 'Wisdom' using a single brush stroke style -->
+  <path d="M300 350C300 350 450 320 512 400C574 320 724 350 724 350V700C724 700 574 670 512 750C450 670 300 700 300 700V350Z" 
+        stroke="#2C2C2C" stroke-width="40" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M512 400V750" stroke="#2C2C2C" stroke-width="40" stroke-linecap="round"/>
+  
+  <!-- Subtle 'Ink' Drop Symbol -->
+  <circle cx="512" cy="250" r="30" fill="#2C2C2C"/>
+</svg>

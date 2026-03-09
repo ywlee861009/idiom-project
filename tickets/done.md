@@ -4,6 +4,16 @@
 
 ---
 
+### ID-24: Premium App Icon Design (The Calm Ink)
+- **Description**: 'The Calm Ink' 디자인 시스템을 응축한 앱 아이콘 자산 제작. 배경(Hanji #F9F7F2)과 전경(Minimalist Symbol #2C2C2C) 레이어를 분리하여 제작 완료.
+- **Completed Date**: 2026-03-09
+- **Deliverables**:
+    - [x] `design/icon_background.svg`: 한지 질감의 배경 레이어.
+    - [x] `design/icon_foreground.svg`: 서책과 먹물을 형상화한 전경 심볼 레이어.
+- **Priority**: High
+
+---
+
 ### ID-09: Result Screen Enhancement
 - **Description**: 'The Calm Ink' 디자인 시스템을 적용하여 결과 화면을 구현. 퀴즈 종료 후 최종 점수와 '다시 하기', '홈으로' 버튼을 포함.
 - **Completed Date**: 2026-03-08
