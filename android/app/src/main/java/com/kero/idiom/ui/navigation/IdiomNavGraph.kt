@@ -1,5 +1,10 @@
 package com.kero.idiom.ui.navigation
 
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
@@ -16,7 +21,31 @@ fun IdiomNavGraph() {
 
     NavHost(
         navController = navController,
-        startDestination = Destination.Quiz
+        startDestination = Destination.Quiz,
+        enterTransition = {
+            slideInHorizontally(
+                initialOffsetX = { it },
+                animationSpec = tween(700)
+            ) + fadeIn(animationSpec = tween(700))
+        },
+        exitTransition = {
+            slideOutHorizontally(
+                targetOffsetX = { -it },
+                animationSpec = tween(700)
+            ) + fadeOut(animationSpec = tween(700))
+        },
+        popEnterTransition = {
+            slideInHorizontally(
+                initialOffsetX = { -it },
+                animationSpec = tween(700)
+            ) + fadeIn(animationSpec = tween(700))
+        },
+        popExitTransition = {
+            slideOutHorizontally(
+                targetOffsetX = { it },
+                animationSpec = tween(700)
+            ) + fadeOut(animationSpec = tween(700))
+        }
     ) {
         composable<Destination.Quiz> {
             QuizScreen(

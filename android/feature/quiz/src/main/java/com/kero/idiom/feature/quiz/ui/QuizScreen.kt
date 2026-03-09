@@ -1,6 +1,16 @@
 package com.kero.idiom.feature.quiz.ui
 
 import android.widget.Toast
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.SizeTransform
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,6 +32,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -33,6 +46,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.kero.idiom.core.components.HanjiBackground
 import com.kero.idiom.core.components.IdiomBaseCard
 import com.kero.idiom.core.components.IdiomPrimaryButton
+import com.kero.idiom.core.components.InkBurstEffect
 import com.kero.idiom.domain.model.QuizType
 import com.kero.idiom.feature.quiz.contract.QuizIntent
 import com.kero.idiom.feature.quiz.contract.QuizSideEffect
@@ -45,6 +59,7 @@ fun QuizScreen(
 ) {
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
+    var showInkEffect by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         viewModel.effect.collect { effect ->
@@ -52,6 +67,13 @@ fun QuizScreen(
                 is QuizSideEffect.ShowToast -> Toast.makeText(context, effect.message, Toast.LENGTH_SHORT).show()
                 is QuizSideEffect.NavigateToResult -> onNavigateToResult(effect.finalScore)
             }
+        }
+    }
+
+    // 정답 시 먹물 효과 트리거
+    LaunchedEffect(state.isAnswerCorrect) {
+        if (state.isAnswerCorrect == true) {
+            showInkEffect = true
         }
     }
 
@@ -71,36 +93,44 @@ fun QuizScreen(
                 if (state.isLoading) {
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                 } else {
-                    state.quiz?.let { quiz ->
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center,
-                            modifier = Modifier.fillMaxSize()
-                        ) {
-                            // Header info
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically
+                    AnimatedContent(
+                        targetState = state.currentQuizIndex,
+                        transitionSpec = {
+                            (slideInHorizontally { width -> width / 2 } + fadeIn(animationSpec = tween(500)))
+                                .togetherWith(slideOutHorizontally { width -> -width / 2 } + fadeOut(animationSpec = tween(500)))
+                        },
+                        label = "QuizTransition"
+                    ) { targetIndex ->
+                        state.quiz?.let { quiz ->
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center,
+                                modifier = Modifier.fillMaxSize()
                             ) {
-                                Text(
-                                    text = when(quiz.type) {
-                                        QuizType.FILL_BLANK -> "빈칸에 들어갈 글자는?"
-                                        QuizType.MEANING_TO_WORD -> "뜻에 알맞은 사자성어는?"
-                                        QuizType.HANJA_TO_HANGUL -> "한자를 읽어보세요."
-                                    },
-                                    style = MaterialTheme.typography.labelMedium,
-                                    color = MaterialTheme.colorScheme.secondary,
-                                    letterSpacing = 2.sp
-                                )
+                                // Header info
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Text(
+                                        text = when(quiz.type) {
+                                            QuizType.FILL_BLANK -> "빈칸에 들어갈 글자는?"
+                                            QuizType.MEANING_TO_WORD -> "뜻에 알맞은 사자성어는?"
+                                            QuizType.HANJA_TO_HANGUL -> "한자를 읽어보세요."
+                                        },
+                                        style = MaterialTheme.typography.labelMedium,
+                                        color = MaterialTheme.colorScheme.secondary,
+                                        letterSpacing = 2.sp
+                                    )
 
-                                Text(
-                                    text = "${state.currentQuizIndex} / ${state.maxQuizzes}",
-                                    style = MaterialTheme.typography.labelMedium,
-                                    color = MaterialTheme.colorScheme.secondary,
-                                    fontWeight = FontWeight.Bold
-                                )
-                            }
+                                    Text(
+                                        text = "$targetIndex / ${state.maxQuizzes}",
+                                        style = MaterialTheme.typography.labelMedium,
+                                        color = MaterialTheme.colorScheme.secondary,
+                                        fontWeight = FontWeight.Bold
+                                    )
+                                }
 
                             Spacer(modifier = Modifier.height(40.dp))
 
@@ -153,16 +183,47 @@ fun QuizScreen(
                             
                             Spacer(modifier = Modifier.height(24.dp))
 
-                            // Current Score
-                            Text(
-                                text = "SCORE: ${state.score}",
-                                style = MaterialTheme.typography.labelLarge,
-                                fontWeight = FontWeight.ExtraBold,
-                                letterSpacing = 3.sp,
-                                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f)
-                            )
+                            // Current Score with Ticker Animation
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Text(
+                                    text = "SCORE: ",
+                                    style = MaterialTheme.typography.labelLarge,
+                                    fontWeight = FontWeight.ExtraBold,
+                                    letterSpacing = 3.sp,
+                                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f)
+                                )
+                                AnimatedContent(
+                                    targetState = state.score,
+                                    transitionSpec = {
+                                        if (targetState > initialState) {
+                                            (slideInVertically { height -> height } + fadeIn())
+                                                .togetherWith(slideOutVertically { height -> -height } + fadeOut())
+                                        } else {
+                                            (slideInVertically { height -> -height } + fadeIn())
+                                                .togetherWith(slideOutVertically { height -> height } + fadeOut())
+                                        }.using(SizeTransform(clip = false))
+                                    },
+                                    label = "ScoreTicker"
+                                ) { targetScore ->
+                                    Text(
+                                        text = "$targetScore",
+                                        style = MaterialTheme.typography.labelLarge,
+                                        fontWeight = FontWeight.ExtraBold,
+                                        letterSpacing = 3.sp,
+                                        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f)
+                                    )
+                                }
+                            }
                         }
                     }
+                }
+            }
+                
+                // Ink Burst Animation Overlay
+                if (showInkEffect) {
+                    InkBurstEffect(
+                        onAnimationEnd = { showInkEffect = false }
+                    )
                 }
             }
         }

@@ -150,6 +150,7 @@
       "name": "Component/ButtonPrimary",
       "reusable": true,
       "fill": "$bg-dark",
+      "cornerRadius": 12,
       "padding": [
         16,
         32
@@ -1049,6 +1050,7 @@
                   "id": "hvBMK",
                   "name": "homeBtn",
                   "width": "fill_container",
+                  "cornerRadius": 12,
                   "stroke": {
                     "thickness": 1,
                     "fill": "$border"
@@ -2509,6 +2511,18 @@
                       "type": "ref",
                       "ref": "00GqI",
                       "name": "btnSecInst"
+                    },
+                    {
+                      "id": "btCorInst",
+                      "type": "ref",
+                      "ref": "btCor",
+                      "name": "btnCorInst"
+                    },
+                    {
+                      "id": "btWroInst",
+                      "type": "ref",
+                      "ref": "btWro",
+                      "name": "btnWroInst"
                     }
                   ]
                 },
@@ -2519,7 +2533,7 @@
                   "fill": "$text-secondary",
                   "textGrowth": "fixed-width",
                   "width": 600,
-                  "content": "Primary: solid black fill, white text. Secondary: outline with border, black text.",
+                  "content": "Primary: black fill. Secondary: outline. Correct/Wrong: green/red fill for feedback.",
                   "lineHeight": 1.5,
                   "fontFamily": "Pretendard",
                   "fontSize": 12,
@@ -2771,6 +2785,7 @@
       "name": "Component/ButtonSecondary",
       "reusable": true,
       "fill": "$bg-primary",
+      "cornerRadius": 12,
       "stroke": {
         "thickness": 1,
         "fill": "$border"
@@ -3024,6 +3039,62 @@
           "content": "View All",
           "fontFamily": "Pretendard",
           "fontSize": 12,
+          "fontWeight": "500"
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "btCor",
+      "x": 0,
+      "y": 1110,
+      "name": "Component/ButtonCorrect",
+      "reusable": true,
+      "fill": "$correct-green",
+      "padding": [
+        16,
+        32
+      ],
+      "cornerRadius": 12,
+      "justifyContent": "center",
+      "alignItems": "center",
+      "children": [
+        {
+          "type": "text",
+          "id": "lbCor",
+          "name": "btnLabel",
+          "fill": "$text-on-dark",
+          "content": "Correct",
+          "fontFamily": "Pretendard",
+          "fontSize": 16,
+          "fontWeight": "500"
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "btWro",
+      "x": 200,
+      "y": 1110,
+      "name": "Component/ButtonWrong",
+      "reusable": true,
+      "fill": "$wrong-red",
+      "padding": [
+        16,
+        32
+      ],
+      "cornerRadius": 12,
+      "justifyContent": "center",
+      "alignItems": "center",
+      "children": [
+        {
+          "type": "text",
+          "id": "lbWro",
+          "name": "btnLabel",
+          "fill": "$text-on-dark",
+          "content": "Wrong",
+          "fontFamily": "Pretendard",
+          "fontSize": 16,
           "fontWeight": "500"
         }
       ]
