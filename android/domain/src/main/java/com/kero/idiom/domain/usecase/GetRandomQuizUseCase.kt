@@ -10,18 +10,26 @@ class GetRandomQuizUseCase @Inject constructor(
     private val repository: IdiomRepository
 ) {
     suspend operator fun invoke(): Quiz {
-        val allIdioms = repository.getIdioms()
-        val idiom = allIdioms.random()
+        // [Smart Selection] 노출 빈도가 낮은 사자성어 1개를 우선적으로 가져옵니다.
+        val targetIdioms = repository.getRandomIdioms(limit = 1)
+        val idiom = targetIdioms.first()
+
+        // 오답 보기를 만들기 위한 샘플 데이터 (이것도 노출 빈도가 낮은 것들 위주로 섞음)
+        val dummyIdioms = repository.getRandomIdioms(limit = 20)
+
+        // 출제 기록 (ID-21 핵심)
+        repository.recordExposure(idiom.word)
+
         val type = QuizType.entries.random()
 
         return when (type) {
-            QuizType.FILL_BLANK -> createFillBlankQuiz(idiom, allIdioms)
-            QuizType.MEANING_TO_WORD -> createMeaningToWordQuiz(idiom, allIdioms)
-            QuizType.HANJA_TO_HANGUL -> createHanjaToHangulQuiz(idiom, allIdioms)
+            QuizType.FILL_BLANK -> createFillBlankQuiz(idiom, dummyIdioms)
+            QuizType.MEANING_TO_WORD -> createMeaningToWordQuiz(idiom, dummyIdioms)
+            QuizType.HANJA_TO_HANGUL -> createHanjaToHangulQuiz(idiom, dummyIdioms)
         }
     }
 
-    private fun createFillBlankQuiz(idiom: Idiom, allIdioms: List<Idiom>): Quiz {
+    private fun createFillBlankQuiz(idiom: Idiom, samples: List<Idiom>): Quiz {
         val blankIndex = (0 until 4).random()
         val answerChar = idiom.word[blankIndex].toString()
         val questionText = idiom.word.mapIndexed { index, c ->
@@ -31,9 +39,10 @@ class GetRandomQuizUseCase @Inject constructor(
         val options = mutableSetOf<String>()
         options.add(answerChar)
         while (options.size < 4) {
-            val randomChar = allIdioms.random().word.random().toString()
+            val randomChar = samples.random().word.random().toString()
             options.add(randomChar)
         }
+// ...
 
         return Quiz(
             type = QuizType.FILL_BLANK,
@@ -45,11 +54,11 @@ class GetRandomQuizUseCase @Inject constructor(
         )
     }
 
-    private fun createMeaningToWordQuiz(idiom: Idiom, allIdioms: List<Idiom>): Quiz {
+    private fun createMeaningToWordQuiz(idiom: Idiom, samples: List<Idiom>): Quiz {
         val options = mutableSetOf<String>()
         options.add(idiom.word)
         while (options.size < 4) {
-            options.add(allIdioms.random().word)
+            options.add(samples.random().word)
         }
 
         return Quiz(
@@ -62,11 +71,11 @@ class GetRandomQuizUseCase @Inject constructor(
         )
     }
 
-    private fun createHanjaToHangulQuiz(idiom: Idiom, allIdioms: List<Idiom>): Quiz {
+    private fun createHanjaToHangulQuiz(idiom: Idiom, samples: List<Idiom>): Quiz {
         val options = mutableSetOf<String>()
         options.add(idiom.word)
         while (options.size < 4) {
-            options.add(allIdioms.random().word)
+            options.add(samples.random().word)
         }
 
         return Quiz(
