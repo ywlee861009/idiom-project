@@ -23,9 +23,10 @@
 - [ ] **M12. Motion Design**: 'The Fluid Ink' 애니메이션 시스템 구현 (ID-11).
 - [ ] **M13. Premium Typography**: 시각적 완성도 및 레이아웃 최적화 (ID-12).
 - [ ] **M14. Local Persistence**: 최고 점수 저장 기능 연동 (ID-10).
+- [ ] **M15. Brand Identity**: 프리미엄 앱 아이콘 디자인 및 리소스 반영 (ID-24).
 
 ## Phase 6: Smart Learning & Silver UX (지능형 학습 및 실버 UX)
-- [ ] **M15. Smart Data Layer**: Room DB 기반 지능형 데이터 마이그레이션 (ID-20).
+- [ ] **M16. Smart Data Layer**: Room DB 기반 지능형 데이터 마이그레이션 (ID-20).
 - [ ] **M16. Adaptive Quiz**: 노출 빈도 기반 개인화 퀴즈 알고리즘 (ID-21).
 - [ ] **M17. Cultural Experience**: "서책 준비 중" 인트로 화면 및 동양적 미학 적용 (ID-22).
 - [ ] **M18. Silver UX Optimization**: 64sp급 대형 폰트 및 명조체 테마 전면 적용 (ID-23).
