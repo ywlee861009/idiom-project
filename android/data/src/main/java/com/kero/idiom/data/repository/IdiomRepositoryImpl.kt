@@ -26,7 +26,7 @@ class IdiomRepositoryImpl @Inject constructor(
 ) : IdiomRepository {
 
     companion object {
-        private const val CURRENT_DATA_VERSION = 1 // 여기서 데이터 버전을 관리합니다.
+        private const val CURRENT_DATA_VERSION = 2 // 여기서 데이터 버전을 관리합니다.
     }
 
     private val IDIOM_VERSION = intPreferencesKey("idiom_version")

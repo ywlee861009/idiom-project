@@ -6,57 +6,57 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
-// Pretendard 폰트 파일이 res/font/에 추가되면 아래 FontFamily.Default를 교체
-private val PretendardFamily = FontFamily.Default
+// Senior-Friendly Silver UI Typography
+// Serif(명조체)는 어르신들께 친숙하고 가독성이 좋습니다.
+val SerifFamily = FontFamily.Serif 
+val SansSerifFamily = FontFamily.SansSerif
 
 val Typography = Typography(
-    // Display — 48sp Regular
+    // Main Quiz Word
     displayLarge = TextStyle(
-        fontFamily = PretendardFamily,
-        fontWeight = FontWeight.Normal,
-        fontSize = 48.sp,
+        fontFamily = SerifFamily,
+        fontWeight = FontWeight.Bold,
+        fontSize = 56.sp,
+        lineHeight = 64.sp,
         letterSpacing = 0.sp
     ),
-    // Question — 42sp Regular
+    // Middle Size Text
     displayMedium = TextStyle(
-        fontFamily = PretendardFamily,
-        fontWeight = FontWeight.Normal,
-        fontSize = 42.sp,
+        fontFamily = SerifFamily,
+        fontWeight = FontWeight.Bold,
+        fontSize = 44.sp,
+        lineHeight = 52.sp,
         letterSpacing = 0.sp
     ),
-    // Score — 72sp Regular
+    // Score Text
     displaySmall = TextStyle(
-        fontFamily = PretendardFamily,
-        fontWeight = FontWeight.Normal,
-        fontSize = 72.sp,
-        letterSpacing = 0.sp
+        fontFamily = SansSerifFamily,
+        fontWeight = FontWeight.Black,
+        fontSize = 64.sp,
+        letterSpacing = 1.sp
     ),
-    // Heading — 28sp Regular
-    headlineMedium = TextStyle(
-        fontFamily = PretendardFamily,
-        fontWeight = FontWeight.Normal,
-        fontSize = 28.sp,
-        letterSpacing = 0.sp
-    ),
-    // Subtitle — 18sp Regular
+    // Meaning/Hint Text (Most important for seniors)
     titleMedium = TextStyle(
-        fontFamily = PretendardFamily,
-        fontWeight = FontWeight.Normal,
-        fontSize = 18.sp,
+        fontFamily = SerifFamily,
+        fontWeight = FontWeight.Medium,
+        fontSize = 24.sp,
+        lineHeight = 34.sp,
         letterSpacing = 0.sp
     ),
-    // Button — 16sp Medium
+    // Button Text
     labelLarge = TextStyle(
-        fontFamily = PretendardFamily,
+        fontFamily = SansSerifFamily,
+        fontWeight = FontWeight.Bold,
+        fontSize = 20.sp,
+        lineHeight = 28.sp,
+        letterSpacing = 0.5.sp
+    ),
+    // Info/Caption (e.g., Progress info)
+    labelSmall = TextStyle(
+        fontFamily = SansSerifFamily,
         fontWeight = FontWeight.Medium,
         fontSize = 16.sp,
-        letterSpacing = 0.sp
-    ),
-    // Caption — 12sp Medium, 0.5sp tracking
-    labelSmall = TextStyle(
-        fontFamily = PretendardFamily,
-        fontWeight = FontWeight.Medium,
-        fontSize = 12.sp,
+        lineHeight = 22.sp,
         letterSpacing = 0.5.sp
     )
 )
