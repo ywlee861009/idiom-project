@@ -1,0 +1,3086 @@
+{
+  "version": "2.8",
+  "children": [
+    {
+      "type": "frame",
+      "id": "gAQ5d",
+      "x": 0,
+      "y": 700,
+      "name": "Component/TabBar",
+      "reusable": true,
+      "width": 393,
+      "height": 83,
+      "fill": "$bg-primary",
+      "padding": [
+        12,
+        21,
+        21,
+        21
+      ],
+      "children": [
+        {
+          "type": "frame",
+          "id": "x4Rvr",
+          "name": "pill",
+          "width": "fill_container",
+          "height": 62,
+          "fill": "$bg-primary",
+          "cornerRadius": 36,
+          "stroke": {
+            "thickness": 1,
+            "fill": "$border"
+          },
+          "padding": 4,
+          "children": [
+            {
+              "type": "frame",
+              "id": "JRa3E",
+              "name": "tab1",
+              "width": "fill_container",
+              "height": "fill_container",
+              "fill": "$bg-dark",
+              "cornerRadius": 26,
+              "layout": "vertical",
+              "gap": 4,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "AI3aD",
+                  "name": "tab1Icon",
+                  "width": 18,
+                  "height": 18,
+                  "iconFontName": "house",
+                  "iconFontFamily": "lucide",
+                  "fill": "$text-on-dark"
+                },
+                {
+                  "type": "text",
+                  "id": "M9nhk",
+                  "name": "tab1Label",
+                  "fill": "$text-on-dark",
+                  "content": "HOME",
+                  "fontFamily": "Pretendard",
+                  "fontSize": 10,
+                  "fontWeight": "600",
+                  "letterSpacing": 0.5
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "8y2CO",
+              "name": "tab2",
+              "width": "fill_container",
+              "height": "fill_container",
+              "cornerRadius": 26,
+              "layout": "vertical",
+              "gap": 4,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "ZPjoG",
+                  "name": "tab2Icon",
+                  "width": 18,
+                  "height": 18,
+                  "iconFontName": "brain",
+                  "iconFontFamily": "lucide",
+                  "fill": "$text-secondary"
+                },
+                {
+                  "type": "text",
+                  "id": "3EBjY",
+                  "name": "tab2Label",
+                  "fill": "$text-secondary",
+                  "content": "QUIZ",
+                  "fontFamily": "Pretendard",
+                  "fontSize": 10,
+                  "fontWeight": "500",
+                  "letterSpacing": 0.5
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "GHSVG",
+              "name": "tab3",
+              "width": "fill_container",
+              "height": "fill_container",
+              "cornerRadius": 26,
+              "layout": "vertical",
+              "gap": 4,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "7c8CS",
+                  "name": "tab3Icon",
+                  "width": 18,
+                  "height": 18,
+                  "iconFontName": "book-open",
+                  "iconFontFamily": "lucide",
+                  "fill": "$text-secondary"
+                },
+                {
+                  "type": "text",
+                  "id": "d7lrd",
+                  "name": "tab3Label",
+                  "fill": "$text-secondary",
+                  "content": "STUDY",
+                  "fontFamily": "Pretendard",
+                  "fontSize": 10,
+                  "fontWeight": "500",
+                  "letterSpacing": 0.5
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "VCGAt",
+      "x": 0,
+      "y": 830,
+      "name": "Component/ButtonPrimary",
+      "reusable": true,
+      "fill": "$bg-dark",
+      "padding": [
+        16,
+        32
+      ],
+      "justifyContent": "center",
+      "alignItems": "center",
+      "children": [
+        {
+          "type": "text",
+          "id": "la6be",
+          "name": "btnLabel",
+          "fill": "$text-on-dark",
+          "content": "Start Quiz",
+          "fontFamily": "Pretendard",
+          "fontSize": 16,
+          "fontWeight": "500"
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "qRJIA",
+      "x": 0,
+      "y": 910,
+      "name": "Component/OptionCard",
+      "reusable": true,
+      "width": 345,
+      "fill": "$bg-primary",
+      "stroke": {
+        "thickness": 1,
+        "fill": "$border"
+      },
+      "layout": "vertical",
+      "gap": 6,
+      "padding": [
+        20,
+        24
+      ],
+      "children": [
+        {
+          "type": "text",
+          "id": "O49Yb",
+          "name": "optionHanja",
+          "fill": "$text-primary",
+          "content": "塞翁之馬",
+          "fontFamily": "Pretendard",
+          "fontSize": 22,
+          "fontStyle": "italic"
+        },
+        {
+          "type": "text",
+          "id": "EOLOk",
+          "name": "optionMeaning",
+          "fill": "$text-secondary",
+          "textGrowth": "fixed-width",
+          "width": 297,
+          "content": "인생의 길흉화복은 예측하기 어렵다",
+          "fontFamily": "Pretendard",
+          "fontSize": 13
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "eZyxO",
+      "x": 0,
+      "y": 1010,
+      "name": "Component/StatCard",
+      "reusable": true,
+      "fill": "$bg-primary",
+      "stroke": {
+        "thickness": 1,
+        "fill": "$border"
+      },
+      "layout": "vertical",
+      "gap": 4,
+      "padding": [
+        24,
+        32
+      ],
+      "children": [
+        {
+          "type": "text",
+          "id": "qXCgF",
+          "name": "statValue",
+          "fill": "$text-primary",
+          "content": "87%",
+          "fontFamily": "Pretendard",
+          "fontSize": 36,
+          "letterSpacing": -2,
+          "fontStyle": "italic"
+        },
+        {
+          "type": "text",
+          "id": "3OSXq",
+          "name": "statLabel",
+          "fill": "$text-secondary",
+          "content": "Accuracy",
+          "fontFamily": "Pretendard",
+          "fontSize": 12,
+          "fontWeight": "500",
+          "letterSpacing": 0.5
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "COLDx",
+      "x": 500,
+      "y": 0,
+      "name": "Home",
+      "clip": true,
+      "width": 393,
+      "height": 852,
+      "fill": "$bg-primary",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "5FEWQ",
+          "name": "statusBar",
+          "width": "fill_container",
+          "height": 62,
+          "padding": [
+            0,
+            24
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "ms8EC",
+              "name": "timeText",
+              "fill": "$text-primary",
+              "content": "9:41",
+              "fontFamily": "Pretendard",
+              "fontSize": 16,
+              "fontWeight": "600"
+            },
+            {
+              "type": "frame",
+              "id": "3cDyX",
+              "name": "statusIcons",
+              "gap": 6,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "IWEbq",
+                  "name": "sigIcon",
+                  "width": 16,
+                  "height": 16,
+                  "iconFontName": "signal",
+                  "iconFontFamily": "lucide",
+                  "fill": "$text-primary"
+                },
+                {
+                  "type": "icon_font",
+                  "id": "Yc8Zc",
+                  "name": "wifiIcon",
+                  "width": 16,
+                  "height": 16,
+                  "iconFontName": "wifi",
+                  "iconFontFamily": "lucide",
+                  "fill": "$text-primary"
+                },
+                {
+                  "type": "icon_font",
+                  "id": "87Ndq",
+                  "name": "batIcon",
+                  "width": 16,
+                  "height": 16,
+                  "iconFontName": "battery-full",
+                  "iconFontFamily": "lucide",
+                  "fill": "$text-primary"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "0aNw4",
+          "name": "content",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 32,
+          "padding": [
+            0,
+            24,
+            24,
+            24
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "I5zb5",
+              "name": "heroSection",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 8,
+              "padding": [
+                40,
+                0,
+                0,
+                0
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "MhleG",
+                  "name": "heroTitle",
+                  "fill": "$text-primary",
+                  "content": "四字成語",
+                  "fontFamily": "Pretendard",
+                  "fontSize": 48,
+                  "letterSpacing": -2,
+                  "fontStyle": "italic"
+                },
+                {
+                  "type": "text",
+                  "id": "edJio",
+                  "name": "heroSub",
+                  "fill": "$text-muted",
+                  "content": "사자성어 퀴즈",
+                  "fontFamily": "Pretendard",
+                  "fontSize": 18
+                },
+                {
+                  "type": "text",
+                  "id": "YvJXM",
+                  "name": "heroDesc",
+                  "fill": "$text-secondary",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "200개의 엄선된 사자성어를 학습하고\n퀴즈로 실력을 확인하세요.",
+                  "lineHeight": 1.6,
+                  "fontFamily": "Pretendard",
+                  "fontSize": 14
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "JjO4q",
+              "name": "divider",
+              "width": "fill_container",
+              "height": 1,
+              "fill": "$border"
+            },
+            {
+              "type": "frame",
+              "id": "v780d",
+              "name": "statsRow",
+              "width": "fill_container",
+              "gap": 12,
+              "children": [
+                {
+                  "id": "1o5sD",
+                  "type": "ref",
+                  "ref": "eZyxO",
+                  "width": "fill_container",
+                  "name": "stat1",
+                  "descendants": {
+                    "qXCgF": {
+                      "content": "42"
+                    },
+                    "3OSXq": {
+                      "content": "Learned"
+                    }
+                  }
+                },
+                {
+                  "id": "RM9kg",
+                  "type": "ref",
+                  "ref": "eZyxO",
+                  "width": "fill_container",
+                  "name": "stat2",
+                  "descendants": {
+                    "qXCgF": {
+                      "content": "85%"
+                    },
+                    "3OSXq": {
+                      "content": "Accuracy"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "fKq5y",
+              "name": "todaySection",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 12,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "UiXO9",
+                  "name": "todayLabel",
+                  "fill": "$text-secondary",
+                  "content": "Today's Idiom",
+                  "fontFamily": "Pretendard",
+                  "fontSize": 12,
+                  "fontWeight": "500",
+                  "letterSpacing": 0.5
+                },
+                {
+                  "type": "frame",
+                  "id": "4zkZV",
+                  "name": "todayCard",
+                  "width": "fill_container",
+                  "fill": "$bg-surface",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "padding": 24,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "4OWni",
+                      "name": "todayHanja",
+                      "fill": "$text-primary",
+                      "content": "溫故知新",
+                      "fontFamily": "Pretendard",
+                      "fontSize": 28,
+                      "letterSpacing": -1,
+                      "fontStyle": "italic"
+                    },
+                    {
+                      "type": "text",
+                      "id": "nZTIX",
+                      "name": "todayReading",
+                      "fill": "$text-muted",
+                      "content": "온고지신",
+                      "fontFamily": "Pretendard",
+                      "fontSize": 15
+                    },
+                    {
+                      "type": "text",
+                      "id": "c27bf",
+                      "name": "todayMeaning",
+                      "fill": "$text-secondary",
+                      "content": "옛것을 익히고 새것을 알다",
+                      "fontFamily": "Pretendard",
+                      "fontSize": 13
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "J5tzk",
+              "name": "spacer",
+              "width": "fill_container",
+              "height": "fill_container"
+            },
+            {
+              "id": "9j1H5",
+              "type": "ref",
+              "ref": "VCGAt",
+              "width": "fill_container",
+              "name": "startBtn",
+              "descendants": {
+                "la6be": {
+                  "content": "Start Quiz"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "rJpsE",
+          "type": "ref",
+          "ref": "gAQ5d",
+          "width": "fill_container",
+          "name": "homeTab"
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "sBlMn",
+      "x": 943,
+      "y": 0,
+      "name": "Quiz",
+      "clip": true,
+      "width": 393,
+      "height": 852,
+      "fill": "$bg-primary",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "3Kv6W",
+          "name": "qStatusBar",
+          "width": "fill_container",
+          "height": 62,
+          "padding": [
+            0,
+            24
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "ol9MN",
+              "name": "qTime",
+              "fill": "$text-primary",
+              "content": "9:41",
+              "fontFamily": "Pretendard",
+              "fontSize": 16,
+              "fontWeight": "600"
+            },
+            {
+              "type": "frame",
+              "id": "KFWCM",
+              "name": "qIcons",
+              "gap": 6,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "wKmnO",
+                  "name": "qSig",
+                  "width": 16,
+                  "height": 16,
+                  "iconFontName": "signal",
+                  "iconFontFamily": "lucide",
+                  "fill": "$text-primary"
+                },
+                {
+                  "type": "icon_font",
+                  "id": "Sovza",
+                  "name": "qWifi",
+                  "width": 16,
+                  "height": 16,
+                  "iconFontName": "wifi",
+                  "iconFontFamily": "lucide",
+                  "fill": "$text-primary"
+                },
+                {
+                  "type": "icon_font",
+                  "id": "6gwN5",
+                  "name": "qBat",
+                  "width": 16,
+                  "height": 16,
+                  "iconFontName": "battery-full",
+                  "iconFontFamily": "lucide",
+                  "fill": "$text-primary"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "Lf1mT",
+          "name": "qContent",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 32,
+          "padding": [
+            0,
+            24,
+            24,
+            24
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "rugcB",
+              "name": "qHeader",
+              "width": "fill_container",
+              "justifyContent": "space_between",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "7wJtY",
+                  "name": "qBackBtn",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "arrow-left",
+                  "iconFontFamily": "lucide",
+                  "fill": "$text-primary"
+                },
+                {
+                  "type": "text",
+                  "id": "LanSV",
+                  "name": "qProgress",
+                  "fill": "$text-secondary",
+                  "content": "3 / 10",
+                  "fontFamily": "Pretendard",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "icon_font",
+                  "id": "mhU7z",
+                  "name": "qCloseBtn",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "x",
+                  "iconFontFamily": "lucide",
+                  "fill": "$text-secondary"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "Qf4BA",
+              "name": "progressBar",
+              "width": "fill_container",
+              "height": 3,
+              "fill": "$border",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "rV2Bx",
+                  "name": "progressFill",
+                  "width": 103,
+                  "height": "fill_container",
+                  "fill": "$bg-dark"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "0PV4d",
+              "name": "questionSection",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 8,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "SkxiO",
+                  "name": "qLabel",
+                  "fill": "$text-secondary",
+                  "content": "What does this mean?",
+                  "fontFamily": "Pretendard",
+                  "fontSize": 12,
+                  "fontWeight": "500",
+                  "letterSpacing": 0.5
+                },
+                {
+                  "type": "text",
+                  "id": "zRK7l",
+                  "name": "qHanja",
+                  "fill": "$text-primary",
+                  "content": "臥薪嘗膽",
+                  "fontFamily": "Pretendard",
+                  "fontSize": 42,
+                  "letterSpacing": -2,
+                  "fontStyle": "italic"
+                },
+                {
+                  "type": "text",
+                  "id": "aOIgX",
+                  "name": "qReading",
+                  "fill": "$text-muted",
+                  "content": "와신상담",
+                  "fontFamily": "Pretendard",
+                  "fontSize": 16
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "wZz0T",
+              "name": "optionsSection",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 12,
+              "children": [
+                {
+                  "id": "FMJxQ",
+                  "type": "ref",
+                  "ref": "qRJIA",
+                  "width": "fill_container",
+                  "name": "opt1",
+                  "descendants": {
+                    "O49Yb": {
+                      "content": "A. 원수를 갚기 위해 괴로움을 참고 견딤",
+                      "fontSize": 14,
+                      "fontFamily": "Pretendard",
+                      "fontStyle": "normal"
+                    },
+                    "EOLOk": {
+                      "enabled": false
+                    }
+                  }
+                },
+                {
+                  "id": "LXN0P",
+                  "type": "ref",
+                  "ref": "qRJIA",
+                  "width": "fill_container",
+                  "name": "opt2",
+                  "descendants": {
+                    "O49Yb": {
+                      "content": "B. 말을 타고 꽃을 봄, 대충 훑어봄",
+                      "fontSize": 14,
+                      "fontFamily": "Pretendard",
+                      "fontStyle": "normal"
+                    },
+                    "EOLOk": {
+                      "enabled": false
+                    }
+                  }
+                },
+                {
+                  "id": "HX2CM",
+                  "type": "ref",
+                  "ref": "qRJIA",
+                  "width": "fill_container",
+                  "name": "opt3",
+                  "descendants": {
+                    "O49Yb": {
+                      "content": "C. 세 사람이 모이면 지혜가 생긴다",
+                      "fontSize": 14,
+                      "fontFamily": "Pretendard",
+                      "fontStyle": "normal"
+                    },
+                    "EOLOk": {
+                      "enabled": false
+                    }
+                  }
+                },
+                {
+                  "id": "ArC27",
+                  "type": "ref",
+                  "ref": "qRJIA",
+                  "width": "fill_container",
+                  "name": "opt4",
+                  "descendants": {
+                    "O49Yb": {
+                      "content": "D. 고생 끝에 낙이 온다",
+                      "fontSize": 14,
+                      "fontFamily": "Pretendard",
+                      "fontStyle": "normal"
+                    },
+                    "EOLOk": {
+                      "enabled": false
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "fOJMp",
+      "x": 1386,
+      "y": 0,
+      "name": "Result",
+      "clip": true,
+      "width": 393,
+      "height": 852,
+      "fill": "$bg-primary",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "A3ktL",
+          "name": "rStatusBar",
+          "width": "fill_container",
+          "height": 62,
+          "padding": [
+            0,
+            24
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "BH6Fj",
+              "name": "rTime",
+              "fill": "$text-primary",
+              "content": "9:41",
+              "fontFamily": "Pretendard",
+              "fontSize": 16,
+              "fontWeight": "600"
+            },
+            {
+              "type": "frame",
+              "id": "f9gAu",
+              "name": "rIcons",
+              "gap": 6,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "YtQuY",
+                  "name": "rSig",
+                  "width": 16,
+                  "height": 16,
+                  "iconFontName": "signal",
+                  "iconFontFamily": "lucide",
+                  "fill": "$text-primary"
+                },
+                {
+                  "type": "icon_font",
+                  "id": "CXyjN",
+                  "name": "rWifi",
+                  "width": 16,
+                  "height": 16,
+                  "iconFontName": "wifi",
+                  "iconFontFamily": "lucide",
+                  "fill": "$text-primary"
+                },
+                {
+                  "type": "icon_font",
+                  "id": "dfFOA",
+                  "name": "rBat",
+                  "width": 16,
+                  "height": 16,
+                  "iconFontName": "battery-full",
+                  "iconFontFamily": "lucide",
+                  "fill": "$text-primary"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "xFtDI",
+          "name": "rContent",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 32,
+          "padding": [
+            0,
+            24,
+            24,
+            24
+          ],
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "q4pmI",
+              "name": "scoreSection",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 8,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "FFAUt",
+                  "name": "scoreLabel",
+                  "fill": "$text-secondary",
+                  "content": "Your Score",
+                  "fontFamily": "Pretendard",
+                  "fontSize": 12,
+                  "fontWeight": "500",
+                  "letterSpacing": 0.5
+                },
+                {
+                  "type": "text",
+                  "id": "6EPlj",
+                  "name": "scoreValue",
+                  "fill": "$text-primary",
+                  "content": "8 / 10",
+                  "fontFamily": "Pretendard",
+                  "fontSize": 72,
+                  "letterSpacing": -3,
+                  "fontStyle": "italic"
+                },
+                {
+                  "type": "text",
+                  "id": "CadEq",
+                  "name": "scorePercent",
+                  "fill": "$text-muted",
+                  "content": "80% correct",
+                  "fontFamily": "Pretendard",
+                  "fontSize": 16
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "coiBj",
+              "name": "rDivider",
+              "width": 80,
+              "height": 1,
+              "fill": "$border"
+            },
+            {
+              "type": "frame",
+              "id": "LCoxd",
+              "name": "statsGrid",
+              "width": "fill_container",
+              "gap": 12,
+              "children": [
+                {
+                  "id": "jYLts",
+                  "type": "ref",
+                  "ref": "eZyxO",
+                  "width": "fill_container",
+                  "name": "rStat1",
+                  "descendants": {
+                    "qXCgF": {
+                      "content": "8",
+                      "fill": "$correct-green"
+                    },
+                    "3OSXq": {
+                      "content": "Correct"
+                    }
+                  }
+                },
+                {
+                  "id": "wPSIn",
+                  "type": "ref",
+                  "ref": "eZyxO",
+                  "width": "fill_container",
+                  "name": "rStat2",
+                  "descendants": {
+                    "qXCgF": {
+                      "content": "2",
+                      "fill": "$wrong-red"
+                    },
+                    "3OSXq": {
+                      "content": "Wrong"
+                    }
+                  }
+                },
+                {
+                  "id": "dkDtu",
+                  "type": "ref",
+                  "ref": "eZyxO",
+                  "width": "fill_container",
+                  "name": "rStat3",
+                  "descendants": {
+                    "qXCgF": {
+                      "content": "85%"
+                    },
+                    "3OSXq": {
+                      "content": "Best"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "QY3vu",
+              "name": "encouragement",
+              "fill": "$text-secondary",
+              "content": "잘하셨습니다! 꾸준히 학습해보세요.",
+              "fontFamily": "Pretendard",
+              "fontSize": 14
+            },
+            {
+              "type": "frame",
+              "id": "PiVkq",
+              "name": "rSpacer",
+              "width": "fill_container",
+              "height": "fill_container"
+            },
+            {
+              "type": "frame",
+              "id": "OtkO6",
+              "name": "btnGroup",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 12,
+              "children": [
+                {
+                  "id": "OI9yF",
+                  "type": "ref",
+                  "ref": "VCGAt",
+                  "width": "fill_container",
+                  "name": "retryBtn",
+                  "descendants": {
+                    "la6be": {
+                      "content": "Try Again"
+                    }
+                  }
+                },
+                {
+                  "type": "frame",
+                  "id": "hvBMK",
+                  "name": "homeBtn",
+                  "width": "fill_container",
+                  "stroke": {
+                    "thickness": 1,
+                    "fill": "$border"
+                  },
+                  "padding": [
+                    16,
+                    32
+                  ],
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "1KTmB",
+                      "name": "homeBtnLabel",
+                      "fill": "$text-primary",
+                      "content": "Back to Home",
+                      "fontFamily": "Pretendard",
+                      "fontSize": 16,
+                      "fontWeight": "500"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "4OWGQ",
+      "x": 1829,
+      "y": 0,
+      "name": "Study",
+      "clip": true,
+      "width": 393,
+      "height": 852,
+      "fill": "$bg-primary",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "qccA8",
+          "name": "sStatusBar",
+          "width": "fill_container",
+          "height": 62,
+          "padding": [
+            0,
+            24
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "rypfw",
+              "name": "sTime",
+              "fill": "$text-primary",
+              "content": "9:41",
+              "fontFamily": "Pretendard",
+              "fontSize": 16,
+              "fontWeight": "600"
+            },
+            {
+              "type": "frame",
+              "id": "vi7ZQ",
+              "name": "sIcons",
+              "gap": 6,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "wE4gx",
+                  "name": "sSig",
+                  "width": 16,
+                  "height": 16,
+                  "iconFontName": "signal",
+                  "iconFontFamily": "lucide",
+                  "fill": "$text-primary"
+                },
+                {
+                  "type": "icon_font",
+                  "id": "Sw11b",
+                  "name": "sWifi",
+                  "width": 16,
+                  "height": 16,
+                  "iconFontName": "wifi",
+                  "iconFontFamily": "lucide",
+                  "fill": "$text-primary"
+                },
+                {
+                  "type": "icon_font",
+                  "id": "CmYa2",
+                  "name": "sBat",
+                  "width": 16,
+                  "height": 16,
+                  "iconFontName": "battery-full",
+                  "iconFontFamily": "lucide",
+                  "fill": "$text-primary"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "7j1B8",
+          "name": "sContent",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "padding": [
+            0,
+            24
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "PjGqC",
+              "name": "sHeader",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 16,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "Vx0LE",
+                  "name": "sTitle",
+                  "fill": "$text-primary",
+                  "content": "Study",
+                  "fontFamily": "Pretendard",
+                  "fontSize": 28,
+                  "fontStyle": "italic"
+                },
+                {
+                  "type": "frame",
+                  "id": "VXxZu",
+                  "name": "searchBar",
+                  "width": "fill_container",
+                  "height": 44,
+                  "fill": "$bg-surface",
+                  "gap": 10,
+                  "padding": [
+                    0,
+                    16
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "IRmg4",
+                      "name": "searchIcon",
+                      "width": 18,
+                      "height": 18,
+                      "iconFontName": "search",
+                      "iconFontFamily": "lucide",
+                      "fill": "$text-secondary"
+                    },
+                    {
+                      "type": "text",
+                      "id": "6u6i1",
+                      "name": "searchText",
+                      "fill": "$text-secondary",
+                      "content": "Search idioms...",
+                      "fontFamily": "Pretendard",
+                      "fontSize": 14
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "TrQDv",
+              "name": "countLabel",
+              "fill": "$text-secondary",
+              "content": "200 idioms",
+              "fontFamily": "Pretendard",
+              "fontSize": 12,
+              "fontWeight": "500",
+              "letterSpacing": 0.5
+            },
+            {
+              "type": "frame",
+              "id": "1pCHE",
+              "name": "listContainer",
+              "width": "fill_container",
+              "height": "fill_container",
+              "layout": "vertical",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "7sjia",
+                  "name": "row1",
+                  "width": "fill_container",
+                  "stroke": {
+                    "thickness": {
+                      "bottom": 1
+                    },
+                    "fill": "$border"
+                  },
+                  "gap": 16,
+                  "padding": [
+                    16,
+                    0
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "Uh2xI",
+                      "name": "row1Left",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 4,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "jkkJY",
+                          "name": "row1Hanja",
+                          "fill": "$text-primary",
+                          "content": "溫故知新",
+                          "fontFamily": "Pretendard",
+                          "fontSize": 18,
+                          "fontStyle": "italic"
+                        },
+                        {
+                          "type": "text",
+                          "id": "B63TM",
+                          "name": "row1Reading",
+                          "fill": "$text-secondary",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "온고지신 — 옛것을 익히고 새것을 알다",
+                          "fontFamily": "Pretendard",
+                          "fontSize": 12
+                        }
+                      ]
+                    },
+                    {
+                      "type": "icon_font",
+                      "id": "WWiPw",
+                      "name": "row1Arrow",
+                      "width": 18,
+                      "height": 18,
+                      "iconFontName": "chevron-right",
+                      "iconFontFamily": "lucide",
+                      "fill": "$text-secondary"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "f8lgD",
+                  "name": "row2",
+                  "width": "fill_container",
+                  "stroke": {
+                    "thickness": {
+                      "bottom": 1
+                    },
+                    "fill": "$border"
+                  },
+                  "gap": 16,
+                  "padding": [
+                    16,
+                    0
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "9nt2r",
+                      "name": "row2Left",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 4,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "P0L70",
+                          "name": "row2Hanja",
+                          "fill": "$text-primary",
+                          "content": "塞翁之馬",
+                          "fontFamily": "Pretendard",
+                          "fontSize": 18,
+                          "fontStyle": "italic"
+                        },
+                        {
+                          "type": "text",
+                          "id": "xYkCl",
+                          "name": "row2Reading",
+                          "fill": "$text-secondary",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "새옹지마 — 인생의 길흉화복은 예측하기 어렵다",
+                          "fontFamily": "Pretendard",
+                          "fontSize": 12
+                        }
+                      ]
+                    },
+                    {
+                      "type": "icon_font",
+                      "id": "JZ5HI",
+                      "name": "row2Arrow",
+                      "width": 18,
+                      "height": 18,
+                      "iconFontName": "chevron-right",
+                      "iconFontFamily": "lucide",
+                      "fill": "$text-secondary"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "JaaRE",
+                  "name": "row3",
+                  "width": "fill_container",
+                  "stroke": {
+                    "thickness": {
+                      "bottom": 1
+                    },
+                    "fill": "$border"
+                  },
+                  "gap": 16,
+                  "padding": [
+                    16,
+                    0
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "Tvs1M",
+                      "name": "row3Left",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 4,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "AK5Vb",
+                          "name": "row3Hanja",
+                          "fill": "$text-primary",
+                          "content": "臥薪嘗膽",
+                          "fontFamily": "Pretendard",
+                          "fontSize": 18,
+                          "fontStyle": "italic"
+                        },
+                        {
+                          "type": "text",
+                          "id": "jXSYn",
+                          "name": "row3Reading",
+                          "fill": "$text-secondary",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "와신상담 — 원수를 갚기 위해 고난을 참음",
+                          "fontFamily": "Pretendard",
+                          "fontSize": 12
+                        }
+                      ]
+                    },
+                    {
+                      "type": "icon_font",
+                      "id": "qwwPE",
+                      "name": "row3Arrow",
+                      "width": 18,
+                      "height": 18,
+                      "iconFontName": "chevron-right",
+                      "iconFontFamily": "lucide",
+                      "fill": "$text-secondary"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "wvdp4",
+                  "name": "row4",
+                  "width": "fill_container",
+                  "stroke": {
+                    "thickness": {
+                      "bottom": 1
+                    },
+                    "fill": "$border"
+                  },
+                  "gap": 16,
+                  "padding": [
+                    16,
+                    0
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "JY4LC",
+                      "name": "row4Left",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 4,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "QKTGG",
+                          "name": "row4Hanja",
+                          "fill": "$text-primary",
+                          "content": "四面楚歌",
+                          "fontFamily": "Pretendard",
+                          "fontSize": 18,
+                          "fontStyle": "italic"
+                        },
+                        {
+                          "type": "text",
+                          "id": "gvx4z",
+                          "name": "row4Reading",
+                          "fill": "$text-secondary",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "사면초가 — 사방이 적에 둘러싸인 형세",
+                          "fontFamily": "Pretendard",
+                          "fontSize": 12
+                        }
+                      ]
+                    },
+                    {
+                      "type": "icon_font",
+                      "id": "T085H",
+                      "name": "row4Arrow",
+                      "width": 18,
+                      "height": 18,
+                      "iconFontName": "chevron-right",
+                      "iconFontFamily": "lucide",
+                      "fill": "$text-secondary"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "mE144",
+                  "name": "row5",
+                  "width": "fill_container",
+                  "stroke": {
+                    "thickness": {
+                      "bottom": 1
+                    },
+                    "fill": "$border"
+                  },
+                  "gap": 16,
+                  "padding": [
+                    16,
+                    0
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "LRkrg",
+                      "name": "row5Left",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 4,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "xDV24",
+                          "name": "row5Hanja",
+                          "fill": "$text-primary",
+                          "content": "自業自得",
+                          "fontFamily": "Pretendard",
+                          "fontSize": 18,
+                          "fontStyle": "italic"
+                        },
+                        {
+                          "type": "text",
+                          "id": "wTAqQ",
+                          "name": "row5Reading",
+                          "fill": "$text-secondary",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "자업자득 — 자기가 저지른 일의 결과를 받음",
+                          "fontFamily": "Pretendard",
+                          "fontSize": 12
+                        }
+                      ]
+                    },
+                    {
+                      "type": "icon_font",
+                      "id": "77AHa",
+                      "name": "row5Arrow",
+                      "width": 18,
+                      "height": 18,
+                      "iconFontName": "chevron-right",
+                      "iconFontFamily": "lucide",
+                      "fill": "$text-secondary"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "3f6gt",
+                  "name": "row6",
+                  "width": "fill_container",
+                  "stroke": {
+                    "thickness": {
+                      "bottom": 1
+                    },
+                    "fill": "$border"
+                  },
+                  "gap": 16,
+                  "padding": [
+                    16,
+                    0
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "ngdfi",
+                      "name": "row6Left",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 4,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "WONKA",
+                          "name": "row6Hanja",
+                          "fill": "$text-primary",
+                          "content": "畫龍點睛",
+                          "fontFamily": "Pretendard",
+                          "fontSize": 18,
+                          "fontStyle": "italic"
+                        },
+                        {
+                          "type": "text",
+                          "id": "mcIdc",
+                          "name": "row6Reading",
+                          "fill": "$text-secondary",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "화룡점정 — 가장 중요한 부분을 완성함",
+                          "fontFamily": "Pretendard",
+                          "fontSize": 12
+                        }
+                      ]
+                    },
+                    {
+                      "type": "icon_font",
+                      "id": "wqxpD",
+                      "name": "row6Arrow",
+                      "width": 18,
+                      "height": 18,
+                      "iconFontName": "chevron-right",
+                      "iconFontFamily": "lucide",
+                      "fill": "$text-secondary"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "qZ7lC",
+                  "name": "row7",
+                  "width": "fill_container",
+                  "stroke": {
+                    "thickness": {
+                      "bottom": 1
+                    },
+                    "fill": "$border"
+                  },
+                  "gap": 16,
+                  "padding": [
+                    16,
+                    0
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "9lpft",
+                      "name": "row7Left",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 4,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "tU7ER",
+                          "name": "row7Hanja",
+                          "fill": "$text-primary",
+                          "content": "朝三暮四",
+                          "fontFamily": "Pretendard",
+                          "fontSize": 18,
+                          "fontStyle": "italic"
+                        },
+                        {
+                          "type": "text",
+                          "id": "yjgW0",
+                          "name": "row7Reading",
+                          "fill": "$text-secondary",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "조삼모사 — 간사한 꾀로 남을 속임",
+                          "fontFamily": "Pretendard",
+                          "fontSize": 12
+                        }
+                      ]
+                    },
+                    {
+                      "type": "icon_font",
+                      "id": "q8lWQ",
+                      "name": "row7Arrow",
+                      "width": 18,
+                      "height": 18,
+                      "iconFontName": "chevron-right",
+                      "iconFontFamily": "lucide",
+                      "fill": "$text-secondary"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "vTy7L",
+          "type": "ref",
+          "ref": "gAQ5d",
+          "width": "fill_container",
+          "name": "studyTab",
+          "descendants": {
+            "JRa3E": {
+              "fill": "#00000000"
+            },
+            "AI3aD": {
+              "fill": "$text-secondary"
+            },
+            "M9nhk": {
+              "fill": "$text-secondary",
+              "fontWeight": "500"
+            },
+            "GHSVG": {
+              "fill": "$bg-dark"
+            },
+            "7c8CS": {
+              "fill": "$text-on-dark"
+            },
+            "d7lrd": {
+              "fill": "$text-on-dark",
+              "fontWeight": "600"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "siaCn",
+      "x": 0,
+      "y": 1227,
+      "name": "Design System",
+      "width": 1200,
+      "fill": "$bg-primary",
+      "layout": "vertical",
+      "gap": 64,
+      "padding": 48,
+      "children": [
+        {
+          "type": "text",
+          "id": "lqkpx",
+          "name": "dsTitle",
+          "fill": "$text-primary",
+          "content": "Design System",
+          "fontFamily": "Pretendard",
+          "fontSize": 32,
+          "fontWeight": "700"
+        },
+        {
+          "type": "text",
+          "id": "wXxXc",
+          "name": "dsSubtitle",
+          "fill": "$text-secondary",
+          "content": "사자성어 퀴즈 — Component Library",
+          "fontFamily": "Pretendard",
+          "fontSize": 14
+        },
+        {
+          "type": "frame",
+          "id": "6Hjn2",
+          "name": "colorSection",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "children": [
+            {
+              "type": "text",
+              "id": "cfMhR",
+              "name": "colorTitle",
+              "fill": "$text-primary",
+              "content": "Colors",
+              "fontFamily": "Pretendard",
+              "fontSize": 20,
+              "fontWeight": "700"
+            },
+            {
+              "type": "frame",
+              "id": "ly1nQ",
+              "name": "colorRow",
+              "width": "fill_container",
+              "gap": 16,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "GbfC5",
+                  "name": "c1",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "0XsGY",
+                      "name": "c1Swatch",
+                      "width": "fill_container",
+                      "height": 56,
+                      "fill": "$bg-primary",
+                      "stroke": {
+                        "thickness": 1,
+                        "fill": "$border"
+                      }
+                    },
+                    {
+                      "type": "text",
+                      "id": "Kxp98",
+                      "name": "c1Label",
+                      "fill": "$text-secondary",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "bg-primary\n#FFFFFF",
+                      "lineHeight": 1.5,
+                      "fontFamily": "Pretendard",
+                      "fontSize": 11
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "8gp4s",
+                  "name": "c2",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "t5RrG",
+                      "name": "c2Swatch",
+                      "width": "fill_container",
+                      "height": 56,
+                      "fill": "$bg-surface"
+                    },
+                    {
+                      "type": "text",
+                      "id": "CtpLS",
+                      "name": "c2Label",
+                      "fill": "$text-secondary",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "bg-surface\n#F5F5F5",
+                      "lineHeight": 1.5,
+                      "fontFamily": "Pretendard",
+                      "fontSize": 11
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "rzXKm",
+                  "name": "c3",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "GP2Un",
+                      "name": "c3Swatch",
+                      "width": "fill_container",
+                      "height": 56,
+                      "fill": "$bg-dark"
+                    },
+                    {
+                      "type": "text",
+                      "id": "op4fZ",
+                      "name": "c3Label",
+                      "fill": "$text-secondary",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "bg-dark\n#000000",
+                      "lineHeight": 1.5,
+                      "fontFamily": "Pretendard",
+                      "fontSize": 11
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "326cy",
+                  "name": "c4",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "wP5uX",
+                      "name": "c4Swatch",
+                      "width": "fill_container",
+                      "height": 56,
+                      "fill": "$border"
+                    },
+                    {
+                      "type": "text",
+                      "id": "p73N4",
+                      "name": "c4Label",
+                      "fill": "$text-secondary",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "border\n#E0E0E0",
+                      "lineHeight": 1.5,
+                      "fontFamily": "Pretendard",
+                      "fontSize": 11
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "tnNci",
+              "name": "colorRow2",
+              "width": "fill_container",
+              "gap": 16,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "tSvSn",
+                  "name": "ct1",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "Ob7FG",
+                      "name": "ct1S",
+                      "width": "fill_container",
+                      "height": 56,
+                      "fill": "$text-primary"
+                    },
+                    {
+                      "type": "text",
+                      "id": "TGsPO",
+                      "name": "ct1L",
+                      "fill": "$text-secondary",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "text-primary\n#000000",
+                      "lineHeight": 1.5,
+                      "fontFamily": "Pretendard",
+                      "fontSize": 11,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "GoZtJ",
+                  "name": "ct2",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "UWxxd",
+                      "name": "ct2S",
+                      "width": "fill_container",
+                      "height": 56,
+                      "fill": "$text-muted"
+                    },
+                    {
+                      "type": "text",
+                      "id": "pA9yd",
+                      "name": "ct2L",
+                      "fill": "$text-secondary",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "text-muted\n#666666",
+                      "lineHeight": 1.5,
+                      "fontFamily": "Pretendard",
+                      "fontSize": 11,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "dWjZk",
+                  "name": "ct3",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "u6Wvc",
+                      "name": "ct3S",
+                      "width": "fill_container",
+                      "height": 56,
+                      "fill": "$text-secondary"
+                    },
+                    {
+                      "type": "text",
+                      "id": "FMaf9",
+                      "name": "ct3L",
+                      "fill": "$text-secondary",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "text-secondary\n#888888",
+                      "lineHeight": 1.5,
+                      "fontFamily": "Pretendard",
+                      "fontSize": 11,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "Cyr0S",
+                  "name": "ct4",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "2p3mK",
+                      "name": "ct4S",
+                      "width": "fill_container",
+                      "height": 56,
+                      "fill": "$text-on-dark",
+                      "stroke": {
+                        "thickness": 1,
+                        "fill": "$border"
+                      }
+                    },
+                    {
+                      "type": "text",
+                      "id": "sjk0S",
+                      "name": "ct4L",
+                      "fill": "$text-secondary",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "text-on-dark\n#FFFFFF",
+                      "lineHeight": 1.5,
+                      "fontFamily": "Pretendard",
+                      "fontSize": 11,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "KyvSQ",
+              "name": "colorRow3",
+              "width": "fill_container",
+              "gap": 16,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "Ew8Yp",
+                  "name": "cs1",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "4AUls",
+                      "name": "cs1S",
+                      "width": "fill_container",
+                      "height": 56,
+                      "fill": "$correct-green"
+                    },
+                    {
+                      "type": "text",
+                      "id": "JZPQq",
+                      "name": "cs1L",
+                      "fill": "$text-secondary",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "correct-green\n#2E7D32",
+                      "lineHeight": 1.5,
+                      "fontFamily": "Pretendard",
+                      "fontSize": 11,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "2dp5R",
+                  "name": "cs2",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "7zolW",
+                      "name": "cs2S",
+                      "width": "fill_container",
+                      "height": 56,
+                      "fill": "$correct-bg"
+                    },
+                    {
+                      "type": "text",
+                      "id": "zK92W",
+                      "name": "cs2L",
+                      "fill": "$text-secondary",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "correct-bg\n#E8F5E9",
+                      "lineHeight": 1.5,
+                      "fontFamily": "Pretendard",
+                      "fontSize": 11,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "l6dPd",
+                  "name": "cs3",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "vRi03",
+                      "name": "cs3S",
+                      "width": "fill_container",
+                      "height": 56,
+                      "fill": "$wrong-red"
+                    },
+                    {
+                      "type": "text",
+                      "id": "bHYw4",
+                      "name": "cs3L",
+                      "fill": "$text-secondary",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "wrong-red\n#C62828",
+                      "lineHeight": 1.5,
+                      "fontFamily": "Pretendard",
+                      "fontSize": 11,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "4whDV",
+                  "name": "cs4",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "PqvoC",
+                      "name": "cs4S",
+                      "width": "fill_container",
+                      "height": 56,
+                      "fill": "$wrong-bg"
+                    },
+                    {
+                      "type": "text",
+                      "id": "PckGn",
+                      "name": "cs4L",
+                      "fill": "$text-secondary",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "wrong-bg\n#FFEBEE",
+                      "lineHeight": 1.5,
+                      "fontFamily": "Pretendard",
+                      "fontSize": 11,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "YVqRL",
+          "name": "typoSection",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "children": [
+            {
+              "type": "text",
+              "id": "yvMfK",
+              "name": "typoTitle",
+              "fill": "$text-primary",
+              "content": "Typography",
+              "fontFamily": "Pretendard",
+              "fontSize": 20,
+              "fontWeight": "700"
+            },
+            {
+              "type": "frame",
+              "id": "oJyyS",
+              "name": "typoGrid",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 20,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "m840J",
+                  "name": "t1",
+                  "width": "fill_container",
+                  "gap": 24,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "C4Nvp",
+                      "name": "t1Sample",
+                      "fill": "$text-primary",
+                      "content": "四字成語",
+                      "fontFamily": "Pretendard",
+                      "fontSize": 48
+                    },
+                    {
+                      "type": "text",
+                      "id": "VIDH3",
+                      "name": "t1Meta",
+                      "fill": "$text-secondary",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Display / 48px / Regular\nHero titles, main headings",
+                      "lineHeight": 1.5,
+                      "fontFamily": "Pretendard",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "zZvm5",
+                  "name": "t1Div",
+                  "width": "fill_container",
+                  "height": 1,
+                  "fill": "$border"
+                },
+                {
+                  "type": "frame",
+                  "id": "V0tnb",
+                  "name": "t2",
+                  "width": "fill_container",
+                  "gap": 24,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "vv2ZE",
+                      "name": "t2Sample",
+                      "fill": "$text-primary",
+                      "content": "臥薪嘗膽",
+                      "fontFamily": "Pretendard",
+                      "fontSize": 42
+                    },
+                    {
+                      "type": "text",
+                      "id": "pQJmv",
+                      "name": "t2Meta",
+                      "fill": "$text-secondary",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Question / 42px / Regular\nQuiz question hanja display",
+                      "lineHeight": 1.5,
+                      "fontFamily": "Pretendard",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "Z8fhT",
+                  "name": "t2Div",
+                  "width": "fill_container",
+                  "height": 1,
+                  "fill": "$border"
+                },
+                {
+                  "type": "frame",
+                  "id": "PQcvq",
+                  "name": "t3",
+                  "width": "fill_container",
+                  "gap": 24,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "uHDSz",
+                      "name": "t3Sample",
+                      "fill": "$text-primary",
+                      "content": "8 / 10",
+                      "fontFamily": "Pretendard",
+                      "fontSize": 72
+                    },
+                    {
+                      "type": "text",
+                      "id": "ShE78",
+                      "name": "t3Meta",
+                      "fill": "$text-secondary",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Score / 72px / Regular\nResult screen score display",
+                      "lineHeight": 1.5,
+                      "fontFamily": "Pretendard",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "hq3KO",
+                  "name": "t3Div",
+                  "width": "fill_container",
+                  "height": 1,
+                  "fill": "$border"
+                },
+                {
+                  "type": "frame",
+                  "id": "qIG55",
+                  "name": "t4",
+                  "width": "fill_container",
+                  "gap": 24,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "nMfB6",
+                      "name": "t4Sample",
+                      "fill": "$text-primary",
+                      "content": "Section Title",
+                      "fontFamily": "Pretendard",
+                      "fontSize": 28
+                    },
+                    {
+                      "type": "text",
+                      "id": "nw9yt",
+                      "name": "t4Meta",
+                      "fill": "$text-secondary",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Heading / 28px / Regular\nSection headers, study title",
+                      "lineHeight": 1.5,
+                      "fontFamily": "Pretendard",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "RLtj2",
+                  "name": "t4Div",
+                  "width": "fill_container",
+                  "height": 1,
+                  "fill": "$border"
+                },
+                {
+                  "type": "frame",
+                  "id": "41Dvj",
+                  "name": "t5",
+                  "width": "fill_container",
+                  "gap": 24,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "xxaXU",
+                      "name": "t5Sample",
+                      "fill": "$text-primary",
+                      "content": "사자성어 퀴즈",
+                      "fontFamily": "Pretendard",
+                      "fontSize": 18
+                    },
+                    {
+                      "type": "text",
+                      "id": "qytru",
+                      "name": "t5Meta",
+                      "fill": "$text-secondary",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Subtitle / 18px / Regular\nSubtitles, list item hanja",
+                      "lineHeight": 1.5,
+                      "fontFamily": "Pretendard",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "f59cC",
+                  "name": "t5Div",
+                  "width": "fill_container",
+                  "height": 1,
+                  "fill": "$border"
+                },
+                {
+                  "type": "frame",
+                  "id": "YasJ9",
+                  "name": "t6",
+                  "width": "fill_container",
+                  "gap": 24,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "PBkPD",
+                      "name": "t6Sample",
+                      "fill": "$text-primary",
+                      "content": "Start Quiz",
+                      "fontFamily": "Pretendard",
+                      "fontSize": 16,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "text",
+                      "id": "hMQRY",
+                      "name": "t6Meta",
+                      "fill": "$text-secondary",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Button / 16px / Medium\nButtons, body text",
+                      "lineHeight": 1.5,
+                      "fontFamily": "Pretendard",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "OG13O",
+                  "name": "t6Div",
+                  "width": "fill_container",
+                  "height": 1,
+                  "fill": "$border"
+                },
+                {
+                  "type": "frame",
+                  "id": "j8qln",
+                  "name": "t7",
+                  "width": "fill_container",
+                  "gap": 24,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "ovCcX",
+                      "name": "t7Sample",
+                      "fill": "$text-secondary",
+                      "content": "200 idioms",
+                      "fontFamily": "Pretendard",
+                      "fontSize": 12,
+                      "fontWeight": "500",
+                      "letterSpacing": 0.5
+                    },
+                    {
+                      "type": "text",
+                      "id": "XSKDr",
+                      "name": "t7Meta",
+                      "fill": "$text-secondary",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Caption / 12px / Medium\nLabels, metadata, counts",
+                      "lineHeight": 1.5,
+                      "fontFamily": "Pretendard",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "0YU2d",
+          "name": "compSection",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 32,
+          "children": [
+            {
+              "type": "text",
+              "id": "UFLy9",
+              "name": "compTitle",
+              "fill": "$text-primary",
+              "content": "Components",
+              "fontFamily": "Pretendard",
+              "fontSize": 20,
+              "fontWeight": "700"
+            },
+            {
+              "type": "frame",
+              "id": "Zklab",
+              "name": "btnRow",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 16,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "qW8it",
+                  "name": "btnRowLabel",
+                  "fill": "$text-muted",
+                  "content": "Buttons",
+                  "fontFamily": "Pretendard",
+                  "fontSize": 14,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "frame",
+                  "id": "GSvXY",
+                  "name": "btnRowItems",
+                  "gap": 16,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "id": "GtkYr",
+                      "type": "ref",
+                      "ref": "VCGAt",
+                      "name": "btnPrimInst"
+                    },
+                    {
+                      "id": "Hc3RS",
+                      "type": "ref",
+                      "ref": "00GqI",
+                      "name": "btnSecInst"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "uxg1L",
+                  "name": "btnRowDesc",
+                  "fill": "$text-secondary",
+                  "textGrowth": "fixed-width",
+                  "width": 600,
+                  "content": "Primary: solid black fill, white text. Secondary: outline with border, black text.",
+                  "lineHeight": 1.5,
+                  "fontFamily": "Pretendard",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "eKYpp",
+              "name": "cardRow",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 16,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "PlhDA",
+                  "name": "cardRowLabel",
+                  "fill": "$text-muted",
+                  "content": "Cards",
+                  "fontFamily": "Pretendard",
+                  "fontSize": 14,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "frame",
+                  "id": "ZJFHb",
+                  "name": "cardRowItems",
+                  "gap": 16,
+                  "children": [
+                    {
+                      "id": "yr2Hd",
+                      "type": "ref",
+                      "ref": "eZyxO",
+                      "name": "statInst"
+                    },
+                    {
+                      "id": "kotaD",
+                      "type": "ref",
+                      "ref": "qRJIA",
+                      "name": "optionInst"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "6VGpK",
+                  "name": "cardRowDesc",
+                  "fill": "$text-secondary",
+                  "textGrowth": "fixed-width",
+                  "width": 600,
+                  "content": "StatCard: key metric with label. OptionCard: quiz answer option with hanja and meaning.",
+                  "lineHeight": 1.5,
+                  "fontFamily": "Pretendard",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "wRRWe",
+              "name": "navRow",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 16,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "qYNjp",
+                  "name": "navRowLabel",
+                  "fill": "$text-muted",
+                  "content": "Navigation",
+                  "fontFamily": "Pretendard",
+                  "fontSize": 14,
+                  "fontWeight": "600"
+                },
+                {
+                  "id": "2Ba57",
+                  "type": "ref",
+                  "ref": "hmJhH",
+                  "name": "statusInst"
+                },
+                {
+                  "id": "joWnc",
+                  "type": "ref",
+                  "ref": "gAQ5d",
+                  "name": "tabInst"
+                },
+                {
+                  "type": "text",
+                  "id": "8Ok95",
+                  "name": "navRowDesc",
+                  "fill": "$text-secondary",
+                  "textGrowth": "fixed-width",
+                  "width": 600,
+                  "content": "StatusBar: OS-level time and icons. TabBar: pill-shaped bottom navigation with 3 tabs (Home, Quiz, Study).",
+                  "lineHeight": 1.5,
+                  "fontFamily": "Pretendard",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "ogtlG",
+              "name": "inputRow",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 16,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "JvWtK",
+                  "name": "inputLabel",
+                  "fill": "$text-muted",
+                  "content": "Inputs & Search",
+                  "fontFamily": "Pretendard",
+                  "fontSize": 14,
+                  "fontWeight": "600"
+                },
+                {
+                  "id": "y5OlZ",
+                  "type": "ref",
+                  "ref": "kU7Tr",
+                  "width": "fill_container",
+                  "name": "searchInst"
+                },
+                {
+                  "type": "text",
+                  "id": "k3kVr",
+                  "name": "inputDesc",
+                  "fill": "$text-secondary",
+                  "textGrowth": "fixed-width",
+                  "width": 600,
+                  "content": "SearchBar: surface-colored input with search icon and placeholder text.",
+                  "lineHeight": 1.5,
+                  "fontFamily": "Pretendard",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "B1EC2",
+              "name": "listRow",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 16,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "6IVS7",
+                  "name": "listLabel",
+                  "fill": "$text-muted",
+                  "content": "List & Data",
+                  "fontFamily": "Pretendard",
+                  "fontSize": 14,
+                  "fontWeight": "600"
+                },
+                {
+                  "id": "c8vcx",
+                  "type": "ref",
+                  "ref": "t9DQE",
+                  "width": "fill_container",
+                  "name": "listInst"
+                },
+                {
+                  "id": "TLv9X",
+                  "type": "ref",
+                  "ref": "8xie9",
+                  "width": "fill_container",
+                  "name": "sectionInst"
+                },
+                {
+                  "type": "text",
+                  "id": "IFZvq",
+                  "name": "listDesc",
+                  "fill": "$text-secondary",
+                  "textGrowth": "fixed-width",
+                  "width": 600,
+                  "content": "ListItem: hanja with description and chevron. SectionHeader: label with optional action text.",
+                  "lineHeight": 1.5,
+                  "fontFamily": "Pretendard",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "Dg9Zo",
+              "name": "utilRow",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 16,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "DMB0L",
+                  "name": "utilLabel",
+                  "fill": "$text-muted",
+                  "content": "Utility",
+                  "fontFamily": "Pretendard",
+                  "fontSize": 14,
+                  "fontWeight": "600"
+                },
+                {
+                  "id": "8L2Wn",
+                  "type": "ref",
+                  "ref": "K2P5t",
+                  "width": "fill_container",
+                  "name": "dividerInst"
+                },
+                {
+                  "id": "XOtrH",
+                  "type": "ref",
+                  "ref": "Bo8rt",
+                  "width": "fill_container",
+                  "name": "progressInst"
+                },
+                {
+                  "type": "text",
+                  "id": "AsHKk",
+                  "name": "utilDesc",
+                  "fill": "$text-secondary",
+                  "textGrowth": "fixed-width",
+                  "width": 600,
+                  "content": "Divider: 1px horizontal separator. ProgressBar: track with fill indicating quiz progress.",
+                  "lineHeight": 1.5,
+                  "fontFamily": "Pretendard",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "00GqI",
+      "x": 200,
+      "y": 830,
+      "name": "Component/ButtonSecondary",
+      "reusable": true,
+      "fill": "$bg-primary",
+      "stroke": {
+        "thickness": 1,
+        "fill": "$border"
+      },
+      "padding": [
+        16,
+        32
+      ],
+      "justifyContent": "center",
+      "alignItems": "center",
+      "children": [
+        {
+          "type": "text",
+          "id": "NaxEO",
+          "name": "btnSecLabel",
+          "fill": "$text-primary",
+          "content": "Back to Home",
+          "fontFamily": "Pretendard",
+          "fontSize": 16,
+          "fontWeight": "500"
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "hmJhH",
+      "x": 400,
+      "y": 700,
+      "name": "Component/StatusBar",
+      "reusable": true,
+      "width": 393,
+      "height": 62,
+      "padding": [
+        0,
+        24
+      ],
+      "justifyContent": "space_between",
+      "alignItems": "center",
+      "children": [
+        {
+          "type": "text",
+          "id": "mqijL",
+          "name": "sbTime",
+          "fill": "$text-primary",
+          "content": "9:41",
+          "fontFamily": "Pretendard",
+          "fontSize": 16,
+          "fontWeight": "600"
+        },
+        {
+          "type": "frame",
+          "id": "pCTEd",
+          "name": "sbIcons",
+          "gap": 6,
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "icon_font",
+              "id": "qQSWE",
+              "name": "sbSig",
+              "width": 16,
+              "height": 16,
+              "iconFontName": "signal",
+              "iconFontFamily": "lucide",
+              "fill": "$text-primary"
+            },
+            {
+              "type": "icon_font",
+              "id": "8CBtq",
+              "name": "sbWifi",
+              "width": 16,
+              "height": 16,
+              "iconFontName": "wifi",
+              "iconFontFamily": "lucide",
+              "fill": "$text-primary"
+            },
+            {
+              "type": "icon_font",
+              "id": "7qJUq",
+              "name": "sbBat",
+              "width": 16,
+              "height": 16,
+              "iconFontName": "battery-full",
+              "iconFontFamily": "lucide",
+              "fill": "$text-primary"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "t9DQE",
+      "x": 400,
+      "y": 830,
+      "name": "Component/ListItem",
+      "reusable": true,
+      "width": 345,
+      "stroke": {
+        "thickness": {
+          "bottom": 1
+        },
+        "fill": "$border"
+      },
+      "gap": 16,
+      "padding": [
+        16,
+        0
+      ],
+      "alignItems": "center",
+      "children": [
+        {
+          "type": "frame",
+          "id": "FGDxC",
+          "name": "liContent",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 4,
+          "children": [
+            {
+              "type": "text",
+              "id": "AZDMk",
+              "name": "liHanja",
+              "fill": "$text-primary",
+              "content": "溫故知新",
+              "fontFamily": "Pretendard",
+              "fontSize": 18
+            },
+            {
+              "type": "text",
+              "id": "b7DRu",
+              "name": "liDesc",
+              "fill": "$text-secondary",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "온고지신 — 옛것을 익히고 새것을 알다",
+              "fontFamily": "Pretendard",
+              "fontSize": 12
+            }
+          ]
+        },
+        {
+          "type": "icon_font",
+          "id": "rnqDB",
+          "name": "liArrow",
+          "width": 18,
+          "height": 18,
+          "iconFontName": "chevron-right",
+          "iconFontFamily": "lucide",
+          "fill": "$text-secondary"
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "kU7Tr",
+      "x": 400,
+      "y": 910,
+      "name": "Component/SearchBar",
+      "reusable": true,
+      "width": 345,
+      "height": 44,
+      "fill": "$bg-surface",
+      "gap": 10,
+      "padding": [
+        0,
+        16
+      ],
+      "alignItems": "center",
+      "children": [
+        {
+          "type": "icon_font",
+          "id": "kWhuo",
+          "name": "searchIcon",
+          "width": 18,
+          "height": 18,
+          "iconFontName": "search",
+          "iconFontFamily": "lucide",
+          "fill": "$text-secondary"
+        },
+        {
+          "type": "text",
+          "id": "8qi7H",
+          "name": "searchPlaceholder",
+          "fill": "$text-secondary",
+          "content": "Search idioms...",
+          "fontFamily": "Pretendard",
+          "fontSize": 14
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "K2P5t",
+      "x": 400,
+      "y": 980,
+      "name": "Component/Divider",
+      "reusable": true,
+      "width": 345,
+      "height": 1,
+      "fill": "$border"
+    },
+    {
+      "type": "frame",
+      "id": "Bo8rt",
+      "x": 400,
+      "y": 1010,
+      "name": "Component/ProgressBar",
+      "reusable": true,
+      "width": 345,
+      "height": 3,
+      "fill": "$border",
+      "children": [
+        {
+          "type": "frame",
+          "id": "4FP6R",
+          "name": "progressFill",
+          "width": 103,
+          "height": "fill_container",
+          "fill": "$bg-dark"
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "8xie9",
+      "x": 400,
+      "y": 1040,
+      "name": "Component/SectionHeader",
+      "reusable": true,
+      "width": 345,
+      "justifyContent": "space_between",
+      "alignItems": "center",
+      "children": [
+        {
+          "type": "text",
+          "id": "buwsu",
+          "name": "shLabel",
+          "fill": "$text-secondary",
+          "content": "Today's Idiom",
+          "fontFamily": "Pretendard",
+          "fontSize": 12,
+          "fontWeight": "500",
+          "letterSpacing": 0.5
+        },
+        {
+          "type": "text",
+          "id": "nZ7WK",
+          "name": "shAction",
+          "fill": "$text-primary",
+          "content": "View All",
+          "fontFamily": "Pretendard",
+          "fontSize": 12,
+          "fontWeight": "500"
+        }
+      ]
+    }
+  ],
+  "variables": {
+    "accent": {
+      "type": "color",
+      "value": "#000000"
+    },
+    "bg-dark": {
+      "type": "color",
+      "value": "#000000"
+    },
+    "bg-primary": {
+      "type": "color",
+      "value": "#FFFFFF"
+    },
+    "bg-surface": {
+      "type": "color",
+      "value": "#F5F5F5"
+    },
+    "border": {
+      "type": "color",
+      "value": "#E0E0E0"
+    },
+    "correct-bg": {
+      "type": "color",
+      "value": "#E8F5E9"
+    },
+    "correct-green": {
+      "type": "color",
+      "value": "#2E7D32"
+    },
+    "text-muted": {
+      "type": "color",
+      "value": "#666666"
+    },
+    "text-on-dark": {
+      "type": "color",
+      "value": "#FFFFFF"
+    },
+    "text-primary": {
+      "type": "color",
+      "value": "#000000"
+    },
+    "text-secondary": {
+      "type": "color",
+      "value": "#888888"
+    },
+    "wrong-bg": {
+      "type": "color",
+      "value": "#FFEBEE"
+    },
+    "wrong-red": {
+      "type": "color",
+      "value": "#C62828"
+    }
+  }
+}
