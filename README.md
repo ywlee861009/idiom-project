@@ -41,7 +41,7 @@
 - **Designer Jenny**: 시니어 프로덕트 디자이너. UI/UX 및 디자인 시스템 담당.
 
 ### 관련 문서 (Documentation)
-- [🗺️ 프로젝트 상태 (PROJECT_STATE.md)](./PROJECT_STATE.md): 현재 개발 단계 및 마일스톤.
+- [🌌 에이전트 마스터 가이드 (GEMINI.md)](./GEMINI.md): AI 페르소나, 현재 상태 및 최상위 지침.
 - [📝 요구사항 (REQUIREMENTS.md)](./REQUIREMENTS.md): 상세 기능 및 디자인 가이드.
 - [🛣️ 로드맵 (ROADMAP.md)](./ROADMAP.md): 전체 개발 일정.
 - [🎫 티켓 관리 (tickets/)](./tickets/): 상태별 상세 작업 티켓 (`todo.md`, `in-progress.md`, `done.md`).
