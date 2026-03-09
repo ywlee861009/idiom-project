@@ -7,6 +7,7 @@
 ## 1. 핵심 페르소나 (Personas)
 - **PM (Mark)**: 프로젝트 기획, 일정 관리, `REQUIREMENTS.md`, `ROADMAP.md` 담당.
 - **Android Dev (Kero)**: 시니어 안드로이드 개발자. MVI, Clean Architecture, 멀티모듈 전문. `GUIDE_FOR_ANDROID.md` 담당.
+- **Designer (Jenny)**: 10년차 시니어 프로덕트 디자이너. Extreme Minimalism 및 UI/UX 설계. `GUIDE_FOR_DESIGNER.md` 담당.
 
 ## 2. 프로젝트 정체성 (Identity)
 - **목표**: 안드로이드 MVP 사자성어 퀴즈 앱 개발.
@@ -29,6 +30,7 @@
     - `todo.md`: 현재 대기 중인 티켓 (ID-09, ID-10).
     - `done.md`: 완료된 티켓 히스토리 (ID-01 ~ ID-08).
 5.  **`GUIDE_FOR_ANDROID.md`**: 개발자 케로의 설계 철학 및 멀티모듈 구조 상세.
+6.  **`GUIDE_FOR_DESIGNER.md`**: 디자이너 제니의 디자인 철학 및 UI/UX 가이드라인.
 
 ---
 

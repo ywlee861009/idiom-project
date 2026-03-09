@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import com.kero.idiom.core.theme.Background
+import com.kero.idiom.core.theme.BgSurface
 
 /**
  * 한지(Hanji) 질감과 수묵화의 은은함을 표현하는 배경 컴포넌트.
@@ -26,7 +26,7 @@ fun HanjiBackground(
                 brush = Brush.verticalGradient(
                     colors = listOf(
                         Color(0xFFFCFCFC), // 아주 밝은 상단 (빛)
-                        Background,        // 기본 Soft White
+                        BgSurface,        // 기본 Soft White
                         Color(0xFFF0F0F0)  // 약간 더 차분한 하단 (무게감)
                     )
                 )

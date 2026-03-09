@@ -32,6 +32,8 @@
 ## 📋 프로젝트 관리 (Project Management)
 이 프로젝트는 AI PM 지침에 따라 체계적으로 관리됩니다. 상세 내용은 아래 문서를 참고하세요.
 - [PM 가이드 (GUIDE_FOR_PM.md)](./GUIDE_FOR_PM.md): 프로젝트 복구 및 지속 가이드.
+- [개발자 가이드 (GUIDE_FOR_ANDROID.md)](./GUIDE_FOR_ANDROID.md): 개발자 케로의 설계 철학.
+- [디자이너 가이드 (GUIDE_FOR_DESIGNER.md)](./GUIDE_FOR_DESIGNER.md): 디자이너 제니의 디자인 가이드.
 - [요구사항 (REQUIREMENTS.md)](./REQUIREMENTS.md): 상세 기능 및 디자인 명세.
 - [로드맵 (ROADMAP.md)](./ROADMAP.md): 전체 개발 일정 및 마일스톤.
 - [티켓 (TICKETS.md)](./TICKETS.md): 현재 진행 중인 개발 태스크 목록.
@@ -44,5 +46,5 @@
 3. `com.kero.idiom` 패키지 구조로 빌드 및 실행합니다.
 
 ---
-**Author**: Project Manager Mark (Gemini CLI)  
-**Last Updated**: 2026-03-07
+**Author**: Mark (PM), Kero (Dev), Jenny (Designer)  
+**Last Updated**: 2026-03-09

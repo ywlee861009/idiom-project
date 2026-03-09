@@ -6,40 +6,57 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
-// Typography optimized for 'Extreme Minimalism'
+// Pretendard 폰트 파일이 res/font/에 추가되면 아래 FontFamily.Default를 교체
+private val PretendardFamily = FontFamily.Default
+
 val Typography = Typography(
-    // 퀴즈 문제 (압도적인 존재감)
+    // Display — 48sp Regular
     displayLarge = TextStyle(
-        fontFamily = FontFamily.Serif, // 명조 계열로 진중함 표현
-        fontWeight = FontWeight.Bold,
-        fontSize = 40.sp,
-        lineHeight = 56.sp,
-        letterSpacing = 4.sp,
-        color = DeepNavy
+        fontFamily = PretendardFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 48.sp,
+        letterSpacing = 0.sp
     ),
-    // 메인 타이틀
-    titleLarge = TextStyle(
-        fontFamily = FontFamily.SansSerif,
-        fontWeight = FontWeight.SemiBold,
-        fontSize = 24.sp,
-        lineHeight = 32.sp,
-        color = DeepNavy
+    // Question — 42sp Regular
+    displayMedium = TextStyle(
+        fontFamily = PretendardFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 42.sp,
+        letterSpacing = 0.sp
     ),
-    // 버튼 및 강조 텍스트
+    // Score — 72sp Regular
+    displaySmall = TextStyle(
+        fontFamily = PretendardFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 72.sp,
+        letterSpacing = 0.sp
+    ),
+    // Heading — 28sp Regular
+    headlineMedium = TextStyle(
+        fontFamily = PretendardFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 28.sp,
+        letterSpacing = 0.sp
+    ),
+    // Subtitle — 18sp Regular
+    titleMedium = TextStyle(
+        fontFamily = PretendardFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 18.sp,
+        letterSpacing = 0.sp
+    ),
+    // Button — 16sp Medium
     labelLarge = TextStyle(
-        fontFamily = FontFamily.SansSerif,
+        fontFamily = PretendardFamily,
         fontWeight = FontWeight.Medium,
         fontSize = 16.sp,
-        lineHeight = 24.sp,
-        letterSpacing = 0.5.sp,
-        color = SoftWhite // 버튼 내부 텍스트
+        letterSpacing = 0.sp
     ),
-    // 일반 본문
-    bodyLarge = TextStyle(
-        fontFamily = FontFamily.SansSerif,
-        fontWeight = FontWeight.Normal,
-        fontSize = 16.sp,
-        lineHeight = 24.sp,
-        color = DeepNavy
+    // Caption — 12sp Medium, 0.5sp tracking
+    labelSmall = TextStyle(
+        fontFamily = PretendardFamily,
+        fontWeight = FontWeight.Medium,
+        fontSize = 12.sp,
+        letterSpacing = 0.5.sp
     )
 )
