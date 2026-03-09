@@ -17,23 +17,13 @@
 - **기술 스택**: Kotlin (1.9.22), Jetpack Compose, Hilt, Coroutines, Repository Pattern, Room DB.
 - **품질 원칙**: 모든 티켓 완료 전 `./gradlew assembleDebug` 빌드 검증 필수 (**Build-Verified Done**).
 
-## 📍 3. 현재 진행 상황 (Status - 2026-03-09)
-- [x] **Phase 1-3**: 기초 구축, 데이터셋(200개), 메인 퀴즈 및 결과 화면 구현 완료. (ID-01 ~ ID-09 완료)
-- [ ] **Phase 6 (Smart Learning)**: 지능형 학습 시스템 구축 중.
-
-### 🚀 최우선 다음 작업 (Next Action)
-1. **ID-20: Room DB 및 초기 동기화 (Smart Migration)**
-   - `assets/idioms.json` 데이터를 Room DB로 마이그레이션 및 노출 빈도(`exposureCount`) 필드 관리.
-2. **ID-21: 지능적 퀴즈 추출 알고리즘**
-   - 노출 빈도가 낮은 단어 우선 출제 로직 구현.
-
 ## 📂 4. 문서 구조 (Doc Structure)
 - **`README.md`**: 실행 방법 및 전체 소개.
 - **`REQUIREMENTS.md`**: 상세 기능 명세.
 - **`ROADMAP.md`**: 전체 개발 일정 및 마일스톤.
 - **`tickets/`**: 
-    - `todo.md`: 대기 중인 티켓 (ID-20 ~ ID-23).
-    - `done.md`: 완료된 티켓 히스토리 (ID-01 ~ ID-09).
+    - `todo.md`: 대기 중인 티켓.
+    - `done.md`: 완료된 티켓 히스토리.
 - **`GUIDE_FOR_xxx.md`**: 각 전문가별 상세 가이드라인.
 
 ---
