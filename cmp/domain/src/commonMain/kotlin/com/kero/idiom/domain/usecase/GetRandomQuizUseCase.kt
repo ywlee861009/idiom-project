@@ -10,7 +10,8 @@ class GetRandomQuizUseCase(
     suspend operator fun invoke(): Quiz {
         // [Smart Selection] 노출 빈도가 낮은 사자성어 1개를 우선적으로 가져옵니다.
         val targetIdioms = repository.getRandomIdioms(limit = 1)
-        val idiom = targetIdioms.first()
+        val idiom = targetIdioms.firstOrNull()
+            ?: throw IllegalStateException("사자성어 데이터가 없습니다. DB 초기화를 확인하세요.")
 
         // 오답 보기를 만들기 위한 샘플 데이터 (이것도 노출 빈도가 낮은 것들 위주로 섞음)
         val dummyIdioms = repository.getRandomIdioms(limit = 20)

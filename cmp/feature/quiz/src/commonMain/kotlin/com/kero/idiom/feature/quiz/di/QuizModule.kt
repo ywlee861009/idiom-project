@@ -6,6 +6,6 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val featureQuizModule = module {
-    // get() 이름 충돌을 피하기 위해 명시적으로 GetRandomQuizUseCase를 가져옵니다.
+    factory { GetRandomQuizUseCase(get()) }
     viewModel { QuizViewModel(get<GetRandomQuizUseCase>()) }
 }

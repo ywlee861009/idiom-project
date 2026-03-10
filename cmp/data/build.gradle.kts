@@ -44,11 +44,15 @@ room {
     schemaDirectory("$projectDir/schemas")
 }
 
+compose.resources {
+    packageOfResClass = "com.kero.idiom.data.resources"
+}
+
 android {
     namespace = "com.kero.idiom.data"
     compileSdk = 35
 }
 
 dependencies {
-    add("kspCommonMainMetadata", libs.androidx.room.compiler)
+    add("kspAndroid", libs.androidx.room.compiler)
 }
