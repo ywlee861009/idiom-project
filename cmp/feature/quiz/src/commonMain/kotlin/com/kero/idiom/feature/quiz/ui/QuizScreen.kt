@@ -24,6 +24,7 @@ import com.kero.idiom.feature.quiz.contract.QuizIntent
 import com.kero.idiom.feature.quiz.contract.QuizSideEffect
 import com.kero.idiom.feature.quiz.viewmodel.QuizViewModel
 import io.github.alexzhirkevich.compottie.LottieCompositionSpec
+import io.github.alexzhirkevich.compottie.animateLottieCompositionAsState
 import io.github.alexzhirkevich.compottie.rememberLottieComposition
 import io.github.alexzhirkevich.compottie.rememberLottiePainter
 import io.github.alexzhirkevich.compottie.DotLottie
@@ -72,12 +73,12 @@ fun QuizScreen(
                     onNavigateToResult(effect.score, effect.total)
                 QuizSideEffect.ShowCorrectEffect -> scope.launch {
                     animationFile = "success"
-                    delay(2000)
+                    delay(500)
                     animationFile = null
                 }
                 QuizSideEffect.ShowWrongEffect -> scope.launch {
                     animationFile = "wrong"
-                    delay(2000)
+                    delay(500)
                     animationFile = null
                 }
             }
@@ -286,10 +287,19 @@ fun QuizScreen(
                     .clickable(enabled = false) { },
                 contentAlignment = Alignment.Center
             ) {
-                if (composition != null) {
+                val comp = composition
+                if (comp != null) {
+                    val durationSec = comp.durationFrames / comp.frameRate
+                    val speed = durationSec / 0.5f
+                    val progress by animateLottieCompositionAsState(
+                        composition = comp,
+                        isPlaying = animationFile != null,
+                        iterations = 1,
+                        speed = speed
+                    )
                     val painter = rememberLottiePainter(
-                        composition = composition,
-                        iterations = 1
+                        composition = comp,
+                        progress = { progress }
                     )
                     Image(
                         painter = painter,
@@ -297,7 +307,6 @@ fun QuizScreen(
                         modifier = Modifier.size(320.dp)
                     )
                 } else {
-                    // 로딩 중일 때 표시할 인디케이터 (필요시)
                     CircularProgressIndicator(color = BgDark, modifier = Modifier.size(48.dp))
                 }
             }
