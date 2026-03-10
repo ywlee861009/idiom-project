@@ -1,0 +1,48 @@
+# Gradle
+.gradle/
+build/
+**/build/
+local.properties
+
+# Kotlin
+.kotlin/
+
+# Android
+*.apk
+*.aab
+*.ap_
+*.dex
+captures/
+.externalNativeBuild/
+.cxx/
+
+# iOS
+*.xcworkspace/
+xcuserdata/
+DerivedData/
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+Pods/
+.build/
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+.DS_Store
+
+# Room schema (선택: 버전 관리 원하면 이 줄 삭제)
+# **/schemas/
+
+# KSP generated
+**/generated/ksp/
+
+# Compose Resources (generated)
+**/generated/compose/

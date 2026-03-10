@@ -35,8 +35,15 @@ fun QuizScreen(
         viewModel.sideEffect.collect { effect ->
             when (effect) {
                 is QuizSideEffect.NavigateToResult -> onNavigateToResult(effect.score, effect.total)
-                QuizSideEffect.ShowCorrectEffect -> { showInkEffect = true }
-                QuizSideEffect.ShowWrongEffect -> { /* 진동 효과 등 추가 가능 */ }
+                QuizSideEffect.ShowCorrectEffect -> { 
+                    showInkEffect = true 
+                    // Note: showInkEffect's onAnimationEnd will handle NextQuiz
+                }
+                QuizSideEffect.ShowWrongEffect -> { 
+                    // Show feedback for a moment then move to next
+                    kotlinx.coroutines.delay(1000)
+                    viewModel.handleIntent(QuizIntent.NextQuiz)
+                }
             }
         }
     }
@@ -57,6 +64,7 @@ fun QuizScreen(
                 if (state.isLoading) {
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                 } else {
+                    // ... (rest of UI remains same)
                     state.currentQuiz?.let { quiz ->
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally,
@@ -123,12 +131,12 @@ fun QuizScreen(
                             Spacer(modifier = Modifier.height(32.dp))
 
                             // Options
-                            quiz.options.chunked(2).forEach { rowOptions ->
-                                Row(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    horizontalArrangement = Arrangement.spacedBy(12.dp)
-                                ) {
-                                    rowOptions.forEach { option ->
+                            quiz.options.forEachIndexed { index, option ->
+                                if (index % 2 == 0) {
+                                    Row(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                                    ) {
                                         Box(modifier = Modifier.weight(1f)) {
                                             IdiomPrimaryButton(
                                                 text = option,
@@ -136,9 +144,21 @@ fun QuizScreen(
                                                 enabled = state.selectedOption == null
                                             )
                                         }
+                                        if (index + 1 < quiz.options.size) {
+                                            val nextOption = quiz.options[index + 1]
+                                            Box(modifier = Modifier.weight(1f)) {
+                                                IdiomPrimaryButton(
+                                                    text = nextOption,
+                                                    onClick = { viewModel.handleIntent(QuizIntent.SelectOption(nextOption)) },
+                                                    enabled = state.selectedOption == null
+                                                )
+                                            }
+                                        } else {
+                                            Spacer(modifier = Modifier.weight(1f))
+                                        }
                                     }
+                                    Spacer(modifier = Modifier.height(12.dp))
                                 }
-                                Spacer(modifier = Modifier.height(12.dp))
                             }
                             
                             Spacer(modifier = Modifier.height(16.dp))
@@ -163,7 +183,10 @@ fun QuizScreen(
                 }
                 
                 if (showInkEffect) {
-                    InkBurstEffect(onAnimationEnd = { showInkEffect = false })
+                    InkBurstEffect(onAnimationEnd = { 
+                        showInkEffect = false 
+                        viewModel.handleIntent(QuizIntent.NextQuiz)
+                    })
                 }
             }
         }
