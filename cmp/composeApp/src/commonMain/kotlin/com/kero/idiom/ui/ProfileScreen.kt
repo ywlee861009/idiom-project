@@ -219,7 +219,7 @@ fun ProfileScreen(
         }
 
         IdiomTabBar(
-            selectedTab = IdiomTab.Home,
+            selectedTab = IdiomTab.Profile,
             onTabSelected = onTabSelected
         )
     }

@@ -46,8 +46,10 @@ fun App() {
                             onTabSelected = { tab ->
                                 when (tab) {
                                     IdiomTab.Home -> {}
-                                    IdiomTab.Quiz -> navController.navigate(Screen.Quiz)
                                     IdiomTab.Study -> navController.navigate(Screen.Collection) {
+                                        launchSingleTop = true
+                                    }
+                                    IdiomTab.Profile -> navController.navigate(Screen.Profile) {
                                         launchSingleTop = true
                                     }
                                 }
@@ -65,8 +67,10 @@ fun App() {
                                         popUpTo(Screen.Home) { inclusive = true }
                                         launchSingleTop = true
                                     }
-                                    IdiomTab.Quiz -> navController.navigate(Screen.Quiz)
                                     IdiomTab.Study -> {}
+                                    IdiomTab.Profile -> navController.navigate(Screen.Profile) {
+                                        launchSingleTop = true
+                                    }
                                 }
                             }
                         )
@@ -80,10 +84,10 @@ fun App() {
                                         popUpTo(Screen.Home) { inclusive = true }
                                         launchSingleTop = true
                                     }
-                                    IdiomTab.Quiz -> navController.navigate(Screen.Quiz)
                                     IdiomTab.Study -> navController.navigate(Screen.Collection) {
                                         launchSingleTop = true
                                     }
+                                    IdiomTab.Profile -> {}
                                 }
                             }
                         )

@@ -13,7 +13,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.MenuBook
-import androidx.compose.material.icons.filled.Psychology
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,8 +35,8 @@ import com.kero.idiom.core.theme.TextSecondary
 
 enum class IdiomTab(val label: String, val icon: ImageVector) {
     Home("HOME", Icons.Filled.Home),
-    Quiz("QUIZ", Icons.Filled.Psychology),
-    Study("STUDY", Icons.Filled.MenuBook)
+    Study("STUDY", Icons.Filled.MenuBook),
+    Profile("PROFILE", Icons.Filled.Person)
 }
 
 @Composable
