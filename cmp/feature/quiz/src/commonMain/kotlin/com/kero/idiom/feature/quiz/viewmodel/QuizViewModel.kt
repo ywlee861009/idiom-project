@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kero.idiom.domain.usecase.GetRandomQuizUseCase
 import com.kero.idiom.domain.usecase.RecordCorrectAnswerUseCase
+import com.kero.idiom.domain.usecase.UpdateUserStatsUseCase
 import com.kero.idiom.feature.quiz.contract.QuizIntent
 import com.kero.idiom.feature.quiz.contract.QuizSideEffect
 import com.kero.idiom.feature.quiz.contract.QuizState
@@ -19,7 +20,8 @@ private const val TOTAL_QUIZ_COUNT = 5
 
 class QuizViewModel(
     private val getRandomQuizUseCase: GetRandomQuizUseCase,
-    private val recordCorrectAnswerUseCase: RecordCorrectAnswerUseCase
+    private val recordCorrectAnswerUseCase: RecordCorrectAnswerUseCase,
+    private val updateUserStatsUseCase: UpdateUserStatsUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(QuizState())
@@ -42,6 +44,9 @@ class QuizViewModel(
     private fun onNextQuiz() {
         if (state.value.quizCount >= TOTAL_QUIZ_COUNT) {
             viewModelScope.launch {
+                // 통계 업데이트
+                updateUserStatsUseCase(state.value.score, TOTAL_QUIZ_COUNT)
+                
                 _sideEffect.send(QuizSideEffect.NavigateToResult(state.value.score, TOTAL_QUIZ_COUNT))
             }
         } else {

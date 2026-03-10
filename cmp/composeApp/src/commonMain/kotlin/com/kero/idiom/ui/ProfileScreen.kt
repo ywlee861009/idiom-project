@@ -19,11 +19,17 @@ import androidx.compose.ui.unit.sp
 import com.kero.idiom.core.components.IdiomTab
 import com.kero.idiom.core.components.IdiomTabBar
 import com.kero.idiom.core.theme.*
+import com.kero.idiom.ui.profile.ProfileViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun ProfileScreen(
-    onTabSelected: (IdiomTab) -> Unit
+    onTabSelected: (IdiomTab) -> Unit,
+    viewModel: ProfileViewModel = koinViewModel()
 ) {
+    val state by viewModel.state.collectAsState()
+    val stats = state.userStats
+    
     var notificationEnabled by remember { mutableStateOf(true) }
 
     Column(
@@ -68,7 +74,7 @@ fun ProfileScreen(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "初",
+                        text = stats.title.first().toString(),
                         fontSize = 22.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.White
@@ -76,13 +82,13 @@ fun ProfileScreen(
                 }
                 Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                     Text(
-                        text = "초립동이",
+                        text = stats.title,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
                         color = TextPrimary
                     )
                     Text(
-                        text = "Lv.3 · 성어 수집가 입문",
+                        text = "Lv.${stats.level} · ${stats.titleDescription}",
                         style = MaterialTheme.typography.bodyMedium,
                         color = TextMuted
                     )
@@ -101,9 +107,13 @@ fun ProfileScreen(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    StatCard(value = "132", label = "총 학습 수", modifier = Modifier.weight(1f))
-                    StatCard(value = "87%", label = "정답률", modifier = Modifier.weight(1f))
-                    StatCard(value = "12일", label = "연속 학습", modifier = Modifier.weight(1f))
+                    val accuracy = if (stats.totalSolvedCount > 0) {
+                        (stats.totalCorrectCount.toFloat() / stats.totalSolvedCount * 100).toInt()
+                    } else 0
+                    
+                    StatCard(value = "${stats.totalSolvedCount}", label = "총 학습 수", modifier = Modifier.weight(1f))
+                    StatCard(value = "$accuracy%", label = "정답률", modifier = Modifier.weight(1f))
+                    StatCard(value = "${stats.currentStreak}일", label = "연속 학습", modifier = Modifier.weight(1f))
                 }
             }
 
@@ -152,7 +162,7 @@ fun ProfileScreen(
                             )
                         )
                     }
-                    Divider(color = BorderColor, thickness = 1.dp)
+                    HorizontalDivider(color = BorderColor, thickness = 1.dp)
 
                     // 폰트 크기
                     Row(
@@ -185,7 +195,7 @@ fun ProfileScreen(
                             Text("›", fontSize = 16.sp, color = TextMuted)
                         }
                     }
-                    Divider(color = BorderColor, thickness = 1.dp)
+                    HorizontalDivider(color = BorderColor, thickness = 1.dp)
 
                     // 앱 버전
                     Row(

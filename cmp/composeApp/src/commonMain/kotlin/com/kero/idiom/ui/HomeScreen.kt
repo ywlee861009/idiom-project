@@ -20,7 +20,9 @@ import com.kero.idiom.core.components.IdiomTab
 import com.kero.idiom.core.components.IdiomTabBar
 import com.kero.idiom.core.theme.*
 import com.kero.idiom.domain.model.Idiom
+import com.kero.idiom.domain.model.UserStats
 import com.kero.idiom.domain.repository.IdiomRepository
+import com.kero.idiom.domain.usecase.GetUserStatsUseCase
 import org.koin.compose.koinInject
 
 @Composable
@@ -30,7 +32,10 @@ fun HomeScreen(
     onNavigateToProfile: () -> Unit
 ) {
     val repository: IdiomRepository = koinInject()
+    val getUserStatsUseCase: GetUserStatsUseCase = koinInject()
+    
     var todayIdiom by remember { mutableStateOf<Idiom?>(null) }
+    val userStats by getUserStatsUseCase().collectAsState(UserStats())
 
     LaunchedEffect(Unit) {
         todayIdiom = repository.getRandomIdioms(1).firstOrNull()
@@ -94,7 +99,7 @@ fun HomeScreen(
                             .padding(horizontal = 10.dp, vertical = 4.dp)
                     ) {
                         Text(
-                            text = "Lv.3",
+                            text = "Lv.${userStats.level}",
                             fontSize = 11.sp,
                             fontWeight = FontWeight.SemiBold,
                             color = Color.White
@@ -102,12 +107,12 @@ fun HomeScreen(
                     }
                 }
                 Text(
-                    text = "초립동이",
+                    text = userStats.title,
                     style = MaterialTheme.typography.headlineSmall,
                     color = Color.White
                 )
                 Text(
-                    text = "오늘도 꾸준히 정진하세요 🎋",
+                    text = "${userStats.titleDescription} 🎋",
                     style = MaterialTheme.typography.bodyMedium,
                     color = Color.White.copy(alpha = 0.6f)
                 )
@@ -118,9 +123,13 @@ fun HomeScreen(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceAround
                 ) {
-                    RankStatItem("3", "고사 푼 문제")
-                    RankStatItem("12일", "연속 복습")
-                    RankStatItem("87%", "정답률")
+                    val accuracy = if (userStats.totalSolvedCount > 0) {
+                        (userStats.totalCorrectCount.toFloat() / userStats.totalSolvedCount * 100).toInt()
+                    } else 0
+                    
+                    RankStatItem("${userStats.totalSolvedCount}", "고사 푼 문제")
+                    RankStatItem("${userStats.currentStreak}일", "연속 복습")
+                    RankStatItem("$accuracy%", "정답률")
                 }
             }
 

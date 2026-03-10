@@ -24,6 +24,7 @@ kotlin {
             
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
+            implementation(libs.koin.compose.viewmodel) // CMP 공통 ViewModel 지원 필수
             implementation(libs.androidx.navigation.compose)
             implementation(compose.runtime)
             implementation(compose.foundation)
