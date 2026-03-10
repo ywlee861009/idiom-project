@@ -31,6 +31,7 @@ fun ProfileScreen(
             .fillMaxSize()
             .background(BgPrimary)
             .statusBarsPadding()
+            .navigationBarsPadding()
     ) {
         Column(
             modifier = Modifier

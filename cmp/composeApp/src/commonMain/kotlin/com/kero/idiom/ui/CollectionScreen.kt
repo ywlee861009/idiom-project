@@ -39,6 +39,7 @@ fun CollectionScreen(
             .fillMaxSize()
             .background(BgPrimary)
             .statusBarsPadding()
+            .navigationBarsPadding()
     ) {
         Column(
             modifier = Modifier

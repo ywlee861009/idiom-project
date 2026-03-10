@@ -51,6 +51,7 @@ fun QuizScreen(
             .fillMaxSize()
             .background(BgPrimary)
             .statusBarsPadding()
+            .navigationBarsPadding()
     ) {
         if (state.isLoading) {
             Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {

@@ -3,6 +3,7 @@ package com.kero.idiom.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -45,7 +46,8 @@ fun RewardScreen(
                 .clip(RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp))
                 .background(BgPrimary)
                 .padding(horizontal = 24.dp)
-                .padding(top = 32.dp, bottom = 48.dp),
+                .padding(top = 32.dp, bottom = 48.dp)
+                .navigationBarsPadding(),
             verticalArrangement = Arrangement.spacedBy(28.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {

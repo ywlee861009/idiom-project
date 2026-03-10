@@ -13,13 +13,6 @@
 
 ---
 
-## 📍 현재 작업 상태 (Current Status)
-- **마지막 업데이트**: 2026-03-08
-- **현재 활성 티켓**: `AID-02: Data Layer Implementation (JSON Parsing)`
-- **다음 단계**: `:data` 모듈에서 `assets/idioms.json`을 파싱하고 `Repository`를 구현할 예정.
-
----
-
 ## 1. 기술 스택 (Technical Stack)
 - **Language**: Kotlin 2.1.10
 - **UI Framework**: Jetpack Compose (Modern Toolkit)

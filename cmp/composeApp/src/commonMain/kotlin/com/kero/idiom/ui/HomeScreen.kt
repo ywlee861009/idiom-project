@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.kero.idiom.core.components.IdiomDivider
 import com.kero.idiom.core.components.IdiomTab
 import com.kero.idiom.core.components.IdiomTabBar
 import com.kero.idiom.core.theme.*
@@ -40,6 +41,7 @@ fun HomeScreen(
             .fillMaxSize()
             .background(BgPrimary)
             .statusBarsPadding()
+            .navigationBarsPadding()
     ) {
         Column(
             modifier = Modifier
@@ -109,10 +111,8 @@ fun HomeScreen(
                     style = MaterialTheme.typography.bodyMedium,
                     color = Color.White.copy(alpha = 0.6f)
                 )
-                Divider(
+                IdiomDivider(
                     modifier = Modifier.padding(vertical = 6.dp),
-                    color = Color.White.copy(alpha = 0.1f),
-                    thickness = 1.dp
                 )
                 Row(
                     modifier = Modifier.fillMaxWidth(),
