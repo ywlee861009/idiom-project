@@ -7,7 +7,7 @@ import com.kero.idiom.data.local.model.IdiomEntity
 
 @Database(
     entities = [IdiomEntity::class],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class IdiomDatabase : RoomDatabase() {

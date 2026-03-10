@@ -46,4 +46,16 @@ interface IdiomDao {
      */
     @Query("UPDATE idioms SET exposureCount = exposureCount + 1 WHERE word = :word")
     suspend fun incrementExposureCount(word: String)
+
+    /**
+     * 정답 횟수 증가 (서고 획득 기준)
+     */
+    @Query("UPDATE idioms SET correctCount = correctCount + 1 WHERE word = :word")
+    suspend fun incrementCorrectCount(word: String)
+
+    /**
+     * 정답을 한 번이라도 맞힌 성어만 반환 (서고 획득 목록)
+     */
+    @Query("SELECT * FROM idioms WHERE correctCount > 0 ORDER BY word ASC")
+    suspend fun getAcquiredIdioms(): List<IdiomEntity>
 }

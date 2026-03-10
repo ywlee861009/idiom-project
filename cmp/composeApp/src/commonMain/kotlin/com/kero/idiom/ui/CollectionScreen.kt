@@ -31,7 +31,7 @@ fun CollectionScreen(
     var idioms by remember { mutableStateOf<List<Idiom>>(emptyList()) }
 
     LaunchedEffect(Unit) {
-        idioms = repository.getAllIdioms()
+        idioms = repository.getAcquiredIdioms()
     }
 
     Column(
@@ -84,21 +84,45 @@ fun CollectionScreen(
 
             Spacer(Modifier.height(12.dp))
 
-            // 카드 그리드
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
-                verticalArrangement = Arrangement.spacedBy(12.dp),
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
-                modifier = Modifier.weight(1f)
-            ) {
-                items(idioms) { idiom ->
-                    IdiomCollectionCard(idiom)
+            if (idioms.isEmpty()) {
+                // 빈 상태
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        Text("📖", fontSize = 48.sp)
+                        Text(
+                            text = "아직 획득한 성어가 없어요",
+                            style = MaterialTheme.typography.titleMedium,
+                            color = TextPrimary
+                        )
+                        Text(
+                            text = "퀴즈에서 정답을 맞히면\n성어 카드를 획득할 수 있어요",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = TextMuted,
+                            textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                        )
+                    }
                 }
-                item {
-                    Spacer(Modifier.height(16.dp))
-                }
-                item {
-                    Spacer(Modifier.height(16.dp))
+            } else {
+                // 카드 그리드
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    modifier = Modifier.weight(1f)
+                ) {
+                    items(idioms) { idiom ->
+                        IdiomCollectionCard(idiom)
+                    }
+                    item { Spacer(Modifier.height(16.dp)) }
+                    item { Spacer(Modifier.height(16.dp)) }
                 }
             }
         }
@@ -166,6 +190,13 @@ private fun IdiomCollectionCard(idiom: Idiom) {
             text = idiom.word,
             style = MaterialTheme.typography.bodySmall,
             color = Color.White.copy(alpha = 0.6f)
+        )
+        Spacer(Modifier.height(4.dp))
+        Text(
+            text = idiom.meaning,
+            style = MaterialTheme.typography.bodySmall,
+            color = Color.White.copy(alpha = 0.75f),
+            lineHeight = 18.sp
         )
         Spacer(Modifier.height(4.dp))
         Text(

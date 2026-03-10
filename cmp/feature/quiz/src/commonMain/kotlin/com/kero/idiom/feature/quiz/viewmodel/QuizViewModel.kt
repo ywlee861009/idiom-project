@@ -3,6 +3,7 @@ package com.kero.idiom.feature.quiz.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kero.idiom.domain.usecase.GetRandomQuizUseCase
+import com.kero.idiom.domain.usecase.RecordCorrectAnswerUseCase
 import com.kero.idiom.feature.quiz.contract.QuizIntent
 import com.kero.idiom.feature.quiz.contract.QuizSideEffect
 import com.kero.idiom.feature.quiz.contract.QuizState
@@ -17,7 +18,8 @@ import kotlinx.coroutines.launch
 private const val TOTAL_QUIZ_COUNT = 5
 
 class QuizViewModel(
-    private val getRandomQuizUseCase: GetRandomQuizUseCase
+    private val getRandomQuizUseCase: GetRandomQuizUseCase,
+    private val recordCorrectAnswerUseCase: RecordCorrectAnswerUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(QuizState())
@@ -75,6 +77,12 @@ class QuizViewModel(
                 score = newScore,
                 quizCount = newCount
             )
+        }
+
+        if (isCorrect) {
+            viewModelScope.launch {
+                recordCorrectAnswerUseCase(currentQuiz.originalIdiom.word)
+            }
         }
     }
 }
