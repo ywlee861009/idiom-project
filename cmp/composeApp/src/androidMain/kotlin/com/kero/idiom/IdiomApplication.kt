@@ -2,7 +2,6 @@ package com.kero.idiom
 
 import android.app.Application
 import com.kero.idiom.data.di.dataModule
-import com.kero.idiom.data.di.platformDataModule
 import com.kero.idiom.feature.quiz.di.featureQuizModule
 import com.kero.idiom.feature.result.di.featureResultModule
 import org.koin.android.ext.koin.androidContext
@@ -19,7 +18,6 @@ class IdiomApplication : Application() {
             androidContext(this@IdiomApplication)
             modules(
                 dataModule,
-                platformDataModule,
                 featureQuizModule,
                 featureResultModule
             )

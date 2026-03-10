@@ -12,7 +12,7 @@ import org.koin.dsl.module
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "idiom_settings")
 
-actual val platformDataModule: Module = module {
+internal actual val platformDataModule: Module = module {
     single { 
         getRoomDatabase(getAndroidDatabaseBuilder(androidContext()))
     }

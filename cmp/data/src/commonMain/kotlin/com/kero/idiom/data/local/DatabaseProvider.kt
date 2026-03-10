@@ -15,4 +15,3 @@ fun getRoomDatabase(
         .build()
 }
 
-expect fun getDatabaseBuilder(): RoomDatabase.Builder<IdiomDatabase>

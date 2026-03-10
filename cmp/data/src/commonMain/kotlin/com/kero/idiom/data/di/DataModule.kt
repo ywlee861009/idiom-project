@@ -10,16 +10,17 @@ import com.kero.idiom.domain.repository.IdiomRepository
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
+internal expect val platformDataModule: Module
+
 val dataModule = module {
+    includes(platformDataModule)
     single { AssetIdiomDataSource() }
     single { get<IdiomDatabase>().idiomDao() }
-    single<IdiomRepository> { 
+    single<IdiomRepository> {
         IdiomRepositoryImpl(
-            dataStore = get(), 
-            assetDataSource = get(), 
+            dataStore = get(),
+            assetDataSource = get(),
             idiomDao = get()
-        ) 
+        )
     }
 }
-
-expect val platformDataModule: Module
