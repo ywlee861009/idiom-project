@@ -221,7 +221,7 @@ fun QuizScreen(
                     .fillMaxWidth()
                     .padding(horizontal = 24.dp)
                     .padding(bottom = 40.dp)
-                    .height(56.dp),
+                    .height(60.dp),
                 enabled = buttonEnabled,
                 shape = RoundedCornerShape(12.dp),
                 colors = ButtonDefaults.buttonColors(

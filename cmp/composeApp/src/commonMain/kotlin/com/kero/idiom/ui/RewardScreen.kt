@@ -136,7 +136,7 @@ fun RewardScreen(
                     onClick = onNavigateToCollection,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(56.dp),
+                        .height(60.dp),
                     shape = RoundedCornerShape(12.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = BgDark,
@@ -153,7 +153,7 @@ fun RewardScreen(
                     onClick = onNavigateToHome,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(56.dp),
+                        .height(60.dp),
                     shape = RoundedCornerShape(12.dp),
                     border = androidx.compose.foundation.BorderStroke(1.dp, BorderColor),
                     colors = ButtonDefaults.outlinedButtonColors(

@@ -48,7 +48,7 @@ fun IdiomTabBar(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .height(83.dp)
+            .height(90.dp)
             .padding(start = 21.dp, end = 21.dp, top = 12.dp, bottom = 21.dp)
             .border(1.dp, BorderColor, RoundedCornerShape(36.dp))
             .clip(RoundedCornerShape(36.dp))

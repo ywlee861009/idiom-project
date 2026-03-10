@@ -166,7 +166,7 @@ fun HomeScreen(
                 .fillMaxWidth()
                 .padding(horizontal = 24.dp)
                 .padding(bottom = 8.dp)
-                .height(56.dp),
+                .height(60.dp),
             shape = RoundedCornerShape(12.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = BgDark,
@@ -192,13 +192,13 @@ private fun RankStatItem(value: String, label: String) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
             text = value,
-            fontSize = 20.sp,
+            fontSize = 22.sp,
             fontWeight = FontWeight.Bold,
             color = Color.White
         )
         Text(
             text = label,
-            fontSize = 11.sp,
+            fontSize = 12.sp,
             color = Color.White.copy(alpha = 0.5f)
         )
     }
