@@ -54,21 +54,29 @@ class QuizViewModel(
         val currentQuiz = state.value.currentQuiz ?: return
         val isCorrect = option == currentQuiz.answer
         
-        _state.update { it.copy(selectedOption = option, isCorrect = isCorrect) }
+        val newScore = if (isCorrect) state.value.score + 1 else state.value.score
+        val newCount = state.value.quizCount + 1
+        
+        _state.update { 
+            it.copy(
+                selectedOption = option, 
+                isCorrect = isCorrect,
+                score = newScore,
+                quizCount = newCount
+            ) 
+        }
 
         viewModelScope.launch {
-            if (isCorrect) {
-                val newScore = state.value.score + 1
-                val newCount = state.value.quizCount + 1
-                _state.update { it.copy(score = newScore, quizCount = newCount) }
-                
-                if (newCount >= 10) {
-                    _sideEffect.send(QuizSideEffect.NavigateToResult(newScore, 10))
-                } else {
-                    _sideEffect.send(QuizSideEffect.ShowCorrectEffect)
-                }
+            if (newCount >= 10) {
+                // 10문제가 모두 끝나면 결과 화면으로 이동
+                _sideEffect.send(QuizSideEffect.NavigateToResult(newScore, 10))
             } else {
-                _sideEffect.send(QuizSideEffect.ShowWrongEffect)
+                // 10문제가 안 끝났으면 정답/오답 효과 보여주기
+                if (isCorrect) {
+                    _sideEffect.send(QuizSideEffect.ShowCorrectEffect)
+                } else {
+                    _sideEffect.send(QuizSideEffect.ShowWrongEffect)
+                }
             }
         }
     }

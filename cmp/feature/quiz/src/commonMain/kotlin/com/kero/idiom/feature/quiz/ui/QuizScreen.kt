@@ -42,10 +42,8 @@ fun QuizScreen(
             try {
                 // Kero Debug: "files/$file" 경로 확인
                 val bytes = Res.readBytes("files/$file")
-                println("Kero Debug: Successfully read ${bytes.size} bytes for $file")
                 compositionBytes = bytes
             } catch (e: Exception) {
-                println("Kero Debug: Error reading $file: ${e.message}")
                 compositionBytes = null
             }
         } else {
@@ -73,7 +71,6 @@ fun QuizScreen(
     // 애니메이션 종료 후 다음 퀴즈로 이동
     LaunchedEffect(progress) {
         if (progress == 1f && currentLottieFile != null) {
-            println("Kero Debug: Animation finished for $currentLottieFile")
             currentLottieFile = null
             viewModel.handleIntent(QuizIntent.NextQuiz)
         }
@@ -147,7 +144,7 @@ fun QuizScreen(
                             IdiomBaseCard(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .heightIn(min = 200.dp)
+                                    .height(260.dp) // 높이를 고정해서 로띠가 나올 때 움찔거리는 현상 방지!
                             ) {
                                 Box(
                                     contentAlignment = Alignment.Center,
