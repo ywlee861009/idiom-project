@@ -1,36 +1,37 @@
-# 사자성어 퀴즈 안드로이드 프로젝트 요구사항 (REQUIREMENTS)
+# 🎯 사자성어 퀴즈 안드로이드 프로젝트 요구사항 (v2.1)
 
 ## 1. 프로젝트 목표 (Project Goal)
-사용자가 심플하고 직관적인 UI를 통해 사자성어 퀴즈를 풀고 실력을 쌓을 수 있는 안드로이드 앱 개발.
+40대 이상 사용자를 위한 **"스마트폰 속 나만의 서당"**. 서버 없이 기기 내에서 완결되는 고품격 사자성어 학습 경험 제공.
 
-## 2. 디자인 컨셉 (Design Concept)
-- **Extreme Minimalism**: 불필요한 아이콘이나 화려한 배경 배제.
-- **Typography Focused**: 깨끗한 폰트와 충분한 여백(Whitespace) 강조.
-- **Material 3 (M3)**: 구글의 최신 디자인 시스템 컴포넌트 활용.
-- **Color Palette**: 톤 다운된 차분한 색상 (예: Light Grey, Deep Navy, Soft White).
+## 2. 핵심 디자인 컨셉 (Design Concept)
+- **The Calm Ink**: 한지 배경(#F9F7F2) + 먹색 타이포그래피(#2C2C2C).
+- **Silver-Friendly**: 최소 폰트 20sp, 주요 버튼 24sp 이상. 넓은 여백과 터치 영역.
+- **Modern Floating**: 캡슐형 하단 Floating Tab Bar 적용.
 
-## 3. 핵심 기능 (Core Features - MVP)
-- [ ] **퀴즈 엔진 (Quiz Engine)**:
-    - 사자성어 데이터(`assets/idioms.json`) 로드.
-    - 무작위 문제 생성 (사자성어 중 한 글자 비우기).
-    - 4개의 객관식 보기 제공 또는 직접 입력 (사용자 선택 가능하게 설계).
-- [ ] **점수 시스템 (Scoring)**:
-    - 정답 시 점수 획득, 실시간 점수 상단 표시.
-- [ ] **로컬 저장소 (Local Storage)**:
-    - 최고 점수(High Score) 저장.
-    - 진행 상황 저장.
-- [ ] **결과 화면 (Result Screen)**:
-    - 퀴즈 종료 후 최종 점수 및 통계 표시.
+## 3. 기능 요구사항 (Functional Requirements)
+
+### 3.1 퀴즈 엔진 (Quiz Engine)
+- 5문제 세션: 3종 문제(객관식, 빈칸, 순서) 혼합 출제.
+- 정답 시 먹물 번짐 효과(Ink-spread) 애니메이션.
+
+### 3.2 로컬 저장소 및 수익 모델 (Native & Monetization)
+- **Only Native**: 백엔드 서버 없이 Room DB를 통한 로컬 데이터 관리.
+- **Theme Purchase (IAP)**: 
+    - 기본 테마(무료) 외 확장 테마 팩당 **2,000원** 판매.
+    - 구글 인앱 결제(Billing API) 연동.
+    - 구매 시 로컬 DB의 잠금 해제(Unlock) 처리.
+
+### 3.3 수집 및 보상 (Collection)
+- 퀴즈 완료 시 '오늘의 성어 카드' 하사.
+- '서고' 메뉴에서 수집한 카드 열람 및 상세 풀이 제공.
 
 ## 4. 기술 스택 (Technical Stack)
 - **Language**: Kotlin
-- **UI Framework**: Jetpack Compose (Modern Toolkit)
-- **Architecture**: MVVM (Model-View-ViewModel)
-- **Data Storage**: DataStore (Simple Key-Value) or Room (SQLite)
-- **Build Tool**: Gradle (Kotlin DSL)
-- **Min SDK**: 26 (Android 8.0 이상)
+- **UI Framework**: Jetpack Compose (Modern M3)
+- **Data**: Room DB (Local Persistence), DataStore (Settings)
+- **Payment**: Google Play Billing Library
+- **Architecture**: MVI 또는 MVVM (Clean Architecture 지향)
 
-## 5. 미결정/추후 고려 사항 (Backlog)
-- [ ] 다크 모드(Dark Mode) 지원.
-- [ ] 사자성어 즐겨찾기(Favorite) 기능.
-- [ ] 정답 확인 시 상세 한자 풀이 팝업.
+## 5. 비즈니스 원칙
+- **Privacy First**: 어떠한 개인정보도 서버로 전송하지 않음.
+- **Simple Flow**: 로그인 없이 즉시 사용 가능한 구조 유지.
