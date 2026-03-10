@@ -7,11 +7,16 @@ import com.kero.idiom.feature.result.di.featureResultModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
-import org.koin.dsl.module
 
 class IdiomApplication : Application() {
+    companion object {
+        var instance: IdiomApplication? = null
+            private set
+    }
+
     override fun onCreate() {
         super.onCreate()
+        instance = this
         
         startKoin {
             androidLogger()

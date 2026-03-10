@@ -28,6 +28,7 @@ import io.github.alexzhirkevich.compottie.rememberLottieComposition
 import io.github.alexzhirkevich.compottie.rememberLottiePainter
 import io.github.alexzhirkevich.compottie.DotLottie
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.koin.compose.viewmodel.koinViewModel
 import idiom_cmp.feature.quiz.generated.resources.Res
@@ -43,6 +44,7 @@ fun QuizScreen(
 ) {
     val state by viewModel.state.collectAsState()
     var animationFile by remember { mutableStateOf<String?>(null) }
+    val scope = rememberCoroutineScope()
 
     // animationFile을 key로 전달하여 상태가 바뀔 때마다 다시 로드하도록 강제함
     val compositionResult = rememberLottieComposition(animationFile) {
@@ -68,12 +70,12 @@ fun QuizScreen(
             when (effect) {
                 is QuizSideEffect.NavigateToResult ->
                     onNavigateToResult(effect.score, effect.total)
-                QuizSideEffect.ShowCorrectEffect -> {
+                QuizSideEffect.ShowCorrectEffect -> scope.launch {
                     animationFile = "success"
-                    delay(2000) // 로딩 시간을 고려하여 조금 더 늘림
+                    delay(2000)
                     animationFile = null
                 }
-                QuizSideEffect.ShowWrongEffect -> {
+                QuizSideEffect.ShowWrongEffect -> scope.launch {
                     animationFile = "wrong"
                     delay(2000)
                     animationFile = null
@@ -248,7 +250,7 @@ fun QuizScreen(
 
                     // 다음 문제 버튼
                     val isLastQuestion = state.quizCount >= TOTAL
-                    val buttonEnabled = state.selectedOption != null
+                    val buttonEnabled = state.selectedOption != null && animationFile == null
 
                     Button(
                         onClick = { viewModel.handleIntent(QuizIntent.NextQuiz) },

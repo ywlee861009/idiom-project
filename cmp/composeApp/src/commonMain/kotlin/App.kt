@@ -42,6 +42,18 @@ fun App() {
                     startDestination = Screen.Home
                 ) {
                     composable<Screen.Home> {
+                        var lastBackPressTime by remember { mutableLongStateOf(0L) }
+                        
+                        BackPressHandler {
+                            val currentTime = currentMillis()
+                            if (currentTime - lastBackPressTime < 2000) {
+                                exitApp()
+                            } else {
+                                lastBackPressTime = currentTime
+                                showToast("뒤로가기 버튼을 한 번 더 누르면 종료됩니다.")
+                            }
+                        }
+
                         HomeScreen(
                             onTabSelected = { tab ->
                                 when (tab) {
