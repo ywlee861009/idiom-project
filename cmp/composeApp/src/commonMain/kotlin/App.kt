@@ -4,8 +4,10 @@ import androidx.compose.runtime.*
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.kero.idiom.core.components.CultureLoadingScreen
 import com.kero.idiom.core.components.IdiomTab
+import com.kero.idiom.core.navigation.Screen
 import com.kero.idiom.core.theme.IdiomQuizTheme
 import com.kero.idiom.domain.repository.IdiomRepository
 import com.kero.idiom.feature.quiz.ui.QuizScreen
@@ -37,49 +39,49 @@ fun App() {
 
                 NavHost(
                     navController = navController,
-                    startDestination = "home"
+                    startDestination = Screen.Home
                 ) {
-                    composable("home") {
+                    composable<Screen.Home> {
                         HomeScreen(
                             onTabSelected = { tab ->
                                 when (tab) {
                                     IdiomTab.Home -> {}
-                                    IdiomTab.Quiz -> navController.navigate("quiz")
-                                    IdiomTab.Study -> navController.navigate("collection") {
+                                    IdiomTab.Quiz -> navController.navigate(Screen.Quiz)
+                                    IdiomTab.Study -> navController.navigate(Screen.Collection) {
                                         launchSingleTop = true
                                     }
                                 }
                             },
-                            onStartQuiz = { navController.navigate("quiz") },
-                            onNavigateToProfile = { navController.navigate("profile") }
+                            onStartQuiz = { navController.navigate(Screen.Quiz) },
+                            onNavigateToProfile = { navController.navigate(Screen.Profile) }
                         )
                     }
 
-                    composable("collection") {
+                    composable<Screen.Collection> {
                         CollectionScreen(
                             onTabSelected = { tab ->
                                 when (tab) {
-                                    IdiomTab.Home -> navController.navigate("home") {
-                                        popUpTo("home") { inclusive = true }
+                                    IdiomTab.Home -> navController.navigate(Screen.Home) {
+                                        popUpTo(Screen.Home) { inclusive = true }
                                         launchSingleTop = true
                                     }
-                                    IdiomTab.Quiz -> navController.navigate("quiz")
+                                    IdiomTab.Quiz -> navController.navigate(Screen.Quiz)
                                     IdiomTab.Study -> {}
                                 }
                             }
                         )
                     }
 
-                    composable("profile") {
+                    composable<Screen.Profile> {
                         ProfileScreen(
                             onTabSelected = { tab ->
                                 when (tab) {
-                                    IdiomTab.Home -> navController.navigate("home") {
-                                        popUpTo("home") { inclusive = true }
+                                    IdiomTab.Home -> navController.navigate(Screen.Home) {
+                                        popUpTo(Screen.Home) { inclusive = true }
                                         launchSingleTop = true
                                     }
-                                    IdiomTab.Quiz -> navController.navigate("quiz")
-                                    IdiomTab.Study -> navController.navigate("collection") {
+                                    IdiomTab.Quiz -> navController.navigate(Screen.Quiz)
+                                    IdiomTab.Study -> navController.navigate(Screen.Collection) {
                                         launchSingleTop = true
                                     }
                                 }
@@ -87,11 +89,11 @@ fun App() {
                         )
                     }
 
-                    composable("quiz") {
+                    composable<Screen.Quiz> {
                         QuizScreen(
                             onNavigateToResult = { score, total ->
-                                navController.navigate("reward/$score/$total") {
-                                    popUpTo("quiz") { inclusive = true }
+                                navController.navigate(Screen.Reward(score, total)) {
+                                    popUpTo(Screen.Quiz) { inclusive = true }
                                 }
                             },
                             onNavigateBack = {
@@ -100,20 +102,19 @@ fun App() {
                         )
                     }
 
-                    composable("reward/{score}/{total}") { backStackEntry ->
-                        val score = backStackEntry.arguments?.getString("score")?.toIntOrNull() ?: 0
-                        val total = backStackEntry.arguments?.getString("total")?.toIntOrNull() ?: 0
+                    composable<Screen.Reward> { backStackEntry ->
+                        val reward = backStackEntry.toRoute<Screen.Reward>()
                         RewardScreen(
-                            score = score,
-                            total = total,
+                            score = reward.score,
+                            total = reward.total,
                             onNavigateToCollection = {
-                                navController.navigate("collection") {
-                                    popUpTo("home") { inclusive = false }
+                                navController.navigate(Screen.Collection) {
+                                    popUpTo(Screen.Home) { inclusive = false }
                                 }
                             },
                             onNavigateToHome = {
-                                navController.navigate("home") {
-                                    popUpTo("home") { inclusive = true }
+                                navController.navigate(Screen.Home) {
+                                    popUpTo(Screen.Home) { inclusive = true }
                                     launchSingleTop = true
                                 }
                             }
