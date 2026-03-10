@@ -15,7 +15,8 @@ data class IdiomEntity(
     val meaning: String,
     val hanja: String,
     val level: Int, // 난이도 (1: 상, 2: 중, 3: 하 등)
-    val exposureCount: Int = 0 // 출제 빈도 (지능적 추출용)
+    val exposureCount: Int = 0, // 출제 빈도 (지능적 추출용)
+    val correctCount: Int = 0  // 정답 횟수 (서고 획득 기준)
 )
 
 /**

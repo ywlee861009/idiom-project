@@ -4,11 +4,17 @@ import androidx.compose.runtime.*
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.kero.idiom.core.components.CultureLoadingScreen
+import com.kero.idiom.core.components.IdiomTab
+import com.kero.idiom.core.navigation.Screen
 import com.kero.idiom.core.theme.IdiomQuizTheme
 import com.kero.idiom.domain.repository.IdiomRepository
 import com.kero.idiom.feature.quiz.ui.QuizScreen
-import com.kero.idiom.feature.result.ui.ResultScreen
+import com.kero.idiom.ui.CollectionScreen
+import com.kero.idiom.ui.HomeScreen
+import com.kero.idiom.ui.ProfileScreen
+import com.kero.idiom.ui.RewardScreen
 import kotlinx.coroutines.delay
 import org.koin.compose.KoinContext
 import org.koin.compose.koinInject
@@ -16,13 +22,13 @@ import org.koin.compose.koinInject
 @Composable
 fun App() {
     IdiomQuizTheme {
-        KoinContext { // Koin 의존성 주입 컨텍스트
+        KoinContext {
             val repository: IdiomRepository = koinInject()
             var isSyncing by remember { mutableStateOf(true) }
 
             LaunchedEffect(Unit) {
                 repository.syncIfNeeded()
-                delay(2000) // 최소 2초 대기
+                delay(2000)
                 isSyncing = false
             }
 
@@ -30,27 +36,102 @@ fun App() {
                 CultureLoadingScreen()
             } else {
                 val navController = rememberNavController()
-                
+
                 NavHost(
                     navController = navController,
-                    startDestination = "quiz"
+                    startDestination = Screen.Home
                 ) {
-                    composable("quiz") {
-                        QuizScreen(
-                            onNavigateToResult = { score, total ->
-                                navController.navigate("result/$score/$total")
+                    composable<Screen.Home> {
+                        var lastBackPressTime by remember { mutableLongStateOf(0L) }
+                        
+                        BackPressHandler {
+                            val currentTime = currentMillis()
+                            if (currentTime - lastBackPressTime < 2000) {
+                                exitApp()
+                            } else {
+                                lastBackPressTime = currentTime
+                                showToast("뒤로가기 버튼을 한 번 더 누르면 종료됩니다.")
+                            }
+                        }
+
+                        HomeScreen(
+                            onTabSelected = { tab ->
+                                when (tab) {
+                                    IdiomTab.Home -> {}
+                                    IdiomTab.Study -> navController.navigate(Screen.Collection) {
+                                        launchSingleTop = true
+                                    }
+                                    IdiomTab.Profile -> navController.navigate(Screen.Profile) {
+                                        launchSingleTop = true
+                                    }
+                                }
+                            },
+                            onStartQuiz = { navController.navigate(Screen.Quiz) },
+                            onNavigateToProfile = { navController.navigate(Screen.Profile) }
+                        )
+                    }
+
+                    composable<Screen.Collection> {
+                        CollectionScreen(
+                            onTabSelected = { tab ->
+                                when (tab) {
+                                    IdiomTab.Home -> navController.navigate(Screen.Home) {
+                                        popUpTo(Screen.Home) { inclusive = true }
+                                        launchSingleTop = true
+                                    }
+                                    IdiomTab.Study -> {}
+                                    IdiomTab.Profile -> navController.navigate(Screen.Profile) {
+                                        launchSingleTop = true
+                                    }
+                                }
                             }
                         )
                     }
-                    composable("result/{score}/{total}") { backStackEntry ->
-                        val score = backStackEntry.arguments?.getString("score")?.toIntOrNull() ?: 0
-                        val total = backStackEntry.arguments?.getString("total")?.toIntOrNull() ?: 0
-                        ResultScreen(
-                            score = score,
-                            total = total,
-                            onRestart = {
-                                navController.navigate("quiz") {
-                                    popUpTo("quiz") { inclusive = true }
+
+                    composable<Screen.Profile> {
+                        ProfileScreen(
+                            onTabSelected = { tab ->
+                                when (tab) {
+                                    IdiomTab.Home -> navController.navigate(Screen.Home) {
+                                        popUpTo(Screen.Home) { inclusive = true }
+                                        launchSingleTop = true
+                                    }
+                                    IdiomTab.Study -> navController.navigate(Screen.Collection) {
+                                        launchSingleTop = true
+                                    }
+                                    IdiomTab.Profile -> {}
+                                }
+                            }
+                        )
+                    }
+
+                    composable<Screen.Quiz> {
+                        QuizScreen(
+                            onNavigateToResult = { score, total ->
+                                navController.navigate(Screen.Reward(score, total)) {
+                                    popUpTo(Screen.Quiz) { inclusive = true }
+                                }
+                            },
+                            onNavigateBack = {
+                                navController.popBackStack()
+                            }
+                        )
+                    }
+
+                    composable<Screen.Reward> { backStackEntry ->
+                        val reward = backStackEntry.toRoute<Screen.Reward>()
+                        RewardScreen(
+                            score = reward.score,
+                            total = reward.total,
+                            onNavigateToCollection = {
+                                navController.navigate(Screen.Collection) {
+                                    popUpTo(Screen.Home) { inclusive = false }
+                                }
+                            },
+                            onNavigateToHome = {
+                                navController.navigate(Screen.Home) {
+                                    popUpTo(Screen.Home) { inclusive = true }
+                                    launchSingleTop = true
                                 }
                             }
                         )
