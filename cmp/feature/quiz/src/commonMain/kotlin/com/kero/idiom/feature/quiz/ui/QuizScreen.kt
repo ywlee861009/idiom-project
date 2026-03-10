@@ -1,55 +1,98 @@
 package com.kero.idiom.feature.quiz.ui
 
-import androidx.compose.animation.*
-import androidx.compose.animation.core.tween
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kero.idiom.core.components.HanjiBackground
 import com.kero.idiom.core.components.IdiomBaseCard
-import com.kero.idiom.core.components.IdiomPrimaryButton
-import com.kero.idiom.core.components.InkBurstEffect
 import com.kero.idiom.domain.model.QuizType
 import com.kero.idiom.feature.quiz.contract.QuizIntent
 import com.kero.idiom.feature.quiz.contract.QuizSideEffect
 import com.kero.idiom.feature.quiz.viewmodel.QuizViewModel
+import io.github.alexzhirkevich.compottie.*
+import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.koin.compose.viewmodel.koinViewModel
+import idiom_cmp.feature.quiz.generated.resources.Res
 
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun QuizScreen(
     viewModel: QuizViewModel = koinViewModel(),
     onNavigateToResult: (Int, Int) -> Unit
 ) {
     val state by viewModel.state.collectAsState()
-    var showInkEffect by remember { mutableStateOf(false) }
+    var currentLottieFile by remember { mutableStateOf<String?>(null) }
+    
+    // CMP 리소스 바이트 상태 관리
+    var compositionBytes by remember { mutableStateOf<ByteArray?>(null) }
+    
+    // 리소스를 바이트로 읽어옴
+    LaunchedEffect(currentLottieFile) {
+        val file = currentLottieFile
+        if (file != null) {
+            try {
+                compositionBytes = Res.readBytes("files/$file")
+            } catch (e: Exception) {
+                compositionBytes = null
+            }
+        } else {
+            compositionBytes = null
+        }
+    }
+
+    // 바이트 기반으로 LottieComposition 생성
+    val composition by rememberLottieComposition {
+        val bytes = compositionBytes
+        if (bytes != null) {
+            if (currentLottieFile?.endsWith(".lottie") == true) {
+                LottieCompositionSpec.DotLottie(bytes)
+            } else {
+                LottieCompositionSpec.JsonString(bytes.decodeToString())
+            }
+        } else {
+            LottieCompositionSpec.JsonString("{}")
+        }
+    }
+    
+    val progress by animateLottieCompositionAsState(
+        composition = composition,
+        isPlaying = currentLottieFile != null,
+        iterations = 1
+    )
+
+    // 애니메이션 종료 후 다음 퀴즈로 이동
+    LaunchedEffect(progress) {
+        if (progress == 1f && currentLottieFile != null) {
+            currentLottieFile = null
+            viewModel.handleIntent(QuizIntent.NextQuiz)
+        }
+    }
 
     LaunchedEffect(Unit) {
         viewModel.sideEffect.collect { effect ->
             when (effect) {
                 is QuizSideEffect.NavigateToResult -> onNavigateToResult(effect.score, effect.total)
                 QuizSideEffect.ShowCorrectEffect -> { 
-                    showInkEffect = true 
-                    // Note: showInkEffect's onAnimationEnd will handle NextQuiz
+                    currentLottieFile = "success.lottie"
                 }
                 QuizSideEffect.ShowWrongEffect -> { 
-                    // Show feedback for a moment then move to next
-                    kotlinx.coroutines.delay(1000)
-                    viewModel.handleIntent(QuizIntent.NextQuiz)
+                    currentLottieFile = "wrong.lottie"
                 }
             }
         }
     }
 
     Scaffold(
-        containerColor = MaterialTheme.colorScheme.background
+        containerColor = Color(0xFFF9F7F2)
     ) { paddingValues ->
         HanjiBackground(
             modifier = Modifier
@@ -62,9 +105,8 @@ fun QuizScreen(
                     .padding(horizontal = 24.dp, vertical = 32.dp)
             ) {
                 if (state.isLoading) {
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center), color = Color(0xFF2C2C2C))
                 } else {
-                    // ... (rest of UI remains same)
                     state.currentQuiz?.let { quiz ->
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally,
@@ -86,13 +128,13 @@ fun QuizScreen(
                                         QuizType.HANJA_TO_HANGUL -> "한자를 읽어보세요."
                                     },
                                     style = MaterialTheme.typography.labelSmall,
-                                    color = MaterialTheme.colorScheme.secondary
+                                    color = Color(0xFF2C2C2C).copy(alpha = 0.6f)
                                 )
 
                                 Text(
                                     text = "${state.quizCount + 1} / 10",
                                     style = MaterialTheme.typography.labelSmall,
-                                    color = MaterialTheme.colorScheme.secondary,
+                                    color = Color(0xFF2C2C2C).copy(alpha = 0.6f),
                                     fontWeight = FontWeight.Bold
                                 )
                             }
@@ -112,7 +154,8 @@ fun QuizScreen(
                                             MaterialTheme.typography.displayMedium 
                                             else MaterialTheme.typography.displayLarge,
                                         textAlign = TextAlign.Center,
-                                        modifier = Modifier.padding(16.dp)
+                                        modifier = Modifier.padding(16.dp),
+                                        color = Color(0xFF2C2C2C)
                                     )
                                 }
                             }
@@ -124,7 +167,7 @@ fun QuizScreen(
                                 text = quiz.hintText,
                                 style = MaterialTheme.typography.titleMedium,
                                 textAlign = TextAlign.Center,
-                                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f),
+                                color = Color(0xFF2C2C2C).copy(alpha = 0.7f),
                                 modifier = Modifier.padding(horizontal = 8.dp)
                             )
 
@@ -137,22 +180,24 @@ fun QuizScreen(
                                         modifier = Modifier.fillMaxWidth(),
                                         horizontalArrangement = Arrangement.spacedBy(12.dp)
                                     ) {
-                                        Box(modifier = Modifier.weight(1f)) {
-                                            IdiomPrimaryButton(
-                                                text = option,
-                                                onClick = { viewModel.handleIntent(QuizIntent.SelectOption(option)) },
-                                                enabled = state.selectedOption == null
-                                            )
-                                        }
+                                        QuizOptionButton(
+                                            modifier = Modifier.weight(1f),
+                                            text = option,
+                                            isSelected = state.selectedOption == option,
+                                            isCorrect = option == quiz.answer,
+                                            showResult = state.selectedOption != null,
+                                            onClick = { viewModel.handleIntent(QuizIntent.SelectOption(option)) }
+                                        )
                                         if (index + 1 < quiz.options.size) {
                                             val nextOption = quiz.options[index + 1]
-                                            Box(modifier = Modifier.weight(1f)) {
-                                                IdiomPrimaryButton(
-                                                    text = nextOption,
-                                                    onClick = { viewModel.handleIntent(QuizIntent.SelectOption(nextOption)) },
-                                                    enabled = state.selectedOption == null
-                                                )
-                                            }
+                                            QuizOptionButton(
+                                                modifier = Modifier.weight(1f),
+                                                text = nextOption,
+                                                isSelected = state.selectedOption == nextOption,
+                                                isCorrect = nextOption == quiz.answer,
+                                                showResult = state.selectedOption != null,
+                                                onClick = { viewModel.handleIntent(QuizIntent.SelectOption(nextOption)) }
+                                            )
                                         } else {
                                             Spacer(modifier = Modifier.weight(1f))
                                         }
@@ -169,26 +214,87 @@ fun QuizScreen(
                                     text = "SCORE: ",
                                     style = MaterialTheme.typography.labelLarge,
                                     fontWeight = FontWeight.ExtraBold,
-                                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f)
+                                    color = Color(0xFF2C2C2C).copy(alpha = 0.8f)
                                 )
                                 Text(
                                     text = "${state.score}",
                                     style = MaterialTheme.typography.labelLarge,
                                     fontWeight = FontWeight.ExtraBold,
-                                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f)
+                                    color = Color(0xFF2C2C2C).copy(alpha = 0.8f)
                                 )
                             }
                         }
                     }
                 }
                 
-                if (showInkEffect) {
-                    InkBurstEffect(onAnimationEnd = { 
-                        showInkEffect = false 
-                        viewModel.handleIntent(QuizIntent.NextQuiz)
-                    })
+                // Lottie Animation Overlay
+                if (currentLottieFile != null && composition != null) {
+                    val lottiePainter = rememberLottiePainter(
+                        composition = composition,
+                        progress = { progress } // 람다로 전달하여 타입 에러 해결
+                    )
+                    
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(Color.Black.copy(alpha = 0.1f))
+                            .clickable(enabled = false) {},
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Image(
+                            painter = lottiePainter,
+                            contentDescription = "Lottie Animation",
+                            modifier = Modifier.size(350.dp)
+                        )
+                    }
                 }
             }
         }
+    }
+}
+
+@Composable
+fun QuizOptionButton(
+    modifier: Modifier = Modifier,
+    text: String,
+    isSelected: Boolean,
+    isCorrect: Boolean,
+    showResult: Boolean,
+    onClick: () -> Unit
+) {
+    val backgroundColor = when {
+        !showResult -> Color(0xFF2C2C2C)
+        isCorrect -> Color(0xFF4CAF50)
+        else -> Color(0xFFE57373)
+    }
+
+    val border = if (isSelected) {
+        BorderStroke(10.dp, Color(0xFF2196F3))
+    } else {
+        BorderStroke(1.dp, Color(0xFF2C2C2C).copy(alpha = 0.1f))
+    }
+
+    Button(
+        onClick = onClick,
+        modifier = modifier
+            .fillMaxWidth()
+            .height(80.dp),
+        enabled = !showResult,
+        shape = RoundedCornerShape(12.dp),
+        border = border,
+        colors = ButtonDefaults.buttonColors(
+            containerColor = backgroundColor,
+            contentColor = Color.White,
+            disabledContainerColor = backgroundColor,
+            disabledContentColor = Color.White
+        ),
+        elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp)
+    ) {
+        Text(
+            text = text,
+            style = MaterialTheme.typography.headlineMedium,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center
+        )
     }
 }
