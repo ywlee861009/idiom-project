@@ -35,13 +35,17 @@ fun QuizScreen(
     // CMP 리소스 바이트 상태 관리
     var compositionBytes by remember { mutableStateOf<ByteArray?>(null) }
     
-    // 리소스를 바이트로 읽어옴
+    // 리소스를 바이트로 읽어옴 (Debug Print 추가)
     LaunchedEffect(currentLottieFile) {
         val file = currentLottieFile
         if (file != null) {
             try {
-                compositionBytes = Res.readBytes("files/$file")
+                // Kero Debug: "files/$file" 경로 확인
+                val bytes = Res.readBytes("files/$file")
+                println("Kero Debug: Successfully read ${bytes.size} bytes for $file")
+                compositionBytes = bytes
             } catch (e: Exception) {
+                println("Kero Debug: Error reading $file: ${e.message}")
                 compositionBytes = null
             }
         } else {
@@ -49,19 +53,16 @@ fun QuizScreen(
         }
     }
 
-    // 바이트 기반으로 LottieComposition 생성
-    val composition by rememberLottieComposition {
-        val bytes = compositionBytes
-        if (bytes != null) {
+    // 바이트 기반으로 LottieComposition 생성 (bytes를 Key로 전달하여 변화 감지)
+    val composition by rememberLottieComposition(
+        spec = compositionBytes?.let { 
             if (currentLottieFile?.endsWith(".lottie") == true) {
-                LottieCompositionSpec.DotLottie(bytes)
+                LottieCompositionSpec.DotLottie(it)
             } else {
-                LottieCompositionSpec.JsonString(bytes.decodeToString())
+                LottieCompositionSpec.JsonString(it.decodeToString())
             }
-        } else {
-            LottieCompositionSpec.JsonString("{}")
-        }
-    }
+        } ?: LottieCompositionSpec.JsonString("{}")
+    )
     
     val progress by animateLottieCompositionAsState(
         composition = composition,
@@ -72,6 +73,7 @@ fun QuizScreen(
     // 애니메이션 종료 후 다음 퀴즈로 이동
     LaunchedEffect(progress) {
         if (progress == 1f && currentLottieFile != null) {
+            println("Kero Debug: Animation finished for $currentLottieFile")
             currentLottieFile = null
             viewModel.handleIntent(QuizIntent.NextQuiz)
         }
@@ -147,16 +149,32 @@ fun QuizScreen(
                                     .fillMaxWidth()
                                     .heightIn(min = 200.dp)
                             ) {
-                                Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
+                                Box(
+                                    contentAlignment = Alignment.Center,
+                                    modifier = Modifier.fillMaxSize().padding(16.dp)
+                                ) {
+                                    // 1. Quiz Text (Bottom Layer)
                                     Text(
                                         text = quiz.questionText,
                                         style = if (quiz.type == QuizType.MEANING_TO_WORD) 
                                             MaterialTheme.typography.displayMedium 
                                             else MaterialTheme.typography.displayLarge,
                                         textAlign = TextAlign.Center,
-                                        modifier = Modifier.padding(16.dp),
                                         color = Color(0xFF2C2C2C)
                                     )
+
+                                    // 2. Lottie Animation (Top Layer - Overlays Text)
+                                    if (currentLottieFile != null && composition != null) {
+                                        val lottiePainter = rememberLottiePainter(
+                                            composition = composition,
+                                            progress = { progress }
+                                        )
+                                        Image(
+                                            painter = lottiePainter,
+                                            contentDescription = "Lottie Animation",
+                                            modifier = Modifier.size(150.dp) // 조금 더 큼직하게 150dp로 조정!
+                                        )
+                                    }
                                 }
                             }
 
@@ -226,28 +244,6 @@ fun QuizScreen(
                         }
                     }
                 }
-                
-                // Lottie Animation Overlay
-                if (currentLottieFile != null && composition != null) {
-                    val lottiePainter = rememberLottiePainter(
-                        composition = composition,
-                        progress = { progress } // 람다로 전달하여 타입 에러 해결
-                    )
-                    
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(Color.Black.copy(alpha = 0.1f))
-                            .clickable(enabled = false) {},
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Image(
-                            painter = lottiePainter,
-                            contentDescription = "Lottie Animation",
-                            modifier = Modifier.size(350.dp)
-                        )
-                    }
-                }
             }
         }
     }
@@ -262,14 +258,15 @@ fun QuizOptionButton(
     showResult: Boolean,
     onClick: () -> Unit
 ) {
+    // Kero Fix: 정답 버튼은 초록색, 나머지 오답 버튼들은 결과 확인 시 모두 빨간색!
     val backgroundColor = when {
-        !showResult -> Color(0xFF2C2C2C)
-        isCorrect -> Color(0xFF4CAF50)
-        else -> Color(0xFFE57373)
+        !showResult -> Color(0xFF2C2C2C) // 평상시 먹색
+        isCorrect -> Color(0xFF4CAF50)   // 정답: 초록색
+        else -> Color(0xFFE57373)        // 오답(선택 여부 상관없이): 빨간색
     }
 
     val border = if (isSelected) {
-        BorderStroke(10.dp, Color(0xFF2196F3))
+        BorderStroke(10.dp, Color(0xFF2196F3)) // 선택 시 파란색 테두리 10dp
     } else {
         BorderStroke(1.dp, Color(0xFF2C2C2C).copy(alpha = 0.1f))
     }
