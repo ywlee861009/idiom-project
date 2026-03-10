@@ -68,21 +68,24 @@ class QuizViewModel(
         val currentQuiz = state.value.currentQuiz ?: return
         val isCorrect = option == currentQuiz.answer
         val newScore = if (isCorrect) state.value.score + 1 else state.value.score
-        val newCount = state.value.quizCount + 1
+        val newCount = state.value.quizCount
+
+        viewModelScope.launch {
+            if (isCorrect) {
+                _sideEffect.send(QuizSideEffect.ShowCorrectEffect)
+                recordCorrectAnswerUseCase(currentQuiz.originalIdiom.word)
+            } else {
+                _sideEffect.send(QuizSideEffect.ShowWrongEffect)
+            }
+        }
 
         _state.update {
             it.copy(
                 selectedOption = option,
                 isCorrect = isCorrect,
                 score = newScore,
-                quizCount = newCount
+                quizCount = newCount + 1
             )
-        }
-
-        if (isCorrect) {
-            viewModelScope.launch {
-                recordCorrectAnswerUseCase(currentQuiz.originalIdiom.word)
-            }
         }
     }
 }
