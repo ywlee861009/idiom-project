@@ -6,4 +6,5 @@ interface IdiomRepository {
     suspend fun syncIfNeeded()
     suspend fun getRandomIdioms(limit: Int = 10): List<Idiom>
     suspend fun recordExposure(word: String)
+    suspend fun getAllIdioms(): List<Idiom>
 }

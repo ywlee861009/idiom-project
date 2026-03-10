@@ -47,4 +47,8 @@ class IdiomRepositoryImpl(
     override suspend fun recordExposure(word: String) {
         idiomDao.incrementExposureCount(word)
     }
+
+    override suspend fun getAllIdioms(): List<Idiom> {
+        return idiomDao.getAllIdioms().map { entities -> entities.map { it.toDomain() } }.first()
+    }
 }

@@ -34,9 +34,9 @@ import com.kero.idiom.core.theme.TextOnDark
 import com.kero.idiom.core.theme.TextSecondary
 
 enum class IdiomTab(val label: String, val icon: ImageVector) {
-    Home("홈", Icons.Filled.Home),
-    Quiz("퀴즈", Icons.Filled.Psychology),
-    Dictionary("사전", Icons.Filled.MenuBook)
+    Home("HOME", Icons.Filled.Home),
+    Quiz("QUIZ", Icons.Filled.Psychology),
+    Study("STUDY", Icons.Filled.MenuBook)
 }
 
 @Composable
@@ -111,11 +111,11 @@ private fun IdiomTabBarPreview() {
 
 @Preview
 @Composable
-private fun IdiomTabBarQuizPreview() {
+private fun IdiomTabBarStudyPreview() {
     IdiomQuizTheme {
         androidx.compose.material3.Surface(color = BgPrimary) {
             IdiomTabBar(
-                selectedTab = IdiomTab.Quiz,
+                selectedTab = IdiomTab.Study,
                 onTabSelected = {}
             )
         }

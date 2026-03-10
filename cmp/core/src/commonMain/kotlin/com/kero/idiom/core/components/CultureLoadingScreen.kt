@@ -1,92 +1,121 @@
 package com.kero.idiom.core.components
 
 import androidx.compose.animation.core.*
-import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.kero.idiom.core.theme.BgDark
 
-/**
- * 어르신들을 위한 동양적인 느낌의 인트로/로딩 화면.
- * 한지 배경 위에 먹물이 은은하게 번지는 애니메이션을 보여줍니다.
- */
 @Composable
-fun CultureLoadingScreen(
-    modifier: Modifier = Modifier,
-    message: String = "서책을 펼쳐 준비하고 있습니다..."
-) {
-    val infiniteTransition = rememberInfiniteTransition(label = "inkSpread")
-    
-    // 먹물 번짐 효과를 위한 애니메이션 값
-    val alpha by infiniteTransition.animateFloat(
-        initialValue = 0.2f,
-        targetValue = 0.8f,
+fun CultureLoadingScreen(modifier: Modifier = Modifier) {
+    val infiniteTransition = rememberInfiniteTransition(label = "dots")
+
+    val alpha1 by infiniteTransition.animateFloat(
+        initialValue = 1f, targetValue = 0.3f, label = "d1",
         animationSpec = infiniteRepeatable(
-            animation = tween(2000, easing = EaseInOutSine),
+            animation = tween(600, easing = EaseInOut),
             repeatMode = RepeatMode.Reverse
-        ),
-        label = "inkAlpha"
+        )
     )
-    
-    val scale by infiniteTransition.animateFloat(
-        initialValue = 0.9f,
-        targetValue = 1.1f,
+    val alpha2 by infiniteTransition.animateFloat(
+        initialValue = 0.6f, targetValue = 1f, label = "d2",
         animationSpec = infiniteRepeatable(
-            animation = tween(3000, easing = EaseInOutSine),
+            animation = tween(600, delayMillis = 200, easing = EaseInOut),
             repeatMode = RepeatMode.Reverse
-        ),
-        label = "inkScale"
+        )
+    )
+    val alpha3 by infiniteTransition.animateFloat(
+        initialValue = 0.3f, targetValue = 0.8f, label = "d3",
+        animationSpec = infiniteRepeatable(
+            animation = tween(600, delayMillis = 400, easing = EaseInOut),
+            repeatMode = RepeatMode.Reverse
+        )
     )
 
-    HanjiBackground(modifier = modifier.fillMaxSize()) {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .background(Color.Black),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
-            // 배경에 은은하게 깔리는 큰 먹물 점 연출
-            Canvas(modifier = Modifier.size(300.dp)) {
-                drawCircle(
-                    color = Color.Black.copy(alpha = alpha * 0.1f),
-                    radius = size.minDimension / 2 * scale
-                )
-            }
-
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
+            Box(
+                modifier = Modifier
+                    .size(80.dp)
+                    .clip(RoundedCornerShape(20.dp))
+                    .background(Color.White.copy(alpha = 0.1f)),
+                contentAlignment = Alignment.Center
             ) {
-                // 상징적인 원형 아이콘 (먹물 한 방울 느낌)
-                Canvas(modifier = Modifier.size(60.dp)) {
-                    drawCircle(
-                        color = BgDark.copy(alpha = alpha),
-                        radius = size.minDimension / 2
-                    )
-                }
+                Text("✒️", fontSize = 32.sp)
+            }
 
-                Spacer(modifier = Modifier.height(32.dp))
+            Text(
+                text = "사 자 성 어",
+                fontSize = 48.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.White,
+                letterSpacing = 8.sp
+            )
 
-                Text(
-                    text = message,
-                    style = MaterialTheme.typography.titleMedium.copy(
-                        fontSize = 24.sp,
-                        fontWeight = FontWeight.Medium,
-                        letterSpacing = 1.sp
-                    ),
-                    color = BgDark.copy(alpha = 0.7f),
-                    modifier = Modifier.graphicsLayer {
-                        this.alpha = alpha
-                    }
+            Text(
+                text = "四 字 成 語",
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Light,
+                color = Color.White.copy(alpha = 0.4f),
+                letterSpacing = 12.sp
+            )
+
+            Spacer(Modifier.height(8.dp))
+
+            Text(
+                text = "하루 다섯 문장, 지혜를 쌓다",
+                fontSize = 14.sp,
+                color = Color.White.copy(alpha = 0.6f),
+                letterSpacing = 1.sp
+            )
+
+            Spacer(Modifier.height(60.dp))
+
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                Box(
+                    modifier = Modifier
+                        .size(6.dp)
+                        .clip(RoundedCornerShape(3.dp))
+                        .background(Color.White.copy(alpha = alpha1))
+                )
+                Box(
+                    modifier = Modifier
+                        .size(6.dp)
+                        .clip(RoundedCornerShape(3.dp))
+                        .background(Color.White.copy(alpha = alpha2))
+                )
+                Box(
+                    modifier = Modifier
+                        .size(6.dp)
+                        .clip(RoundedCornerShape(3.dp))
+                        .background(Color.White.copy(alpha = alpha3))
                 )
             }
+
+            Spacer(Modifier.height(8.dp))
+
+            Text(
+                text = "v2.0",
+                fontSize = 12.sp,
+                color = Color.White.copy(alpha = 0.2f),
+                letterSpacing = 2.sp
+            )
         }
     }
 }

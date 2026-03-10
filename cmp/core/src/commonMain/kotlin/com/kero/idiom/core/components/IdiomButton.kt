@@ -37,7 +37,7 @@ fun IdiomPrimaryButton(
             .fillMaxWidth()
             .height(56.dp),
         enabled = enabled,
-        shape = RoundedCornerShape(0.dp),
+        shape = RoundedCornerShape(12.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = BgDark,
             contentColor = TextOnDark
@@ -64,7 +64,7 @@ fun IdiomSecondaryButton(
             .fillMaxWidth()
             .height(56.dp),
         enabled = enabled,
-        shape = RoundedCornerShape(0.dp),
+        shape = RoundedCornerShape(12.dp),
         border = BorderStroke(1.dp, BorderColor),
         colors = ButtonDefaults.outlinedButtonColors(
             containerColor = BgPrimary,
