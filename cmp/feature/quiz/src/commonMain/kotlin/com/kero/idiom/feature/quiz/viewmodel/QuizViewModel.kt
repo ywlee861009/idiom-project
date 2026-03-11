@@ -2,6 +2,7 @@ package com.kero.idiom.feature.quiz.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kero.idiom.core.ads.AdController
 import com.kero.idiom.domain.usecase.GetRandomQuizUseCase
 import com.kero.idiom.domain.usecase.RecordCorrectAnswerUseCase
 import com.kero.idiom.domain.usecase.UpdateUserStatsUseCase
@@ -21,7 +22,8 @@ private const val TOTAL_QUIZ_COUNT = 5
 class QuizViewModel(
     private val getRandomQuizUseCase: GetRandomQuizUseCase,
     private val recordCorrectAnswerUseCase: RecordCorrectAnswerUseCase,
-    private val updateUserStatsUseCase: UpdateUserStatsUseCase
+    private val updateUserStatsUseCase: UpdateUserStatsUseCase,
+    private val adController: AdController
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(QuizState())
@@ -32,6 +34,7 @@ class QuizViewModel(
 
     init {
         loadNextQuiz()
+        adController.loadInterstitial() // 시작 시 광고 로드 시도
     }
 
     fun handleIntent(intent: QuizIntent) {
@@ -48,6 +51,9 @@ class QuizViewModel(
             viewModelScope.launch {
                 // 통계 업데이트
                 updateUserStatsUseCase(state.value.score, TOTAL_QUIZ_COUNT)
+                
+                // 전면 광고 노출 (테스트)
+                adController.showInterstitial()
                 
                 _sideEffect.send(QuizSideEffect.NavigateToResult(state.value.score, TOTAL_QUIZ_COUNT))
             }

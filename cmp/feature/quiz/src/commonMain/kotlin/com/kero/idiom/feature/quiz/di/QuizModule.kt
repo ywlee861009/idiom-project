@@ -16,7 +16,8 @@ val featureQuizModule = module {
         QuizViewModel(
             getRandomQuizUseCase = get(),
             recordCorrectAnswerUseCase = get(),
-            updateUserStatsUseCase = get()
+            updateUserStatsUseCase = get(),
+            adController = get()
         ) 
     }
 }
