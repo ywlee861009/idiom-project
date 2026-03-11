@@ -38,6 +38,7 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.androidx.core.ktx)
             implementation(libs.androidx.activity.compose)
+            implementation(libs.google.admob) // AdMob SDK
             implementation(libs.koin.android)
         }
     }

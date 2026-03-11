@@ -24,8 +24,10 @@ datastore = "1.1.1"
 room = "2.7.0-alpha11"
 sqlite = "2.5.0-alpha11"
 compottie = "2.0.0-rc02"
+google-admob = "23.6.0"
 
 [libraries]
+google-admob = { group = "com.google.android.gms", name = "play-services-ads", version.ref = "google-admob" }
 compottie = { module = "io.github.alexzhirkevich:compottie", version.ref = "compottie" }
 compottie-resources = { module = "io.github.alexzhirkevich:compottie-resources", version.ref = "compottie" }
 compottie-dot = { module = "io.github.alexzhirkevich:compottie-dot", version.ref = "compottie" }

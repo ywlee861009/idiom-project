@@ -4,6 +4,18 @@
 
 ---
 
+### ID-32: Google AdMob SDK 연동 및 기초 설정 (수익화 기초)
+- **Completed Date**: 2026-03-11
+- **Build Verified**: [x] `./cmp/gradlew :composeApp:assembleDebug` SUCCESS
+- **Results**:
+    - [x] `libs.versions.toml` 및 `build.gradle.kts`에 AdMob SDK(`23.6.0`) 연동.
+    - [x] `commonMain` 내 `AdController` 인터페이스를 통한 플랫폼 독립적 호출 구조 구축.
+    - [x] `androidMain` 내 `AndroidAdController` 전면 광고(Interstitial) 로딩 및 노출 로직 구현.
+    - [x] `MainActivity` 및 `IdiomApplication`에서 SDK 초기화 및 Koin DI 등록 완료.
+- **Priority**: Highest
+
+---
+
 ### ID-29: [Level 2] 주관식 2칸 채우기 퀴즈 개발
 - **Completed Date**: 2026-03-11
 - **Build Verified**: [x] `./cmp/gradlew :composeApp:assembleDebug` SUCCESS

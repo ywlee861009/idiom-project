@@ -1,6 +1,7 @@
 package com.kero.idiom
 
 import android.app.Application
+import com.kero.idiom.ads.androidAdModule
 import com.kero.idiom.data.di.dataModule
 import com.kero.idiom.domain.usecase.GetUserStatsUseCase
 import com.kero.idiom.domain.usecase.UpdateUserStatsUseCase
@@ -39,7 +40,8 @@ class IdiomApplication : Application() {
                 dataModule,
                 appModule,
                 featureQuizModule,
-                featureResultModule
+                featureResultModule,
+                androidAdModule
             )
         }
     }
