@@ -43,6 +43,9 @@ class QuizViewModel(
             is QuizIntent.InputAnswer -> _state.update { it.copy(inputText = intent.input) }
             QuizIntent.SubmitAnswer -> checkAnswer(state.value.inputText)
             QuizIntent.NextQuiz -> onNextQuiz()
+            QuizIntent.ShowHint -> adController.showRewardedAd {
+                _state.update { it.copy(isHintRevealed = true) }
+            }
         }
     }
 
@@ -51,9 +54,6 @@ class QuizViewModel(
             viewModelScope.launch {
                 // 통계 업데이트
                 updateUserStatsUseCase(state.value.score, TOTAL_QUIZ_COUNT)
-                
-                // 전면 광고 노출 (테스트)
-                adController.showInterstitial()
                 
                 _sideEffect.send(QuizSideEffect.NavigateToResult(state.value.score, TOTAL_QUIZ_COUNT))
             }
@@ -73,6 +73,7 @@ class QuizViewModel(
                     selectedOption = null,
                     inputText = "", // 입력값 초기화
                     isCorrect = null,
+                    isHintRevealed = false,
                     quizCount = it.quizCount + 1
                 )
             }

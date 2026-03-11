@@ -9,7 +9,8 @@ data class QuizState(
     val inputText: String = "", // 주관식 입력값
     val isCorrect: Boolean? = null,
     val score: Int = 0,
-    val quizCount: Int = 0
+    val quizCount: Int = 0,
+    val isHintRevealed: Boolean = false
 )
 
 sealed interface QuizIntent {
@@ -17,6 +18,7 @@ sealed interface QuizIntent {
     data class InputAnswer(val input: String) : QuizIntent // 실시간 입력 업데이트
     data object SubmitAnswer : QuizIntent // 주관식 정답 제출
     data object NextQuiz : QuizIntent
+    data object ShowHint : QuizIntent
 }
 
 sealed interface QuizSideEffect {

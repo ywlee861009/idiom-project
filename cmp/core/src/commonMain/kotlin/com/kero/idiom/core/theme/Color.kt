@@ -15,3 +15,6 @@ val CorrectGreen  = Color(0xFF2E7D32)
 val CorrectBg     = Color(0xFFE8F5E9)
 val WrongRed      = Color(0xFFC62828)
 val WrongBg       = Color(0xFFFFEBEE)
+val HintBg         = Color(0xFFFFFBF2)  // hint button/card 배경
+val HintOrange     = Color(0xFFF5A623)  // border, icon, badge 배경
+val HintDarkOrange = Color(0xFFC67C00)  // 텍스트

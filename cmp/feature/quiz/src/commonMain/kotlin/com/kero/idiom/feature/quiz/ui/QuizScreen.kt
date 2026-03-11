@@ -39,6 +39,107 @@ import idiom_cmp.feature.quiz.generated.resources.Res
 
 private const val TOTAL = 5
 
+@Composable
+private fun HintButton(onClick: () -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(14.dp))
+            .background(HintBg)
+            .border(1.5.dp, HintOrange, RoundedCornerShape(14.dp))
+            .clickable(onClick = onClick)
+            .padding(horizontal = 20.dp, vertical = 14.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
+    ) {
+        Text("💡", fontSize = 18.sp)
+        Spacer(Modifier.width(8.dp))
+        Text(
+            text = "힌트 보기",
+            fontSize = 15.sp,
+            fontWeight = FontWeight.SemiBold,
+            color = HintDarkOrange
+        )
+        Spacer(Modifier.width(10.dp))
+        Row(
+            modifier = Modifier
+                .clip(RoundedCornerShape(6.dp))
+                .background(HintOrange)
+                .padding(horizontal = 8.dp, vertical = 3.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            Text(
+                text = "광고",
+                fontSize = 11.sp,
+                fontWeight = FontWeight.Medium,
+                color = Color.White
+            )
+            Text("▶", fontSize = 11.sp, color = Color.White)
+        }
+    }
+}
+
+@Composable
+private fun HintRevealCard(word: String, blankIndices: List<Int>) {
+    val firstBlankIndex = blankIndices.firstOrNull() ?: 0
+    val revealedChar = word.getOrNull(firstBlankIndex)?.toString() ?: "?"
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(16.dp))
+            .background(HintBg)
+            .border(1.5.dp, HintOrange, RoundedCornerShape(16.dp))
+            .padding(20.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Text("💡", fontSize = 16.sp)
+            Text(
+                text = "힌트 — 빈칸 첫 번째 글자",
+                fontSize = 13.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = HintDarkOrange
+            )
+        }
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            word.forEachIndexed { index, char ->
+                val isBlank = index in blankIndices
+                val isRevealed = index == firstBlankIndex
+                Box(
+                    modifier = Modifier
+                        .size(56.dp)
+                        .clip(RoundedCornerShape(12.dp))
+                        .background(if (isRevealed) BgDark else BgSurface)
+                        .then(
+                            if (!isRevealed) Modifier.border(1.5.dp, BorderColor, RoundedCornerShape(12.dp))
+                            else Modifier
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = if (isBlank && !isRevealed) "?" else char.toString(),
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = if (isRevealed) TextOnDark else if (isBlank) TextMuted else TextPrimary
+                    )
+                }
+            }
+        }
+        Text(
+            text = "광고를 시청하면 빈칸의 첫 번째 글자 '${revealedChar}'을 공개해 드렸어요.",
+            fontSize = 12.sp,
+            color = HintDarkOrange
+        )
+    }
+}
+
 @OptIn(ExperimentalResourceApi::class)
 @Composable
 fun QuizScreen(
@@ -194,7 +295,7 @@ fun QuizScreen(
                                 modifier = Modifier.fillMaxWidth(),
                                 letterSpacing = 4.sp
                             )
-                            if (quiz.hintText.isNotEmpty()) {
+                            if (quiz.hintText.isNotEmpty() && (quiz.options.isEmpty() || state.isHintRevealed)) {
                                 Text(
                                     text = quiz.hintText,
                                     style = MaterialTheme.typography.bodyMedium,
@@ -203,7 +304,17 @@ fun QuizScreen(
                             }
                         }
 
-                        Spacer(Modifier.height(24.dp))
+                        Spacer(Modifier.height(16.dp))
+
+                        if (!state.isHintRevealed && state.selectedOption == null && state.isCorrect == null) {
+                            HintButton(onClick = { viewModel.handleIntent(QuizIntent.ShowHint) })
+                            Spacer(Modifier.height(12.dp))
+                        }
+
+                        if (state.isHintRevealed && quiz.options.isEmpty()) {
+                            HintRevealCard(word = quiz.originalIdiom.word, blankIndices = quiz.blankIndices)
+                            Spacer(Modifier.height(12.dp))
+                        }
 
                         // 선택지 또는 입력 필드
                         if (quiz.options.isNotEmpty()) {
