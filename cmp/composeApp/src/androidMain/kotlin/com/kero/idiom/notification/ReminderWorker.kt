@@ -7,17 +7,29 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
-import androidx.work.Worker
+import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.kero.idiom.MainActivity
 import com.kero.idiom.R
+import com.kero.idiom.domain.repository.UserStatsRepository
+import kotlinx.coroutines.flow.first
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 /**
  * 48시간 동안 앱을 열지 않았을 때 로컬 알림을 생성하는 워커.
  */
-class ReminderWorker(context: Context, params: WorkerParameters) : Worker(context, params) {
+class ReminderWorker(context: Context, params: WorkerParameters) : CoroutineWorker(context, params), KoinComponent {
 
-    override fun doWork(): Result {
+    private val userStatsRepository: UserStatsRepository by inject()
+
+    override suspend fun doWork(): Result {
+        // [방어 로직] 실행 시점에 DB 설정이 꺼져 있으면 즉시 중단 (이중 잠금)
+        val stats = userStatsRepository.getUserStats().first()
+        if (!stats.isNotificationEnabled) {
+            return Result.success()
+        }
+
         showNotification()
         return Result.success()
     }

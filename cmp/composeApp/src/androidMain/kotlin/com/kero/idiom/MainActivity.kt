@@ -12,13 +12,14 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.gms.ads.MobileAds
 import com.kero.idiom.core.ads.AdController
 import com.kero.idiom.domain.repository.UserStatsRepository
 import com.kero.idiom.notification.ReminderManager
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import org.koin.android.ext.android.inject
 
 class MainActivity : ComponentActivity() {
@@ -30,14 +31,17 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         currentActivity = this
 
-        // 유저 설정에 따른 알림 예약 여부 결정
-        runBlocking {
-            launch {
-                val stats = userStatsRepository.getUserStats().first()
-                if (stats.isNotificationEnabled) {
-                    ReminderManager.scheduleReminder(this@MainActivity)
-                } else {
-                    ReminderManager.cancelReminder(this@MainActivity)
+        // 알림 설정 상태 관찰 및 실시간 반영
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                userStatsRepository.getUserStats().collect { stats ->
+                    if (stats.isNotificationEnabled) {
+                        // 사용자가 앱을 켰으므로(onStart) 타이머를 다시 2일(5분) 뒤로 갱신
+                        ReminderManager.scheduleReminder(this@MainActivity)
+                    } else {
+                        // 알림이 꺼져 있으면 즉시 취소
+                        ReminderManager.cancelReminder(this@MainActivity)
+                    }
                 }
             }
         }
