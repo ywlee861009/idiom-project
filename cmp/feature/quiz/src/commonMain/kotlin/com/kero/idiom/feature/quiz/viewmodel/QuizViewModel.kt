@@ -63,18 +63,20 @@ class QuizViewModel(
                     isLoading = false,
                     currentQuiz = quiz,
                     selectedOption = null,
-                    isCorrect = null
+                    isCorrect = null,
+                    quizCount = it.quizCount + 1
                 )
             }
         }
     }
 
     private fun checkAnswer(option: String) {
+        // 이미 답변을 선택한 경우 무시 (Race Condition 방지)
+        if (state.value.selectedOption != null) return
+        
         val currentQuiz = state.value.currentQuiz ?: return
         val isCorrect = option == currentQuiz.answer
-        val newScore = if (isCorrect) state.value.score + 1 else state.value.score
-        val newCount = state.value.quizCount
-
+        
         viewModelScope.launch {
             if (isCorrect) {
                 _sideEffect.send(QuizSideEffect.ShowCorrectEffect)
@@ -88,8 +90,7 @@ class QuizViewModel(
             it.copy(
                 selectedOption = option,
                 isCorrect = isCorrect,
-                score = newScore,
-                quizCount = newCount + 1
+                score = if (isCorrect) it.score + 1 else it.score
             )
         }
     }

@@ -4,6 +4,18 @@
 
 ---
 
+### ID-26: Quiz Counter UX Improvement & Bug Fix
+- **Description**: 퀴즈 카운트가 문제를 풀었을 때(사후)가 아닌, 새로운 문제를 불러올 때(사전) 증가하도록 로직을 변경하여 UX 불일치를 해결. 또한 ViewModel 수준에서 중복 클릭 및 Race Condition 방지 로직을 강화함.
+- **Completed Date**: 2026-03-11
+- **Build Verified**: [x] `./cmp/gradlew :composeApp:assembleDebug` SUCCESS
+- **Results**:
+    - [x] `QuizViewModel.loadNextQuiz`에서 문제 로드 시 `quizCount`를 증가시키도록 변경 (시작 시 `1 / 5` 표시).
+    - [x] `QuizViewModel.checkAnswer`에서 `selectedOption != null` 체크를 추가하여 중복 이벤트 차단.
+    - [x] `_state.update` 내에서 원자적 상태 업데이트(`it` 참조)를 사용하도록 리팩토링.
+- **Priority**: High
+
+---
+
 ### ID-24: Premium App Icon Design (The Calm Ink)
 - **Description**: 'The Calm Ink' 디자인 시스템을 응축한 앱 아이콘 자산 제작. 배경(Hanji #F9F7F2)과 전경(Minimalist Symbol #2C2C2C) 레이어를 분리하여 제작 완료.
 - **Completed Date**: 2026-03-09
