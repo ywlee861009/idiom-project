@@ -30,6 +30,12 @@ actual fun updateReminderSettings(enabled: Boolean) {
     // No-op for iOS
 }
 
+actual fun isSystemNotificationEnabled(): Boolean = true
+
+actual fun openNotificationSettings() {
+    // No-op for iOS
+}
+
 actual fun exitApp() {
     // No-op for iOS
 }

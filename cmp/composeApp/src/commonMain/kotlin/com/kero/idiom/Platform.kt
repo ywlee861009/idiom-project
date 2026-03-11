@@ -15,6 +15,10 @@ expect fun openBrowser(url: String)
 
 expect fun updateReminderSettings(enabled: Boolean)
 
+expect fun isSystemNotificationEnabled(): Boolean
+
+expect fun openNotificationSettings()
+
 expect fun exitApp()
 
 expect fun currentMillis(): Long
