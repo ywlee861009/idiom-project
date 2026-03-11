@@ -34,7 +34,8 @@ class QuizViewModel(
 
     init {
         loadNextQuiz()
-        adController.loadInterstitial() // 시작 시 광고 로드 시도
+        adController.loadInterstitial() // 전면 광고 미리 로드
+        adController.loadRewardedAd()   // 리워드 광고 미리 로드
     }
 
     fun handleIntent(intent: QuizIntent) {
@@ -43,8 +44,15 @@ class QuizViewModel(
             is QuizIntent.InputAnswer -> _state.update { it.copy(inputText = intent.input) }
             QuizIntent.SubmitAnswer -> checkAnswer(state.value.inputText)
             QuizIntent.NextQuiz -> onNextQuiz()
-            QuizIntent.ShowHint -> adController.showRewardedAd {
-                _state.update { it.copy(isHintRevealed = true) }
+            QuizIntent.ShowHint -> {
+                val isShown = adController.showRewardedAd {
+                    _state.update { it.copy(isHintRevealed = true) }
+                }
+                if (!isShown) {
+                    viewModelScope.launch {
+                        _sideEffect.send(QuizSideEffect.ShowToast("광고를 준비 중입니다. 잠시 후 다시 눌러주세요."))
+                    }
+                }
             }
         }
     }

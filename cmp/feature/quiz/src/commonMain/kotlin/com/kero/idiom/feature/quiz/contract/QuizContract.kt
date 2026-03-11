@@ -25,4 +25,5 @@ sealed interface QuizSideEffect {
     data class NavigateToResult(val score: Int, val total: Int) : QuizSideEffect
     data object ShowCorrectEffect : QuizSideEffect
     data object ShowWrongEffect : QuizSideEffect
+    data class ShowToast(val message: String) : QuizSideEffect
 }

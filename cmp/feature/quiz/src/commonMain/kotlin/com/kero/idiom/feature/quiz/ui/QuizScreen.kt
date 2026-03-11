@@ -148,6 +148,7 @@ fun QuizScreen(
     onNavigateBack: () -> Unit
 ) {
     val state by viewModel.state.collectAsState()
+    val snackbarHostState = remember { SnackbarHostState() }
     var animationFile by remember { mutableStateOf<String?>(null) }
     val scope = rememberCoroutineScope()
 
@@ -195,6 +196,9 @@ fun QuizScreen(
                     animationFile = "wrong"
                     delay(500)
                     animationFile = null
+                }
+                is QuizSideEffect.ShowToast -> scope.launch {
+                    snackbarHostState.showSnackbar(effect.message)
                 }
             }
         }
@@ -478,6 +482,29 @@ fun QuizScreen(
                         )
                     }
                 }
+            }
+        }
+
+        // 🍞 커스텀 스낵바 (어르신들을 위해 크게 표시)
+        SnackbarHost(
+            hostState = snackbarHostState,
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 120.dp)
+                .padding(horizontal = 24.dp)
+        ) { data ->
+            Card(
+                shape = RoundedCornerShape(12.dp),
+                colors = CardDefaults.cardColors(containerColor = BgDark.copy(alpha = 0.95f)),
+                elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)
+            ) {
+                Text(
+                    text = data.visuals.message,
+                    modifier = Modifier.padding(horizontal = 24.dp, vertical = 16.dp),
+                    fontSize = 17.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
             }
         }
 

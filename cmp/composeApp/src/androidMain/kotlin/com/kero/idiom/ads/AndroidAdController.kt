@@ -44,7 +44,7 @@ class AndroidAdController(
         })
     }
 
-    private fun loadRewardedAd() {
+    override fun loadRewardedAd() {
         if (rewardedAd != null) return
         val adRequest = AdRequest.Builder().build()
         RewardedAd.load(context, rewardedAdUnitId, adRequest, object : RewardedAdLoadCallback() {
@@ -70,14 +70,16 @@ class AndroidAdController(
         }
     }
 
-    override fun showRewardedAd(onRewardEarned: () -> Unit) {
+    override fun showRewardedAd(onRewardEarned: () -> Unit): Boolean {
         val currentActivity = activityProvider()
-        if (rewardedAd != null && currentActivity != null) {
+        return if (rewardedAd != null && currentActivity != null) {
             rewardedAd?.show(currentActivity) { 
                 onRewardEarned() 
             }
+            true
         } else {
             loadRewardedAd()
+            false
         }
     }
 }

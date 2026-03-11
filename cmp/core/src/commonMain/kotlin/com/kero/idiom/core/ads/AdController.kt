@@ -13,6 +13,12 @@ interface AdController {
     fun loadInterstitial()
 
     /**
+     * 보상형 광고(Rewarded Ad)를 로드합니다.
+     * 힌트 보기 등 보상형 광고가 필요한 화면 진입 시 미리 호출해두는 것이 좋습니다.
+     */
+    fun loadRewardedAd()
+
+    /**
      * 로드된 전면 광고를 보여줍니다.
      */
     fun showInterstitial()
@@ -20,6 +26,7 @@ interface AdController {
     /**
      * 보상형 광고(Rewarded Ad)를 보여줍니다.
      * @param onRewardEarned 사용자가 광고를 끝까지 시청하여 보상을 받을 때 호출될 콜백
+     * @return 광고가 즉시 표시되면 true, 아니면 false (로딩 중이거나 광고 없음)
      */
-    fun showRewardedAd(onRewardEarned: () -> Unit)
+    fun showRewardedAd(onRewardEarned: () -> Unit): Boolean
 }
