@@ -165,6 +165,8 @@ fun QuizScreen(
                                     QuizType.FILL_BLANK -> "빈칸에 들어갈 글자는?"
                                     QuizType.MEANING_TO_WORD -> "뜻을 보고 맞히기"
                                     QuizType.HANJA_TO_HANGUL -> "한자를 읽어보세요"
+                                    QuizType.FILL_BLANKS_2 -> "빈칸 두 개를 채워보세요"
+                                    QuizType.FILL_BLANKS_4 -> "사자성어를 완성해 보세요"
                                 },
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.Medium,
@@ -172,10 +174,11 @@ fun QuizScreen(
                                 letterSpacing = 1.sp
                             )
                             Text(
-                                text = quiz.questionText,
+                                text = if (state.isCorrect == true) quiz.answer else quiz.questionText,
                                 style = MaterialTheme.typography.headlineMedium,
                                 color = TextPrimary,
-                                modifier = Modifier.fillMaxWidth()
+                                modifier = Modifier.fillMaxWidth(),
+                                letterSpacing = 4.sp
                             )
                             if (quiz.hintText.isNotEmpty()) {
                                 Text(
@@ -188,60 +191,122 @@ fun QuizScreen(
 
                         Spacer(Modifier.height(24.dp))
 
-                        // 선택지
-                        quiz.options.forEachIndexed { index, option ->
-                            val isSelected = state.selectedOption == option
-                            val isCorrect = option == quiz.answer
-                            val showResult = state.selectedOption != null
+                        // 선택지 또는 입력 필드
+                        if (quiz.options.isNotEmpty()) {
+                            quiz.options.forEachIndexed { index, option ->
+                                val isSelected = state.selectedOption == option
+                                val isCorrect = option == quiz.answer
+                                val showResult = state.selectedOption != null
 
-                            val bgColor = when {
-                                !showResult -> BgSurface
-                                isCorrect -> CorrectBg
-                                isSelected -> WrongBg
-                                else -> BgSurface
-                            }
-                            val borderColor = when {
-                                !showResult -> BorderColor
-                                isCorrect -> CorrectGreen
-                                isSelected -> WrongRed
-                                else -> BorderColor
-                            }
-
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(bottom = 12.dp)
-                                    .clip(RoundedCornerShape(14.dp))
-                                    .background(bgColor)
-                                    .border(1.dp, borderColor, RoundedCornerShape(14.dp))
-                                    .clickable(enabled = !showResult) {
-                                        viewModel.handleIntent(QuizIntent.SelectOption(option))
-                                    }
-                                    .padding(horizontal = 20.dp, vertical = 18.dp),
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.SpaceBetween
-                            ) {
-                                Row(
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.spacedBy(12.dp)
-                                ) {
-                                    Text(
-                                        text = "${index + 1}",
-                                        fontSize = 13.sp,
-                                        fontWeight = FontWeight.Medium,
-                                        color = if (showResult && isCorrect) CorrectGreen
-                                        else if (showResult && isSelected) WrongRed
-                                        else TextMuted
-                                    )
-                                    Text(
-                                        text = option,
-                                        fontSize = 16.sp,
-                                        fontWeight = FontWeight.Medium,
-                                        color = TextPrimary
-                                    )
+                                val bgColor = when {
+                                    !showResult -> BgSurface
+                                    isCorrect -> CorrectBg
+                                    isSelected -> WrongBg
+                                    else -> BgSurface
                                 }
-                                if (showResult && isCorrect) {
-                                    Text("✓", color = CorrectGreen, fontWeight = FontWeight.Bold)
+                                val borderColor = when {
+                                    !showResult -> BorderColor
+                                    isCorrect -> CorrectGreen
+                                    isSelected -> WrongRed
+                                    else -> BorderColor
+                                }
+
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(bottom = 12.dp)
+                                        .clip(RoundedCornerShape(14.dp))
+                                        .background(bgColor)
+                                        .border(1.dp, borderColor, RoundedCornerShape(14.dp))
+                                        .clickable(enabled = !showResult) {
+                                            viewModel.handleIntent(QuizIntent.SelectOption(option))
+                                        }
+                                        .padding(horizontal = 20.dp, vertical = 18.dp),
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.SpaceBetween
+                                ) {
+                                    Row(
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                                    ) {
+                                        Text(
+                                            text = "${index + 1}",
+                                            fontSize = 13.sp,
+                                            fontWeight = FontWeight.Medium,
+                                            color = if (showResult && isCorrect) CorrectGreen
+                                            else if (showResult && isSelected) WrongRed
+                                            else TextMuted
+                                        )
+                                        Text(
+                                            text = option,
+                                            fontSize = 16.sp,
+                                            fontWeight = FontWeight.Medium,
+                                            color = TextPrimary
+                                        )
+                                    }
+                                    if (showResult && isCorrect) {
+                                        Text("✓", color = CorrectGreen, fontWeight = FontWeight.Bold)
+                                    }
+                                }
+                            }
+                        } else {
+                            // 주관식 입력 필드
+                            Column(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.spacedBy(16.dp)
+                            ) {
+                                OutlinedTextField(
+                                    value = state.inputText,
+                                    onValueChange = { 
+                                        if (it.length <= 4 && state.isCorrect == null) {
+                                            viewModel.handleIntent(QuizIntent.InputAnswer(it))
+                                        }
+                                    },
+                                    modifier = Modifier.fillMaxWidth(),
+                                    textStyle = MaterialTheme.typography.headlineSmall.copy(
+                                        textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                                        letterSpacing = 8.sp
+                                    ),
+                                    placeholder = {
+                                        Text(
+                                            "여기에 입력",
+                                            modifier = Modifier.fillMaxWidth(),
+                                            textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                                            fontSize = 18.sp,
+                                            color = TextMuted
+                                        )
+                                    },
+                                    singleLine = true,
+                                    shape = RoundedCornerShape(14.dp),
+                                    colors = OutlinedTextFieldDefaults.colors(
+                                        focusedBorderColor = BgDark,
+                                        unfocusedBorderColor = BorderColor,
+                                        focusedContainerColor = BgSurface,
+                                        unfocusedContainerColor = BgSurface,
+                                        disabledContainerColor = if (state.isCorrect == true) CorrectBg else WrongBg,
+                                        disabledBorderColor = if (state.isCorrect == true) CorrectGreen else WrongRed
+                                    ),
+                                    enabled = state.isCorrect == null
+                                )
+
+                                if (state.isCorrect == null) {
+                                    Button(
+                                        onClick = { viewModel.handleIntent(QuizIntent.SubmitAnswer) },
+                                        modifier = Modifier.fillMaxWidth().height(56.dp),
+                                        shape = RoundedCornerShape(12.dp),
+                                        colors = ButtonDefaults.buttonColors(containerColor = BgDark),
+                                        enabled = state.inputText.isNotBlank()
+                                    ) {
+                                        Text("정답 확인", fontWeight = FontWeight.Bold)
+                                    }
+                                } else if (state.isCorrect == false) {
+                                    Text(
+                                        text = "정답은 '${quiz.answer}' 입니다.",
+                                        color = WrongRed,
+                                        fontWeight = FontWeight.Medium,
+                                        fontSize = 16.sp
+                                    )
                                 }
                             }
                         }
@@ -251,7 +316,8 @@ fun QuizScreen(
 
                     // 다음 문제 버튼
                     val isLastQuestion = state.quizCount >= TOTAL
-                    val buttonEnabled = state.selectedOption != null && animationFile == null
+                    val showResult = state.selectedOption != null || state.isCorrect != null
+                    val buttonEnabled = showResult && animationFile == null
 
                     Button(
                         onClick = { viewModel.handleIntent(QuizIntent.NextQuiz) },

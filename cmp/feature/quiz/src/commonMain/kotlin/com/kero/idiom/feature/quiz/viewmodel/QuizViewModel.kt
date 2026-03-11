@@ -37,6 +37,8 @@ class QuizViewModel(
     fun handleIntent(intent: QuizIntent) {
         when (intent) {
             is QuizIntent.SelectOption -> checkAnswer(intent.option)
+            is QuizIntent.InputAnswer -> _state.update { it.copy(inputText = intent.input) }
+            QuizIntent.SubmitAnswer -> checkAnswer(state.value.inputText)
             QuizIntent.NextQuiz -> onNextQuiz()
         }
     }
@@ -63,6 +65,7 @@ class QuizViewModel(
                     isLoading = false,
                     currentQuiz = quiz,
                     selectedOption = null,
+                    inputText = "", // 입력값 초기화
                     isCorrect = null,
                     quizCount = it.quizCount + 1
                 )
@@ -71,11 +74,11 @@ class QuizViewModel(
     }
 
     private fun checkAnswer(option: String) {
-        // 이미 답변을 선택한 경우 무시 (Race Condition 방지)
-        if (state.value.selectedOption != null) return
+        // 이미 답변을 선택했거나 정답 처리가 완료된 경우 무시
+        if (state.value.isCorrect != null) return
         
         val currentQuiz = state.value.currentQuiz ?: return
-        val isCorrect = option == currentQuiz.answer
+        val isCorrect = option.trim() == currentQuiz.answer.trim()
         
         viewModelScope.launch {
             if (isCorrect) {
@@ -88,7 +91,8 @@ class QuizViewModel(
 
         _state.update {
             it.copy(
-                selectedOption = option,
+                selectedOption = if (currentQuiz.options.isNotEmpty()) option else null,
+                inputText = if (currentQuiz.options.isEmpty()) option else it.inputText,
                 isCorrect = isCorrect,
                 score = if (isCorrect) it.score + 1 else it.score
             )

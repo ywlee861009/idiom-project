@@ -1,9 +1,11 @@
 package com.kero.idiom.domain.model
 
 enum class QuizType {
-    FILL_BLANK,      // A타입: 한 글자 비우기
-    MEANING_TO_WORD, // B타입: 뜻 보고 단어 맞히기
-    HANJA_TO_HANGUL  // C타입: 한자 보고 음독 맞히기
+    FILL_BLANK,      // A타입: 한 글자 비우기 (객관식)
+    MEANING_TO_WORD, // B타입: 뜻 보고 단어 맞히기 (객관식)
+    HANJA_TO_HANGUL, // C타입: 한자 보고 음독 맞히기 (객관식)
+    FILL_BLANKS_2,   // ID-29: 주관식 2칸 채우기
+    FILL_BLANKS_4    // ID-30: 주관식 4칸 채우기
 }
 
 data class Quiz(

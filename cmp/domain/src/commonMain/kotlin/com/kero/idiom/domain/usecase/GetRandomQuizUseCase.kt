@@ -25,7 +25,25 @@ class GetRandomQuizUseCase(
             QuizType.FILL_BLANK -> createFillBlankQuiz(idiom, dummyIdioms)
             QuizType.MEANING_TO_WORD -> createMeaningToWordQuiz(idiom, dummyIdioms)
             QuizType.HANJA_TO_HANGUL -> createHanjaToHangulQuiz(idiom, dummyIdioms)
+            QuizType.FILL_BLANKS_2 -> createFillMultipleBlanksQuiz(idiom, 2)
+            QuizType.FILL_BLANKS_4 -> createFillMultipleBlanksQuiz(idiom, 4)
         }
+    }
+
+    private fun createFillMultipleBlanksQuiz(idiom: Idiom, blankCount: Int): Quiz {
+        val blankIndices = (0 until 4).shuffled().take(blankCount).sorted()
+        val questionText = idiom.word.mapIndexed { index, c ->
+            if (index in blankIndices) '_' else c
+        }.joinToString("")
+
+        return Quiz(
+            type = if (blankCount == 2) QuizType.FILL_BLANKS_2 else QuizType.FILL_BLANKS_4,
+            originalIdiom = idiom,
+            questionText = questionText,
+            hintText = idiom.meaning,
+            answer = idiom.word,
+            options = emptyList() // 주관식은 선택지 없음
+        )
     }
 
     private fun createFillBlankQuiz(idiom: Idiom, samples: List<Idiom>): Quiz {

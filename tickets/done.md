@@ -4,6 +4,27 @@
 
 ---
 
+### ID-29: [Level 2] 주관식 2칸 채우기 퀴즈 개발
+- **Completed Date**: 2026-03-11
+- **Build Verified**: [x] `./cmp/gradlew :composeApp:assembleDebug` SUCCESS
+- **Results**:
+    - [x] `QuizType` 확장 및 `GetRandomQuizUseCase` 내 2칸 빈칸 생성 로직 구현.
+    - [x] `QuizViewModel`에 주관식 입력 처리(`InputAnswer`, `SubmitAnswer`) 로직 추가.
+    - [x] `QuizScreen`에 실버 세대를 위한 대형 `OutlinedTextField` 주관식 UI 구현.
+- **Priority**: High
+
+---
+
+### ID-30: [Level 3] 주관식 전체 채우기 퀴즈 개발
+- **Completed Date**: 2026-03-11
+- **Build Verified**: [x] `./cmp/gradlew :composeApp:assembleDebug` SUCCESS
+- **Results**:
+    - [x] `FILL_BLANKS_4` 유형 지원 및 4글자 전체 빈칸 처리.
+    - [x] 주관식 정답 검증 로직 공용화 및 정답 공개 기능 추가.
+- **Priority**: Medium
+
+---
+
 ### ID-25: 상세 UI 디자인 - Floating Tab & 3단 구조 (Jenny)
 - **Completed Date**: 2026-03-10
 - **Build Verified**: [x] `./cmp/gradlew :composeApp:assembleDebug` SUCCESS
