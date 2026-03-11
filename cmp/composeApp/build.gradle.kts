@@ -43,6 +43,9 @@ kotlin {
             implementation(libs.google.admob) // AdMob SDK
             implementation(libs.koin.android)
             
+            // Ktor Engine
+            implementation(libs.ktor.client.okhttp)
+
             // Firebase
             implementation(platform(libs.firebase.bom.get().toString()))
             implementation(libs.firebase.analytics)
