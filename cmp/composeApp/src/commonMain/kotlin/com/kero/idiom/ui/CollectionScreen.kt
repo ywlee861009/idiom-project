@@ -127,41 +127,6 @@ fun CollectionScreen(
             }
         }
 
-        // 유료 테마팩 섹션
-        Column(
-            modifier = Modifier
-                .padding(horizontal = 24.dp)
-                .padding(bottom = 8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "유료 테마팩",
-                    style = MaterialTheme.typography.titleMedium,
-                    color = TextPrimary
-                )
-                Box(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(4.dp))
-                        .background(BgDark)
-                        .padding(horizontal = 8.dp, vertical = 3.dp)
-                ) {
-                    Text(
-                        text = "PRO",
-                        fontSize = 10.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White
-                    )
-                }
-            }
-            LockedPackCard("조선왕조 실록 팩", "50개 성어 수록", "2,000원")
-            LockedPackCard("삼국지 고사성어 팩", "40개 성어 수록", "2,000원")
-        }
-
         IdiomTabBar(
             selectedTab = IdiomTab.Study,
             onTabSelected = onTabSelected
@@ -204,60 +169,5 @@ private fun IdiomCollectionCard(idiom: Idiom) {
             fontSize = 11.sp,
             color = Color.White.copy(alpha = 0.4f)
         )
-    }
-}
-
-@Composable
-private fun LockedPackCard(title: String, subtitle: String, price: String) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(14.dp))
-            .background(BgSurface)
-            .border(1.dp, BorderColor, RoundedCornerShape(14.dp))
-            .padding(16.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            Box(
-                modifier = Modifier
-                    .size(40.dp)
-                    .clip(RoundedCornerShape(8.dp))
-                    .background(BorderColor),
-                contentAlignment = Alignment.Center
-            ) {
-                Text("📖", fontSize = 18.sp)
-            }
-            Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.SemiBold,
-                    color = TextPrimary
-                )
-                Text(
-                    text = subtitle,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = TextMuted
-                )
-            }
-        }
-        Box(
-            modifier = Modifier
-                .clip(RoundedCornerShape(8.dp))
-                .background(BgDark)
-                .padding(horizontal = 12.dp, vertical = 6.dp)
-        ) {
-            Text(
-                text = price,
-                fontSize = 12.sp,
-                fontWeight = FontWeight.SemiBold,
-                color = Color.White
-            )
-        }
     }
 }

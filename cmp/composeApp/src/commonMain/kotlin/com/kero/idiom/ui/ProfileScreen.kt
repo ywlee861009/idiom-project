@@ -98,6 +98,87 @@ fun ProfileScreen(
                 }
             }
 
+            // 경험치 및 레벨 진척도 (SeekBar 형태)
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(16.dp))
+                    .background(BgSurface)
+                    .border(1.dp, BorderColor, RoundedCornerShape(16.dp))
+                    .padding(20.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                val currentExp = stats.totalCorrectCount % 10
+                val progress = currentExp / 10f
+                val remaining = 10 - currentExp
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.Bottom
+                ) {
+                    Text(
+                        text = "현재 ${stats.level}단계 정진 중",
+                        style = MaterialTheme.typography.titleMedium,
+                        color = TextPrimary
+                    )
+                    Text(
+                        text = "다음 단계까지 ${remaining}문제",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = TextMuted
+                    )
+                }
+
+                // 시니어 친화적인 두꺼운 프로그레스 바
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(12.dp)
+                        .clip(CircleShape)
+                        .background(BorderColor)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth(progress)
+                            .fillMaxHeight()
+                            .clip(CircleShape)
+                            .background(BgDark)
+                    )
+                }
+                
+                Text(
+                    text = "현재 단계에서 ${currentExp}문제를 맞히셨습니다.",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = TextSecondary
+                )
+
+                // 다음 타이틀 예고 (명확한 수치 제공!)
+                stats.nextTitleInfo?.let { next ->
+                    HorizontalDivider(color = BorderColor.copy(alpha = 0.5f), thickness = 1.dp)
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    ) {
+                        Text("📜", fontSize = 18.sp)
+                        Column {
+                            val steps = stats.levelsUntilNextTitle
+                            Text(
+                                text = "앞으로 ${steps}번 더 정진하시면",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = TextMuted
+                            )
+                            Text(
+                                text = "'${next.title}' 칭호를 얻게 됩니다!",
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = TextPrimary
+                            )
+                        }
+                    }
+                }
+            }
+
             // 학습 통계
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 Text(

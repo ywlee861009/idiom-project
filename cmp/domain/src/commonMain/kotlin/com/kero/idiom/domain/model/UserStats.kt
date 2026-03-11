@@ -10,19 +10,19 @@ data class UserStats(
     // 맞힌 개수에 따른 레벨 계산 (정답 10개당 1레벨 상승)
     val level: Int get() = (totalCorrectCount / 10).coerceIn(0, 49) + 1
     
-    val title: String get() = when (level) {
-        in 1..10 -> "초립동이"
-        in 11..20 -> "유생"
-        in 21..30 -> "진사"
-        in 31..40 -> "대제학"
-        else -> "문창성"
-    }
+    // 현재 타이틀 정보
+    val currentTitleInfo: UserTitle get() = UserTitle.fromLevel(level)
     
-    val titleDescription: String get() = when (level) {
-        in 1..10 -> "이제 막 글공부를 시작한 아이"
-        in 11..20 -> "성균관에서 정진하는 학생"
-        in 21..30 -> "학문적 깊이가 깊어진 선비"
-        in 31..40 -> "나라의 문장을 책임지는 석학"
-        else -> "문장을 주관하는 신선의 경지"
+    // 다음 타이틀 정보
+    val nextTitleInfo: UserTitle? get() = UserTitle.getNextTitle(currentTitleInfo)
+
+    // 다음 타이틀까지 남은 레벨 수
+    val levelsUntilNextTitle: Int get() {
+        val next = nextTitleInfo ?: return 0
+        return (next.minLevel - level).coerceAtLeast(0)
     }
+
+    // 기존 프로퍼티 유지
+    val title: String get() = currentTitleInfo.title
+    val titleDescription: String get() = currentTitleInfo.description
 }
