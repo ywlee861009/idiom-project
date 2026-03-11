@@ -15,15 +15,15 @@
 ## 🎨 2. 프로젝트 정체성 및 원칙 (Identity & Principles)
 - **컨셉**: Extreme Minimalism (Material 3) + 실버 세대를 위한 UX.
 - **디자인 시스템 (The Calm Ink)**: 한지 느낌의 미색(#F9F7F2) 배경과 먹색(#2C2C2C) 타이포그래피. 여백의 미 강조.
-- **기술 스택**: Kotlin (1.9.22), Compose Multiplatform (CMP), Koin, Coroutines, Repository Pattern, Room DB.
-- **품질 원칙**: 모든 티켓 완료 전 `./gradlew :cmp:composeApp:assembleDebug` 빌드 검증 필수 (**Build-Verified Done**).
+- **기술 스택**: Kotlin (2.1.10), Compose Multiplatform, Koin, Coroutines, Repository Pattern, Room DB (KMP).
+- **품질 원칙**: 모든 티켓 완료 전 `./cmp/gradlew assembleDebug` 빌드 검증 필수 (**Build-Verified Done**).
 
 ## 📂 4. 문서 구조 (Doc Structure)
 - **`README.md`**: 실행 방법 및 전체 소개.
-- **`REQUIREMENTS.md`**: 상세 기능 명세.
-- **`ROADMAP.md`**: 전체 개발 일정 및 마일스톤.
+- **`REQUIREMENTS.md`**: 상세 기능 명세 (v3.0).
+- **`ROADMAP.md`**: 전체 개발 일정 및 마일스톤 (v3.0).
 - **`tickets/`**: 
-    - `todo.md`: 대기 중인 티켓.
+    - `todo.md`: 배포 전 파이널 스프린트 티켓.
     - `done.md`: 완료된 티켓 히스토리.
 - **`GUIDE_FOR_xxx.md`**: 각 전문가별 상세 가이드라인.
 
