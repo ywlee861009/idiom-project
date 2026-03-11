@@ -1,4 +1,4 @@
-# 🎯 사자성어 퀴즈 안드로이드 프로젝트 요구사항 (v2.1)
+# 🎯 사자성어 퀴즈 안드로이드 프로젝트 요구사항 (v2.2)
 
 ## 1. 프로젝트 목표 (Project Goal)
 40대 이상 사용자를 위한 **"스마트폰 속 나만의 서당"**. 서버 없이 기기 내에서 완결되는 고품격 사자성어 학습 경험 제공.
@@ -12,7 +12,7 @@
 
 ### 3.1 퀴즈 엔진 (Quiz Engine)
 - 5문제 세션: 3종 문제(객관식, 빈칸, 순서) 혼합 출제.
-- 정답 시 먹물 번짐 효과(Ink-spread) 애니메이션.
+- 정답 시 먹물 번짐 효과(Ink-spread) 애니메이션 (Lottie).
 
 ### 3.2 로컬 저장소 및 수익 모델 (Native & Monetization)
 - **Only Native**: 백엔드 서버 없이 Room DB를 통한 로컬 데이터 관리.
@@ -26,8 +26,9 @@
 - '서고' 메뉴에서 수집한 카드 열람 및 상세 풀이 제공.
 
 ## 4. 기술 스택 (Technical Stack)
-- **Language**: Kotlin
-- **UI Framework**: Jetpack Compose (Modern M3)
+- **Language**: Kotlin (1.9.22)
+- **UI Framework**: Compose Multiplatform (CMP)
+- **Dependency Injection**: Koin
 - **Data**: Room DB (Local Persistence), DataStore (Settings)
 - **Payment**: Google Play Billing Library
 - **Architecture**: MVI 또는 MVVM (Clean Architecture 지향)
