@@ -54,6 +54,26 @@ android {
         versionCode = 1
         versionName = "1.0.0-CMP"
     }
+
+    buildFeatures {
+        buildConfig = true
+    }
+
+    buildTypes {
+        getByName("debug") {
+            manifestPlaceholders["admobAppId"] = "ca-app-pub-3940256099942544~3347511713" // Test App ID
+            buildConfigField("String", "ADMOB_INTERSTITIAL_ID", "\"ca-app-pub-3940256099942544/1033173712\"") // Test Interstitial ID
+            buildConfigField("String", "ADMOB_REWARDED_ID", "\"ca-app-pub-3940256099942544/5224354917\"") // Test Reward ID
+        }
+        getByName("release") {
+            isMinifyEnabled = false // 실제 배포 시에는 true 권장 (Proguard/R8)
+            manifestPlaceholders["admobAppId"] = "ca-app-pub-2103375309908918~7366320554" // Real App ID
+            buildConfigField("String", "ADMOB_INTERSTITIAL_ID", "\"ca-app-pub-3940256099942544/1033173712\"") 
+            buildConfigField("String", "ADMOB_REWARDED_ID", "\"ca-app-pub-2103375309908918/5518411052\"") // Real Reward ID
+            signingConfig = signingConfigs.getByName("debug")
+        }
+    }
+
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"

@@ -7,12 +7,14 @@ import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
+import com.google.android.gms.ads.rewarded.RewardedAd
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
+import com.kero.idiom.BuildConfig
 import com.kero.idiom.core.ads.AdController
 
 /**
  * [AndroidAdController]
  * Android 전용 AdMob 구현체입니다.
- * [activity]는 광고를 띄울 컨텍스트입니다.
  */
 class AndroidAdController(
     private val context: Context,
@@ -20,38 +22,43 @@ class AndroidAdController(
 ) : AdController {
 
     private var interstitialAd: InterstitialAd? = null
+    private var rewardedAd: RewardedAd? = null
     
-    // 테스트용 전면 광고 ID
-    private val interstitialAdUnitId = "ca-app-pub-3940256099942544/1033173712"
+    private val interstitialAdUnitId = BuildConfig.ADMOB_INTERSTITIAL_ID
+    private val rewardedAdUnitId = BuildConfig.ADMOB_REWARDED_ID
 
     override fun loadInterstitial() {
         if (interstitialAd != null) return
-
         val adRequest = AdRequest.Builder().build()
-        InterstitialAd.load(
-            context,
-            interstitialAdUnitId,
-            adRequest,
-            object : InterstitialAdLoadCallback() {
-                override fun onAdLoaded(ad: InterstitialAd) {
-                    interstitialAd = ad
-                    setupCallbacks()
-                }
-
-                override fun onAdFailedToLoad(error: LoadAdError) {
-                    interstitialAd = null
+        InterstitialAd.load(context, interstitialAdUnitId, adRequest, object : InterstitialAdLoadCallback() {
+            override fun onAdLoaded(ad: InterstitialAd) {
+                interstitialAd = ad
+                interstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
+                    override fun onAdDismissedFullScreenContent() {
+                        interstitialAd = null
+                        loadInterstitial()
+                    }
                 }
             }
-        )
+            override fun onAdFailedToLoad(error: LoadAdError) { interstitialAd = null }
+        })
     }
 
-    private fun setupCallbacks() {
-        interstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
-            override fun onAdDismissedFullScreenContent() {
-                interstitialAd = null
-                loadInterstitial() // 다음 광고 미리 로드
+    private fun loadRewardedAd() {
+        if (rewardedAd != null) return
+        val adRequest = AdRequest.Builder().build()
+        RewardedAd.load(context, rewardedAdUnitId, adRequest, object : RewardedAdLoadCallback() {
+            override fun onAdLoaded(ad: RewardedAd) {
+                rewardedAd = ad
+                rewardedAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
+                    override fun onAdDismissedFullScreenContent() {
+                        rewardedAd = null
+                        loadRewardedAd()
+                    }
+                }
             }
-        }
+            override fun onAdFailedToLoad(error: LoadAdError) { rewardedAd = null }
+        })
     }
 
     override fun showInterstitial() {
@@ -59,8 +66,18 @@ class AndroidAdController(
         if (interstitialAd != null && currentActivity != null) {
             interstitialAd?.show(currentActivity)
         } else {
-            // 광고가 로드되지 않았다면 로드 시도
             loadInterstitial()
+        }
+    }
+
+    override fun showRewardedAd(onRewardEarned: () -> Unit) {
+        val currentActivity = activityProvider()
+        if (rewardedAd != null && currentActivity != null) {
+            rewardedAd?.show(currentActivity) { 
+                onRewardEarned() 
+            }
+        } else {
+            loadRewardedAd()
         }
     }
 }

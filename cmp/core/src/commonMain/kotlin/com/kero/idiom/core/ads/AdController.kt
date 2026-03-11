@@ -14,7 +14,12 @@ interface AdController {
 
     /**
      * 로드된 전면 광고를 보여줍니다.
-     * 광고가 준비되지 않았다면 아무 동작도 하지 않거나 다음 로드를 트리거합니다.
      */
     fun showInterstitial()
+
+    /**
+     * 보상형 광고(Rewarded Ad)를 보여줍니다.
+     * @param onRewardEarned 사용자가 광고를 끝까지 시청하여 보상을 받을 때 호출될 콜백
+     */
+    fun showRewardedAd(onRewardEarned: () -> Unit)
 }
