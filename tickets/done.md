@@ -4,6 +4,17 @@
 
 ---
 
+### [TASK-023] 힌트 보기 광고 UX 개선 및 로딩 지연 해결
+- **Completed Date**: 2026-03-11
+- **Build Verified**: [x] `./cmp/gradlew :composeApp:assembleDebug` SUCCESS
+- **Results**:
+    - [x] `QuizViewModel` 초기화 시 보상형 광고(Rewarded Ad) 미리 로딩(Pre-load) 로직 추가.
+    - [x] `AdController` 인터페이스 및 `AndroidAdController` 구현체 확장 (로딩 상태 체크 및 리턴 타입 변경).
+    - [x] `QuizScreen` 내 `SnackbarHost` 연동 및 광고 로딩 중일 때 실버 세대 맞춤형 피드백 UI 구현.
+- **Priority**: High
+
+---
+
 ### [TASK-021] Firebase SDK 및 Crashlytics/Analytics 연동
 - **Completed Date**: 2026-03-11
 - **Build Verified**: [x] `./cmp/gradlew :composeApp:assembleDebug` SUCCESS
