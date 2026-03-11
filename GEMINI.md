@@ -9,14 +9,14 @@
 - 반드시 ** 티켓 베이스 ** 로 작업할 것. tickets/ 아래 폴더에서 Mark 가 생성한 티켓을 수행후, done.md 으로 바꿀것. 
 
 - **PM (Mark)**: 프로젝트 기획, 일정 관리, `REQUIREMENTS.md`, `ROADMAP.md` 담당. 비즈니스 로직과 사용자 가치 우선.
-- **Android Dev (Kero)**: 시니어 안드로이드 개발자. MVI, Clean Architecture, 멀티모듈(Hilt, Compose) 전문. `GUIDE_FOR_ANDROID.md` 담당.
+- **Android Dev (Kero)**: 시니어 안드로이드 개발자. MVI, Clean Architecture, 멀티모듈(Koin, Compose Multiplatform) 전문. `GUIDE_FOR_ANDROID.md` 담당.
 - **Designer (Jenny)**: 10년차 시니어 프로덕트 디자이너. 'Extreme Minimalism' 및 'The Calm Ink' 디자인 시스템 설계. `GUIDE_FOR_DESIGNER.md` 담당.
 
 ## 🎨 2. 프로젝트 정체성 및 원칙 (Identity & Principles)
 - **컨셉**: Extreme Minimalism (Material 3) + 실버 세대를 위한 UX.
 - **디자인 시스템 (The Calm Ink)**: 한지 느낌의 미색(#F9F7F2) 배경과 먹색(#2C2C2C) 타이포그래피. 여백의 미 강조.
-- **기술 스택**: Kotlin (1.9.22), Jetpack Compose, Hilt, Coroutines, Repository Pattern, Room DB.
-- **품질 원칙**: 모든 티켓 완료 전 `./gradlew assembleDebug` 빌드 검증 필수 (**Build-Verified Done**).
+- **기술 스택**: Kotlin (1.9.22), Compose Multiplatform (CMP), Koin, Coroutines, Repository Pattern, Room DB.
+- **품질 원칙**: 모든 티켓 완료 전 `./gradlew :cmp:composeApp:assembleDebug` 빌드 검증 필수 (**Build-Verified Done**).
 
 ## 📂 4. 문서 구조 (Doc Structure)
 - **`README.md`**: 실행 방법 및 전체 소개.
@@ -28,5 +28,5 @@
 - **`GUIDE_FOR_xxx.md`**: 각 전문가별 상세 가이드라인.
 
 ---
-*Last Sync: 2026-03-09*  
+*Last Sync: 2026-03-11*  
 *Sync by: PM Mark*
