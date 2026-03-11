@@ -14,6 +14,10 @@ actual fun showToast(message: String) {
     // No-op for iOS
 }
 
+actual fun openFontSizeSettings() {
+    // No-op for iOS
+}
+
 actual fun exitApp() {
     // No-op for iOS
 }

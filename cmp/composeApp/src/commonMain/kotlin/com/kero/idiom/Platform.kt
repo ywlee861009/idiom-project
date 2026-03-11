@@ -7,6 +7,8 @@ expect fun BackPressHandler(onBack: () -> Unit)
 
 expect fun showToast(message: String)
 
+expect fun openFontSizeSettings()
+
 expect fun exitApp()
 
 expect fun currentMillis(): Long

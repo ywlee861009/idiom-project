@@ -2,6 +2,7 @@ package com.kero.idiom.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -19,6 +20,7 @@ import androidx.compose.ui.unit.sp
 import com.kero.idiom.core.components.IdiomTab
 import com.kero.idiom.core.components.IdiomTabBar
 import com.kero.idiom.core.theme.*
+import com.kero.idiom.openFontSizeSettings
 import com.kero.idiom.ui.profile.ProfileViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -164,10 +166,11 @@ fun ProfileScreen(
                     }
                     HorizontalDivider(color = BorderColor, thickness = 1.dp)
 
-                    // 폰트 크기
+                    // 폰트 크기 (시스템 설정으로 이동)
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
+                            .clickable { openFontSizeSettings() }
                             .padding(horizontal = 16.dp, vertical = 14.dp),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
@@ -178,22 +181,16 @@ fun ProfileScreen(
                         ) {
                             Text("T", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = TextPrimary)
                             Text(
-                                text = "폰트 크기",
+                                text = "폰트 크기 설정",
                                 style = MaterialTheme.typography.bodyLarge,
                                 color = TextPrimary
                             )
                         }
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(4.dp)
-                        ) {
-                            Text(
-                                text = "보통",
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = TextMuted
-                            )
-                            Text("›", fontSize = 16.sp, color = TextMuted)
-                        }
+                        Text(
+                            text = "시스템에서 조절",
+                            style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
+                            color = BgDark // 더 진한 색으로 강조
+                        )
                     }
                     HorizontalDivider(color = BorderColor, thickness = 1.dp)
 
