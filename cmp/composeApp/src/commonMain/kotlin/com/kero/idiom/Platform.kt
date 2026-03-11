@@ -13,6 +13,8 @@ expect fun openStorePage()
 
 expect fun openBrowser(url: String)
 
+expect fun updateReminderSettings(enabled: Boolean)
+
 expect fun exitApp()
 
 expect fun currentMillis(): Long

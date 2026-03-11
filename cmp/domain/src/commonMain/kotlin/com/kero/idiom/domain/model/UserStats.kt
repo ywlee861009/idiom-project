@@ -5,7 +5,8 @@ data class UserStats(
     val currentStreak: Int = 0,
     val maxStreak: Int = 0,
     val lastSolvedDateMillis: Long = 0,
-    val totalCorrectCount: Int = 0
+    val totalCorrectCount: Int = 0,
+    val isNotificationEnabled: Boolean = true
 ) {
     // 맞힌 개수에 따른 레벨 계산 (정답 10개당 1레벨 상승)
     val level: Int get() = (totalCorrectCount / 10).coerceIn(0, 49) + 1

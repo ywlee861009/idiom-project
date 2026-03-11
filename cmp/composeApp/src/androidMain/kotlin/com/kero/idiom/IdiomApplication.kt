@@ -34,7 +34,7 @@ class IdiomApplication : Application() {
             factory { UpdateUserStatsUseCase(get()) }
             
             // ViewModels
-            viewModel { ProfileViewModel(get()) }
+            viewModel { ProfileViewModel(get(), get()) }
         }
 
         startKoin {

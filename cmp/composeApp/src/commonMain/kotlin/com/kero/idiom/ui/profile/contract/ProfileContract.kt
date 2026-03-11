@@ -9,4 +9,5 @@ data class ProfileState(
 
 sealed interface ProfileIntent {
     data object Refresh : ProfileIntent
+    data class ToggleNotification(val enabled: Boolean) : ProfileIntent
 }

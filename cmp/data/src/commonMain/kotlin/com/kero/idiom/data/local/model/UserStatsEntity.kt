@@ -10,5 +10,6 @@ data class UserStatsEntity(
     val currentStreak: Int = 0,
     val maxStreak: Int = 0,
     val lastSolvedDateMillis: Long = 0,
-    val totalCorrectCount: Int = 0
+    val totalCorrectCount: Int = 0,
+    val isNotificationEnabled: Boolean = true
 )

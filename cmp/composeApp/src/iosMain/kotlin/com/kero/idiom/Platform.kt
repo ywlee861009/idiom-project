@@ -26,6 +26,10 @@ actual fun openBrowser(url: String) {
     // No-op for iOS
 }
 
+actual fun updateReminderSettings(enabled: Boolean) {
+    // No-op for iOS
+}
+
 actual fun exitApp() {
     // No-op for iOS
 }

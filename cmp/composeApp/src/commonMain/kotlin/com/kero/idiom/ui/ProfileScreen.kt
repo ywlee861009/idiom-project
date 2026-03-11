@@ -23,6 +23,7 @@ import com.kero.idiom.core.theme.*
 import com.kero.idiom.openFontSizeSettings
 import com.kero.idiom.openStorePage
 import com.kero.idiom.ui.profile.ProfileViewModel
+import com.kero.idiom.ui.profile.contract.ProfileIntent
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -32,8 +33,6 @@ fun ProfileScreen(
 ) {
     val state by viewModel.state.collectAsState()
     val stats = state.userStats
-    
-    var notificationEnabled by remember { mutableStateOf(true) }
 
     Column(
         modifier = Modifier
@@ -236,8 +235,8 @@ fun ProfileScreen(
                             )
                         }
                         Switch(
-                            checked = notificationEnabled,
-                            onCheckedChange = { notificationEnabled = it },
+                            checked = stats.isNotificationEnabled,
+                            onCheckedChange = { viewModel.onIntent(ProfileIntent.ToggleNotification(it)) },
                             colors = SwitchDefaults.colors(
                                 checkedThumbColor = Color.White,
                                 checkedTrackColor = BgDark,
@@ -296,6 +295,11 @@ fun ProfileScreen(
                                 color = TextPrimary
                             )
                         }
+                        Text(
+                            text = "최신 버전 v2.0.0",
+                            style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
+                            color = BgDark // 강조색
+                        )
                     }
                 }
             }

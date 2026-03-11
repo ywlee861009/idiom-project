@@ -6,6 +6,7 @@ import android.provider.Settings
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
+import com.kero.idiom.notification.ReminderManager
 import kotlin.system.exitProcess
 
 @Composable
@@ -73,6 +74,16 @@ actual fun openBrowser(url: String) {
             context.startActivity(intent)
         } catch (e: Exception) {
             Toast.makeText(context, "브라우저를 열 수 없습니다.", Toast.LENGTH_SHORT).show()
+        }
+    }
+}
+
+actual fun updateReminderSettings(enabled: Boolean) {
+    IdiomApplication.instance?.let { context ->
+        if (enabled) {
+            ReminderManager.scheduleReminder(context)
+        } else {
+            ReminderManager.cancelReminder(context)
         }
     }
 }

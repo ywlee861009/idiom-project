@@ -6,7 +6,6 @@ import com.kero.idiom.domain.model.UserStats
 import com.kero.idiom.domain.repository.UserStatsRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlin.time.Duration.Companion.days
 
 class UserStatsRepositoryImpl(
     private val userStatsDao: UserStatsDao
@@ -22,16 +21,15 @@ class UserStatsRepositoryImpl(
         val currentEntity = userStatsDao.getUserStats() ?: UserStatsEntity()
         val now = System.currentTimeMillis()
         
-        // 간단한 연속 학습일 계산 (24시간 기준)
         val lastSolved = currentEntity.lastSolvedDateMillis
         val diff = now - lastSolved
         val oneDayMillis = 24 * 60 * 60 * 1000L
         
         val newStreak = when {
             lastSolved == 0L -> 1
-            diff < oneDayMillis -> currentEntity.currentStreak // 오늘 이미 함
-            diff < 2 * oneDayMillis -> currentEntity.currentStreak + 1 // 어제 함
-            else -> 1 // 끊김
+            diff < oneDayMillis -> currentEntity.currentStreak
+            diff < 2 * oneDayMillis -> currentEntity.currentStreak + 1
+            else -> 1
         }
 
         val updatedEntity = currentEntity.copy(
@@ -45,11 +43,17 @@ class UserStatsRepositoryImpl(
         userStatsDao.upsertUserStats(updatedEntity)
     }
 
+    override suspend fun updateNotificationEnabled(enabled: Boolean) {
+        val currentEntity = userStatsDao.getUserStats() ?: UserStatsEntity()
+        userStatsDao.upsertUserStats(currentEntity.copy(isNotificationEnabled = enabled))
+    }
+
     private fun UserStatsEntity.toDomain() = UserStats(
         totalSolvedCount = totalSolvedCount,
         currentStreak = currentStreak,
         maxStreak = maxStreak,
         lastSolvedDateMillis = lastSolvedDateMillis,
-        totalCorrectCount = totalCorrectCount
+        totalCorrectCount = totalCorrectCount,
+        isNotificationEnabled = isNotificationEnabled
     )
 }

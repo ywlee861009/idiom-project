@@ -14,19 +14,33 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.ContextCompat
 import com.google.android.gms.ads.MobileAds
 import com.kero.idiom.core.ads.AdController
+import com.kero.idiom.domain.repository.UserStatsRepository
 import com.kero.idiom.notification.ReminderManager
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.koin.android.ext.android.inject
 
 class MainActivity : ComponentActivity() {
 
     private val adController: AdController by inject()
+    private val userStatsRepository: UserStatsRepository by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         currentActivity = this
 
-        // 로컬 알림 예약 (유저가 접속했으므로 다시 48시간 뒤로 미룸)
-        ReminderManager.scheduleReminder(this)
+        // 유저 설정에 따른 알림 예약 여부 결정
+        runBlocking {
+            launch {
+                val stats = userStatsRepository.getUserStats().first()
+                if (stats.isNotificationEnabled) {
+                    ReminderManager.scheduleReminder(this@MainActivity)
+                } else {
+                    ReminderManager.cancelReminder(this@MainActivity)
+                }
+            }
+        }
 
         // 안드로이드 13 이상 알림 권한 요청
         requestNotificationPermission()
