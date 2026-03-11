@@ -9,8 +9,8 @@ import com.kero.idiom.data.local.model.UserStatsEntity
 
 @Database(
     entities = [IdiomEntity::class, UserStatsEntity::class],
-    version = 4, // isNotificationEnabled 필드 추가로 인한 버전 상향
-    exportSchema = false
+    version = 1, // 정식 출시용 첫 번째 버전
+    exportSchema = true
 )
 abstract class IdiomDatabase : RoomDatabase() {
     abstract fun idiomDao(): IdiomDao

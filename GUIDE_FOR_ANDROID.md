@@ -67,7 +67,21 @@
     }
     ```
 
-## 5. 주요 파일 위치
+## 5. 데이터베이스 관리 및 마이그레이션 (Room Strategy)
+사용자의 소중한 학습 데이터를 보호하기 위해 다음 원칙을 엄격히 준수합니다.
+
+### 스키마 변경 및 버전 관리
+- **버전 상향 필성**: `@Entity` 클래스에 필드를 추가, 삭제, 수정할 경우 반드시 `IdiomDatabase`의 `version`을 1 상향해야 합니다. (미이행 시 런타임 에러 발생)
+- **휴먼 에러 방지**: `exportSchema = true` 설정을 유지하여 빌드 시 생성되는 `schemas/*.json` 파일을 Git으로 관리합니다. 이를 통해 버전 누락을 코드 리뷰 단계에서 차단합니다.
+
+### 마이그레이션 전략 (Migration Policy)
+- **개발 단계 (Alpha/Beta)**: `fallbackToDestructiveMigration(true)`를 사용하여 스키마 변경 시 데이터를 초기화합니다. 개발 속도를 우선합니다.
+- **운영 단계 (Production)**: 
+    - 반드시 `autoMigrations`를 사용하여 데이터를 보존해야 합니다.
+    - 복잡한 변경(테이블 분리 등)은 `Migration` 클래스를 직접 작성하여 대응합니다.
+    - 출시 후에는 어떠한 경우에도 `DestructiveMigration`이 발생해서는 안 됩니다.
+
+## 6. 주요 파일 위치
 - **의존성 관리**: `cmp/gradle/libs.versions.toml`
 - **MVI 샘플**: `cmp/feature/quiz/src/commonMain/kotlin/com/kero/idiom/feature/quiz/`
 - **공통 테마**: `cmp/core/src/commonMain/kotlin/com/kero/idiom/core/theme/`
