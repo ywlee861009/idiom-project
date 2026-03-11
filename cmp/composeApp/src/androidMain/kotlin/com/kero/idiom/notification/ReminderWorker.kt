@@ -31,6 +31,11 @@ class ReminderWorker(context: Context, params: WorkerParameters) : CoroutineWork
         }
 
         showNotification()
+
+        // [추가] 알림을 보낸 후, 사용자가 앱을 열지 않더라도 2일 뒤에 다시 알림이 울리도록 재예약
+        // 사용자가 앱을 열면 MainActivity에서 이 예약을 REPLACE하여 다시 2일 뒤로 밀게 됩니다.
+        ReminderManager.scheduleReminder(applicationContext)
+
         return Result.success()
     }
 
