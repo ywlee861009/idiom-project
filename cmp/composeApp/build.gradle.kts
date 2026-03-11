@@ -4,6 +4,8 @@ plugins {
     alias(libs.plugins.compose.multiplatform)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.firebase.crashlytics)
 }
 
 kotlin {
@@ -40,6 +42,11 @@ kotlin {
             implementation(libs.androidx.activity.compose)
             implementation(libs.google.admob) // AdMob SDK
             implementation(libs.koin.android)
+            
+            // Firebase
+            implementation(platform(libs.firebase.bom.get().toString()))
+            implementation(libs.firebase.analytics)
+            implementation(libs.firebase.crashlytics)
         }
     }
 }

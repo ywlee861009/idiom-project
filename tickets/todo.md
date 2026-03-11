@@ -4,3 +4,6 @@
 
 ---
 
+- [x] **[TASK-021] Firebase SDK 및 Crashlytics/Analytics 연동**
+
+

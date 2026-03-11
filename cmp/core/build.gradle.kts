@@ -18,6 +18,7 @@ kotlin {
         commonMain.dependencies {
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.androidx.navigation.compose)
+            implementation(libs.koin.core) // Koin Core 추가
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)
@@ -25,6 +26,15 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
+        }
+        
+        androidMain.dependencies {
+            implementation(libs.koin.android) // Koin Android 추가
+            
+            // Firebase (Android 전용)
+            implementation(platform(libs.firebase.bom.get().toString()))
+            implementation(libs.firebase.analytics)
+            implementation(libs.firebase.crashlytics)
         }
     }
 }

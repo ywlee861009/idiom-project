@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "710193678917",
+    "project_id": "idiom-2b1b4",
+    "storage_bucket": "idiom-2b1b4.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:710193678917:android:0d50da5c3f2afa79ddf12c",
+        "android_client_info": {
+          "package_name": "com.kero.idiom"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCgt2mpaC1PV8jdYAmTij1gUABGqkt-oUU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

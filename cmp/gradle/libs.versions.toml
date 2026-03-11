@@ -4,12 +4,17 @@ agp = "8.7.3"
 kotlin = "2.1.10"
 ksp = "2.1.10-1.0.29"
 jetbrains-compose = "1.7.3"
+google-services = "4.4.2"
+firebase-crashlytics-plugin = "3.0.3"
 
 # Android Specific
 coreKtx = "1.15.0"
 lifecycle = "2.8.4" # 2.8.7 대신 2.8.4
 activityCompose = "1.9.3"
 uiTooling = "1.7.6" # 추가
+
+# Firebase
+firebase-bom = "33.9.0"
 
 # Koin (CMP DI)
 koin = "4.0.0"
@@ -28,6 +33,9 @@ google-admob = "23.6.0"
 
 [libraries]
 google-admob = { group = "com.google.android.gms", name = "play-services-ads", version.ref = "google-admob" }
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
+firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
+firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics" }
 compottie = { module = "io.github.alexzhirkevich:compottie", version.ref = "compottie" }
 compottie-resources = { module = "io.github.alexzhirkevich:compottie-resources", version.ref = "compottie" }
 compottie-dot = { module = "io.github.alexzhirkevich:compottie-dot", version.ref = "compottie" }
@@ -69,3 +77,5 @@ compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 room = { id = "androidx.room", version.ref = "room" }
+google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics-plugin" }

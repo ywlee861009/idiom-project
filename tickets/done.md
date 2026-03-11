@@ -4,6 +4,18 @@
 
 ---
 
+### [TASK-021] Firebase SDK 및 Crashlytics/Analytics 연동
+- **Completed Date**: 2026-03-11
+- **Build Verified**: [x] `./cmp/gradlew :composeApp:assembleDebug` SUCCESS
+- **Results**:
+    - [x] `libs.versions.toml`에 Firebase BoM(33.9.0), Analytics, Crashlytics 설정.
+    - [x] 루트 및 `composeApp` 수준 `build.gradle.kts`에 `google-services` 및 `crashlytics` 플러그인 적용.
+    - [x] `google-services.json` 파일을 `cmp/composeApp/` 모듈 루트로 배치하여 빌드 시스템 연동.
+    - [x] `IdiomApplication`에서 Crashlytics 초기화 로그 및 수집 활성화 코드 추가.
+- **Priority**: High
+
+---
+
 ### ID-32: Google AdMob SDK 연동 및 기초 설정 (수익화 기초)
 - **Completed Date**: 2026-03-11
 - **Build Verified**: [x] `./cmp/gradlew :composeApp:assembleDebug` SUCCESS
