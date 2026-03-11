@@ -14,5 +14,6 @@ data class Quiz(
     val questionText: String,  // 화면에 표시될 메인 텍스트
     val hintText: String,      // 보조 힌트 텍스트 (뜻 또는 한자 등)
     val answer: String,        // 정답 (문자 또는 단어 전체)
-    val options: List<String>  // 4개의 선택지
+    val options: List<String>, // 4개의 선택지
+    val blankIndices: List<Int> = emptyList() // 주관식일 때 빈칸의 위치 (0, 1, 2, 3)
 )

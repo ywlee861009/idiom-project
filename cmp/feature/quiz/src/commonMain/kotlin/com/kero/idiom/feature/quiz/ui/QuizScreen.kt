@@ -270,7 +270,7 @@ fun QuizScreen(
                                     ),
                                     placeholder = {
                                         Text(
-                                            "여기에 입력",
+                                            "${quiz.blankIndices.size}글자 또는 4글자 입력",
                                             modifier = Modifier.fillMaxWidth(),
                                             textAlign = androidx.compose.ui.text.style.TextAlign.Center,
                                             fontSize = 18.sp,

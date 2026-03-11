@@ -42,7 +42,8 @@ class GetRandomQuizUseCase(
             questionText = questionText,
             hintText = idiom.meaning,
             answer = idiom.word,
-            options = emptyList() // 주관식은 선택지 없음
+            options = emptyList(),
+            blankIndices = blankIndices
         )
     }
 
@@ -59,7 +60,6 @@ class GetRandomQuizUseCase(
             val randomChar = samples.random().word.random().toString()
             options.add(randomChar)
         }
-// ...
 
         return Quiz(
             type = QuizType.FILL_BLANK,
@@ -67,7 +67,8 @@ class GetRandomQuizUseCase(
             questionText = questionText,
             hintText = idiom.meaning,
             answer = answerChar,
-            options = options.toList().shuffled()
+            options = options.toList().shuffled(),
+            blankIndices = listOf(blankIndex)
         )
     }
 

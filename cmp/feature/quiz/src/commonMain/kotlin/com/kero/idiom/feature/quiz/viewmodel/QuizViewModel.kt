@@ -78,7 +78,23 @@ class QuizViewModel(
         if (state.value.isCorrect != null) return
         
         val currentQuiz = state.value.currentQuiz ?: return
-        val isCorrect = option.trim() == currentQuiz.answer.trim()
+        val trimmedInput = option.trim()
+        
+        // 정답 판정 로직 개선
+        val isCorrect = if (currentQuiz.options.isEmpty() && trimmedInput.length == currentQuiz.blankIndices.size) {
+            // 빈칸 글자수만 입력한 경우 (예: "건_일_" + "곤척")
+            val reconstructed = currentQuiz.originalIdiom.word.mapIndexed { index, c ->
+                if (index in currentQuiz.blankIndices) {
+                    trimmedInput[currentQuiz.blankIndices.indexOf(index)]
+                } else {
+                    c
+                }
+            }.joinToString("")
+            reconstructed == currentQuiz.answer
+        } else {
+            // 전체 4글자를 입력하거나 객관식인 경우
+            trimmedInput == currentQuiz.answer
+        }
         
         viewModelScope.launch {
             if (isCorrect) {
