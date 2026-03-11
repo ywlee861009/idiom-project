@@ -16,12 +16,12 @@ object ReminderManager {
 
     /**
      * 알림을 예약합니다. 
-     * 디버그 모드(Debug): 5분 뒤 알림 (테스트용)
+     * 디버그 모드(Debug): 1분 뒤 알림 (테스트용)
      * 운영 모드(Release): 2일 뒤 오전 8시 알림
      */
     fun scheduleReminder(context: Context) {
         val (delay, unit) = if (BuildConfig.DEBUG) {
-            5L to TimeUnit.MINUTES // 테스트를 위해 5분으로 설정
+            1L to TimeUnit.MINUTES // 테스트를 위해 1분으로 설정 (기존 5분에서 단축)
         } else {
             calculateDelayUntilEightAm() to TimeUnit.MILLISECONDS
         }

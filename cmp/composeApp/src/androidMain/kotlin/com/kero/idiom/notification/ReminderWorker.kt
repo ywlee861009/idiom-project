@@ -63,14 +63,14 @@ class ReminderWorker(context: Context, params: WorkerParameters) : CoroutineWork
         val message = ReminderMessage.getRandom()
 
         val notification = NotificationCompat.Builder(applicationContext, channelId)
-            .setSmallIcon(R.mipmap.ic_launcher)
+            .setSmallIcon(R.mipmap.ic_launcher_foreground) // [수정] 배경이 투명한 실루엣 아이콘 사용
+            .setColor(applicationContext.getColor(android.R.color.black)) // [추가] 아이콘에 입힐 강조색 (먹색 권장)
             .setContentTitle(message.title)
             .setContentText(message.content)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
             .build()
-
 
         notificationManager.notify(1001, notification)
     }
