@@ -207,6 +207,7 @@ fun QuizScreen(
                 .background(BgPrimary)
                 .statusBarsPadding()
                 .navigationBarsPadding()
+                .imePadding() // 💡 키보드가 올라올 때 UI를 밀어 올림
         ) {
             if (state.isLoading) {
                 Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -417,17 +418,7 @@ fun QuizScreen(
                                     enabled = state.isCorrect == null
                                 )
 
-                                if (state.isCorrect == null) {
-                                    Button(
-                                        onClick = { viewModel.handleIntent(QuizIntent.SubmitAnswer) },
-                                        modifier = Modifier.fillMaxWidth().height(56.dp),
-                                        shape = RoundedCornerShape(12.dp),
-                                        colors = ButtonDefaults.buttonColors(containerColor = BgDark),
-                                        enabled = state.inputText.isNotBlank()
-                                    ) {
-                                        Text("정답 확인", fontWeight = FontWeight.Bold)
-                                    }
-                                } else if (state.isCorrect == false) {
+                                if (state.isCorrect == false) {
                                     Text(
                                         text = "정답은 '${quiz.answer}' 입니다.",
                                         color = WrongRed,
@@ -441,13 +432,31 @@ fun QuizScreen(
                         Spacer(Modifier.height(16.dp))
                     }
 
-                    // 다음 문제 버튼
+                    // 🌌 [통합 버튼] 상태에 따라 정답 확인 또는 다음 문제로 동작
+                    val isSubjective = quiz.options.isEmpty()
+                    val hasSubmittedSubjective = state.isCorrect != null
+                    val hasSelectedObjective = state.selectedOption != null
                     val isLastQuestion = state.quizCount >= TOTAL
-                    val showResult = state.selectedOption != null || state.isCorrect != null
-                    val buttonEnabled = showResult && animationFile == null
+                    
+                    val buttonText = when {
+                        isSubjective && !hasSubmittedSubjective -> "정답 확인"
+                        isLastQuestion -> "결과 보기 →"
+                        else -> "다음 문제 →"
+                    }
+
+                    val buttonEnabled = when {
+                        isSubjective && !hasSubmittedSubjective -> state.inputText.isNotBlank()
+                        else -> (hasSelectedObjective || hasSubmittedSubjective) && animationFile == null
+                    }
 
                     Button(
-                        onClick = { viewModel.handleIntent(QuizIntent.NextQuiz) },
+                        onClick = { 
+                            if (isSubjective && !hasSubmittedSubjective) {
+                                viewModel.handleIntent(QuizIntent.SubmitAnswer)
+                            } else {
+                                viewModel.handleIntent(QuizIntent.NextQuiz)
+                            }
+                        },
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 24.dp)
@@ -463,7 +472,7 @@ fun QuizScreen(
                         )
                     ) {
                         Text(
-                            text = if (isLastQuestion) "결과 보기 →" else "다음 문제 →",
+                            text = buttonText,
                             style = MaterialTheme.typography.labelLarge,
                             fontWeight = FontWeight.Bold
                         )

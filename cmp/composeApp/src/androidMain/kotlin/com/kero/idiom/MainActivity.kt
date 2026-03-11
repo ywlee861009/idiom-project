@@ -9,8 +9,6 @@ import androidx.activity.addCallback
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -92,10 +90,4 @@ class MainActivity : ComponentActivity() {
         var currentActivity: MainActivity? = null
             private set
     }
-}
-
-@Preview
-@Composable
-fun AppAndroidPreview() {
-    App()
 }

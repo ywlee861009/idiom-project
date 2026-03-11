@@ -1,9 +1,12 @@
 package com.kero.idiom.ui
 
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
@@ -11,8 +14,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kero.idiom.core.components.IdiomDivider
@@ -37,6 +43,17 @@ fun HomeScreen(
     var todayIdiom by remember { mutableStateOf<Idiom?>(null) }
     val userStats by getUserStatsUseCase().collectAsState(UserStats())
 
+    val infiniteTransition = rememberInfiniteTransition(label = "breathing")
+    val scale by infiniteTransition.animateFloat(
+        initialValue = 1f,
+        targetValue = 1.06f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(1200, easing = EaseInOutSine),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "scale"
+    )
+
     LaunchedEffect(Unit) {
         todayIdiom = repository.getRandomIdioms(1).firstOrNull()
     }
@@ -53,140 +70,109 @@ fun HomeScreen(
                 .weight(1f)
                 .padding(horizontal = 24.dp)
                 .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(28.dp)
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(16.dp))
 
-            // 타이틀
-            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                Text(
-                    text = "오늘의 학습",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = TextMuted,
-                    letterSpacing = 0.5.sp
-                )
-                Text(
-                    text = "서당",
-                    style = MaterialTheme.typography.headlineLarge,
-                    color = TextPrimary
-                )
-            }
-
-            // 랭크 카드 (검정 배경)
-            Column(
+            // 1️⃣ [상단] 슬림해진 나의 칭호 및 상태 바
+            Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(16.dp))
                     .background(BgDark)
-                    .padding(20.dp),
-                verticalArrangement = Arrangement.spacedBy(6.dp)
+                    .padding(horizontal = 20.dp, vertical = 16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
+                Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = "나의 칭호",
+                        text = "현재 나의 칭호",
                         fontSize = 11.sp,
                         color = Color.White.copy(alpha = 0.5f),
                         letterSpacing = 0.5.sp
                     )
-                    Box(
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(20.dp))
-                            .background(Color.White.copy(alpha = 0.15f))
-                            .padding(horizontal = 10.dp, vertical = 4.dp)
-                    ) {
-                        Text(
-                            text = "Lv.${userStats.level}",
-                            fontSize = 11.sp,
-                            fontWeight = FontWeight.SemiBold,
-                            color = Color.White
-                        )
-                    }
+                    Text(
+                        text = userStats.title,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White
+                    )
                 }
-                Text(
-                    text = userStats.title,
-                    style = MaterialTheme.typography.headlineSmall,
-                    color = Color.White
-                )
-                Text(
-                    text = "${userStats.titleDescription} 🎋",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = Color.White.copy(alpha = 0.6f)
-                )
-                IdiomDivider(
-                    modifier = Modifier.padding(vertical = 6.dp),
-                )
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceAround
-                ) {
-                    val accuracy = if (userStats.totalSolvedCount > 0) {
-                        (userStats.totalCorrectCount.toFloat() / userStats.totalSolvedCount * 100).toInt()
-                    } else 0
-                    
-                    RankStatItem("${userStats.totalSolvedCount}", "고사 푼 문제")
-                    RankStatItem("${userStats.currentStreak}일", "연속 복습")
-                    RankStatItem("$accuracy%", "정답률")
+                
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    CompactStatItem("${userStats.currentStreak}일", "연속")
+                    Spacer(Modifier.width(16.dp))
+                    CompactStatItem("Lv.${userStats.level}", "단계")
                 }
             }
 
-            // 오늘의 성어 섹션 헤더
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "오늘의 성어",
-                    style = MaterialTheme.typography.titleMedium,
-                    color = TextPrimary
-                )
-                Text(
-                    text = "더보기",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = TextMuted
-                )
-            }
+            Spacer(Modifier.height(48.dp))
 
-            // 오늘의 성어 카드
-            todayIdiom?.let { idiom ->
-                TodayIdiomCard(idiom)
-            } ?: Box(
+            // 2️⃣ [중앙] 압도적인 강독 시작 버튼 (Breathing Action)
+            Box(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(120.dp)
-                    .clip(RoundedCornerShape(14.dp))
-                    .background(BgSurface),
+                    .size(180.dp)
+                    .graphicsLayer {
+                        scaleX = scale
+                        scaleY = scale
+                    }
+                    .shadow(elevation = 16.dp, shape = CircleShape)
+                    .clip(CircleShape)
+                    .background(BgDark)
+                    .clickable(onClick = onStartQuiz),
                 contentAlignment = Alignment.Center
             ) {
-                CircularProgressIndicator(color = BgDark, modifier = Modifier.size(24.dp))
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(
+                        text = "오늘의",
+                        fontSize = 16.sp,
+                        color = Color.White.copy(alpha = 0.7f),
+                        fontWeight = FontWeight.Medium
+                    )
+                    Text(
+                        text = "강독 시작",
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.ExtraBold,
+                        color = Color.White,
+                        textAlign = TextAlign.Center
+                    )
+                    Text(
+                        text = "→",
+                        fontSize = 20.sp,
+                        color = Color.White
+                    )
+                }
             }
 
-            Spacer(Modifier.height(8.dp))
-        }
+            Spacer(Modifier.height(56.dp))
 
-        // 강독 시작 버튼
-        Button(
-            onClick = onStartQuiz,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 24.dp)
-                .padding(bottom = 8.dp)
-                .height(60.dp),
-            shape = RoundedCornerShape(12.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = BgDark,
-                contentColor = TextOnDark
-            )
-        ) {
-            Text(
-                text = "강독 시작 →",
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold
-            )
+            // 3️⃣ [하단] 오늘의 성어 (부드러운 지식 카드)
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                Text(
+                    text = "오늘의 지혜",
+                    style = MaterialTheme.typography.titleMedium,
+                    color = TextPrimary,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                
+                todayIdiom?.let { idiom ->
+                    TodayIdiomCard(idiom)
+                } ?: Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(100.dp)
+                        .clip(RoundedCornerShape(14.dp))
+                        .background(BgSurface),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator(color = BgDark, modifier = Modifier.size(24.dp))
+                }
+            }
+
+            Spacer(Modifier.height(32.dp))
         }
 
         IdiomTabBar(
@@ -197,17 +183,17 @@ fun HomeScreen(
 }
 
 @Composable
-private fun RankStatItem(value: String, label: String) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+private fun CompactStatItem(value: String, label: String) {
+    Column(horizontalAlignment = Alignment.End) {
         Text(
             text = value,
-            fontSize = 22.sp,
+            fontSize = 16.sp,
             fontWeight = FontWeight.Bold,
             color = Color.White
         )
         Text(
             text = label,
-            fontSize = 12.sp,
+            fontSize = 10.sp,
             color = Color.White.copy(alpha = 0.5f)
         )
     }
@@ -224,11 +210,19 @@ private fun TodayIdiomCard(idiom: Idiom) {
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Text(
-            text = idiom.hanja,
-            style = MaterialTheme.typography.titleLarge,
-            color = TextPrimary
-        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.Top
+        ) {
+            Text(
+                text = idiom.hanja,
+                style = MaterialTheme.typography.titleLarge,
+                color = TextPrimary,
+                modifier = Modifier.weight(1f)
+            )
+            TagChip("고사성어")
+        }
         Text(
             text = idiom.word,
             style = MaterialTheme.typography.bodyMedium,
@@ -240,11 +234,6 @@ private fun TodayIdiomCard(idiom: Idiom) {
             style = MaterialTheme.typography.bodyMedium,
             color = TextSecondary
         )
-        Spacer(Modifier.height(4.dp))
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            TagChip("고사성어")
-            TagChip("초급")
-        }
     }
 }
 
