@@ -21,6 +21,7 @@ import com.kero.idiom.core.components.IdiomTab
 import com.kero.idiom.core.components.IdiomTabBar
 import com.kero.idiom.core.theme.*
 import com.kero.idiom.openFontSizeSettings
+import com.kero.idiom.openStorePage
 import com.kero.idiom.ui.profile.ProfileViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -194,10 +195,11 @@ fun ProfileScreen(
                     }
                     HorizontalDivider(color = BorderColor, thickness = 1.dp)
 
-                    // 앱 버전
+                    // 앱 버전 (마켓으로 이동)
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
+                            .clickable { openStorePage() }
                             .padding(horizontal = 16.dp, vertical = 14.dp),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
@@ -208,16 +210,11 @@ fun ProfileScreen(
                         ) {
                             Text("ℹ", fontSize = 16.sp, color = TextPrimary)
                             Text(
-                                text = "앱 버전",
+                                text = "업데이트 확인",
                                 style = MaterialTheme.typography.bodyLarge,
                                 color = TextPrimary
                             )
                         }
-                        Text(
-                            text = "v2.0.0",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = TextMuted
-                        )
                     }
                 }
             }

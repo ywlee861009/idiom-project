@@ -18,6 +18,10 @@ actual fun openFontSizeSettings() {
     // No-op for iOS
 }
 
+actual fun openStorePage() {
+    // No-op for iOS
+}
+
 actual fun exitApp() {
     // No-op for iOS
 }

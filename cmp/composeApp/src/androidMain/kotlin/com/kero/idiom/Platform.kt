@@ -1,6 +1,7 @@
 package com.kero.idiom
 
 import android.content.Intent
+import android.net.Uri
 import android.provider.Settings
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
@@ -25,18 +26,15 @@ actual fun openFontSizeSettings() {
 
         // 2. 최대한 구체적인 폰트 설정 화면 시도
         val intent = try {
-            // 일부 기기에서 지원하는 직접 경로
             Intent("android.settings.FONT_SIZE").apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
         } catch (e: Exception) {
-            // 실패 시 표준 디스플레이 설정으로 폴백
             Intent(Settings.ACTION_DISPLAY_SETTINGS).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
         }
         
-        // 실제 실행 시에도 에러가 날 수 있으므로 최종 try-catch
         try {
             context.startActivity(intent)
         } catch (e: Exception) {
@@ -44,6 +42,27 @@ actual fun openFontSizeSettings() {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
             context.startActivity(fallbackIntent)
+        }
+    }
+}
+
+actual fun openStorePage() {
+    IdiomApplication.instance?.let { context ->
+        val packageName = context.packageName
+        val intent = Intent(Intent.ACTION_VIEW).apply {
+            data = Uri.parse("market://details?id=$packageName")
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+        
+        try {
+            context.startActivity(intent)
+        } catch (e: Exception) {
+            // 플레이 스토어 앱이 없는 경우 브라우저로 열기
+            val webIntent = Intent(Intent.ACTION_VIEW).apply {
+                data = Uri.parse("https://play.google.com/store/apps/details?id=$packageName")
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            context.startActivity(webIntent)
         }
     }
 }

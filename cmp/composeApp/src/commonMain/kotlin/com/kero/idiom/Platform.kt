@@ -9,6 +9,8 @@ expect fun showToast(message: String)
 
 expect fun openFontSizeSettings()
 
+expect fun openStorePage()
+
 expect fun exitApp()
 
 expect fun currentMillis(): Long
