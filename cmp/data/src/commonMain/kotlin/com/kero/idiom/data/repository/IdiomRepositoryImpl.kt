@@ -71,8 +71,6 @@ class IdiomRepositoryImpl(
     }
 
     override suspend fun getRandomIdioms(limit: Int): List<Idiom> {
-        // syncIfNeeded()를 콜백 없이 호출 (기본값)
-        syncIfNeeded()
         return idiomDao.getRandomIdioms(limit).map { it.toDomain() }
     }
 
