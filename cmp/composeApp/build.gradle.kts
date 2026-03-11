@@ -47,6 +47,9 @@ kotlin {
             implementation(platform(libs.firebase.bom.get().toString()))
             implementation(libs.firebase.analytics)
             implementation(libs.firebase.crashlytics)
+
+            // WorkManager (Local Notification)
+            implementation(libs.androidx.work.runtime.ktx)
         }
     }
 }

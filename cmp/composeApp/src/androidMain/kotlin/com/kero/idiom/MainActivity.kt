@@ -1,14 +1,20 @@
 package com.kero.idiom
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.addCallback
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.content.ContextCompat
 import com.google.android.gms.ads.MobileAds
 import com.kero.idiom.core.ads.AdController
+import com.kero.idiom.notification.ReminderManager
 import org.koin.android.ext.android.inject
 
 class MainActivity : ComponentActivity() {
@@ -18,7 +24,13 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         currentActivity = this
-        
+
+        // 로컬 알림 예약 (유저가 접속했으므로 다시 48시간 뒤로 미룸)
+        ReminderManager.scheduleReminder(this)
+
+        // 안드로이드 13 이상 알림 권한 요청
+        requestNotificationPermission()
+
         // AdMob 초기화
         MobileAds.initialize(this) {}
         
@@ -34,6 +46,20 @@ class MainActivity : ComponentActivity() {
         
         setContent {
             App() // 공통 UI 호출!
+        }
+    }
+
+    private fun requestNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                val permissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+                    if (isGranted) {
+                        // 권한 허용 시 리마인더 예약 (한 번 더 확실하게)
+                        ReminderManager.scheduleReminder(this)
+                    }
+                }
+                permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
         }
     }
 
