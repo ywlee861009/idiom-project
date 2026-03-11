@@ -14,7 +14,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -46,6 +49,17 @@ fun QuizScreen(
     val state by viewModel.state.collectAsState()
     var animationFile by remember { mutableStateOf<String?>(null) }
     val scope = rememberCoroutineScope()
+
+    val focusRequester = remember { FocusRequester() }
+    val keyboardController = LocalSoftwareKeyboardController.current
+
+    LaunchedEffect(state.currentQuiz) {
+        if (state.currentQuiz != null && state.currentQuiz?.options?.isEmpty() == true) {
+            delay(300)
+            focusRequester.requestFocus()
+            keyboardController?.show()
+        }
+    }
 
     // animationFile을 key로 전달하여 상태가 바뀔 때마다 다시 로드하도록 강제함
     val compositionResult = rememberLottieComposition(animationFile) {
@@ -263,7 +277,9 @@ fun QuizScreen(
                                             viewModel.handleIntent(QuizIntent.InputAnswer(it))
                                         }
                                     },
-                                    modifier = Modifier.fillMaxWidth(),
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .focusRequester(focusRequester),
                                     textStyle = MaterialTheme.typography.headlineSmall.copy(
                                         textAlign = androidx.compose.ui.text.style.TextAlign.Center,
                                         letterSpacing = 8.sp
