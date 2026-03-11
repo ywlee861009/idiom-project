@@ -25,15 +25,18 @@ fun App() {
         KoinContext {
             val repository: IdiomRepository = koinInject()
             var isSyncing by remember { mutableStateOf(true) }
+            var syncMessage by remember { mutableStateOf("서책을 정리 중입니다...") }
 
             LaunchedEffect(Unit) {
-                repository.syncIfNeeded()
-                delay(2000)
+                // 💡 동기화 상태 메시지를 콜백으로 받아 화면에 노출
+                repository.syncIfNeeded { message ->
+                    syncMessage = message
+                }
                 isSyncing = false
             }
 
             if (isSyncing) {
-                CultureLoadingScreen()
+                CultureLoadingScreen(message = syncMessage)
             } else {
                 val navController = rememberNavController()
 

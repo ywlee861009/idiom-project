@@ -11,6 +11,7 @@ import com.kero.idiom.data.local.model.toDomain
 import com.kero.idiom.data.local.model.toEntity
 import com.kero.idiom.domain.model.Idiom
 import com.kero.idiom.domain.repository.IdiomRepository
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
@@ -23,46 +24,54 @@ class IdiomRepositoryImpl(
 
     private val IDIOM_VERSION = intPreferencesKey("idiom_version")
 
-    /**
-     * GitHub 기반 서버 동기화 로직
-     * 1. 서버의 version.json 확인
-     * 2. 로컬 버전보다 높거나 Room이 비어있으면 idioms.json 다운로드
-     * 3. 실패 시 로컬 Asset으로 Fallback
-     */
-    override suspend fun syncIfNeeded() {
+    override suspend fun syncIfNeeded(onStatusChanged: ((String) -> Unit)?) {
+        onStatusChanged?.invoke("서책을 정리 중입니다...")
+        
         val storedVersion = dataStore.data.map { it[IDIOM_VERSION] ?: 0 }.first()
         val remoteVersion = remoteDataSource.getRemoteVersion() ?: 0
 
-        // 1. 서버에 새로운 버전이 있거나, DB가 비어있는 경우
+        com.kero.idiom.core.util.Logger.d("Data Sync: [Stored: v$storedVersion] vs [Remote: v$remoteVersion]")
+
+        // 💡 새로운 버전 발견 또는 DB가 비어있는 경우
         if (remoteVersion > storedVersion || idiomDao.getCount() == 0) {
+            
+            if (remoteVersion > storedVersion) {
+                onStatusChanged?.invoke("새로운 서책 목록이 발견되었습니다!")
+                delay(1000) // 유저가 읽을 시간을 줌
+            }
+
+            onStatusChanged?.invoke("서책을 업데이트 중입니다...")
+            delay(500)
+
             val remoteIdioms = remoteDataSource.getRemoteIdioms()
             
             if (remoteIdioms.isNotEmpty()) {
-                // 서버에서 데이터를 성공적으로 받아온 경우
                 idiomDao.deleteAll()
                 idiomDao.insertAll(remoteIdioms.map { it.toEntity() })
                 dataStore.edit { it[IDIOM_VERSION] = remoteVersion }
-                println("✅ Sync success: Version $remoteVersion from Remote")
+                onStatusChanged?.invoke("서책 업데이트 완료!")
+                delay(500)
             } else if (idiomDao.getCount() == 0) {
-                // 서버 통신 실패했는데 DB가 아예 비어있으면 Local Asset 사용
-                syncFromLocalAsset()
+                // 서버 실패 시 로컬 Asset으로 Fallback
+                syncFromLocalAsset(onStatusChanged)
             }
         }
     }
 
-    private suspend fun syncFromLocalAsset() {
+    private suspend fun syncFromLocalAsset(onStatusChanged: ((String) -> Unit)?) {
+        onStatusChanged?.invoke("로컬 서책을 불러오는 중입니다...")
         val idioms = assetDataSource.getIdiomsFromAssets()
         if (idioms.isNotEmpty()) {
             idiomDao.deleteAll()
             idiomDao.insertAll(idioms.map { it.toEntity() })
-            // Asset 버전은 최소값(0)으로 일단 세팅하여 차후 서버 업데이트 가능하게 함
             dataStore.edit { it[IDIOM_VERSION] = 0 }
-            println("📂 Sync: Loaded from Local Asset (Fallback)")
+            onStatusChanged?.invoke("서책 준비 완료!")
+            delay(500)
         }
     }
 
     override suspend fun getRandomIdioms(limit: Int): List<Idiom> {
-        // getRandomIdioms 호출 시마다 동기화 여부 체크 (필요시 실행됨)
+        // syncIfNeeded()를 콜백 없이 호출 (기본값)
         syncIfNeeded()
         return idiomDao.getRandomIdioms(limit).map { it.toDomain() }
     }

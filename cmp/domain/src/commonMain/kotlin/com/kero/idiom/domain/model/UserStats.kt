@@ -6,7 +6,8 @@ data class UserStats(
     val maxStreak: Int = 0,
     val lastSolvedDateMillis: Long = 0,
     val totalCorrectCount: Int = 0,
-    val isNotificationEnabled: Boolean = true
+    val isNotificationEnabled: Boolean = true,
+    val dataVersion: Int = 0 // 📜 서책(데이터) 버전 추가
 ) {
     // 맞힌 개수에 따른 레벨 계산 (정답 10개당 1레벨 상승)
     val level: Int get() = (totalCorrectCount / 10).coerceIn(0, 49) + 1
@@ -23,7 +24,6 @@ data class UserStats(
         return (next.minLevel - level).coerceAtLeast(0)
     }
 
-    // 기존 프로퍼티 유지
     val title: String get() = currentTitleInfo.title
     val titleDescription: String get() = currentTitleInfo.description
 }

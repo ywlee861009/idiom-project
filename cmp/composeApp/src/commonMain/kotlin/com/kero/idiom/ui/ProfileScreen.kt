@@ -275,6 +275,33 @@ fun ProfileScreen(
                     }
                     HorizontalDivider(color = BorderColor, thickness = 1.dp)
 
+                    // 서책 버전 (데이터 버전)
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 14.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(10.dp)
+                        ) {
+                            Text("📜", fontSize = 16.sp, color = TextPrimary)
+                            Text(
+                                text = "서책 버전",
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = TextPrimary
+                            )
+                        }
+                        Text(
+                            text = "v${stats.dataVersion}",
+                            style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
+                            color = TextSecondary
+                        )
+                    }
+                    HorizontalDivider(color = BorderColor, thickness = 1.dp)
+
                     // 앱 버전 (마켓으로 이동)
                     Row(
                         modifier = Modifier

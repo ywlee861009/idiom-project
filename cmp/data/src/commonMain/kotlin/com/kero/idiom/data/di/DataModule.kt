@@ -28,9 +28,14 @@ val dataModule = module {
                     ignoreUnknownKeys = true
                     prettyPrint = true
                     isLenient = true
-                })
+                }, contentType = io.ktor.http.ContentType.Any) // 💡 GitHub Raw(text/plain) 대응
             }
             install(Logging) {
+                logger = object : io.ktor.client.plugins.logging.Logger {
+                    override fun log(message: String) {
+                        com.kero.idiom.core.util.Logger.d("Network: $message")
+                    }
+                }
                 level = LogLevel.ALL
             }
         }
@@ -52,7 +57,8 @@ val dataModule = module {
     
     single<UserStatsRepository> {
         UserStatsRepositoryImpl(
-            userStatsDao = get()
+            userStatsDao = get(),
+            dataStore = get()
         )
     }
 }
