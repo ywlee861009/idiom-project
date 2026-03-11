@@ -9,9 +9,9 @@ firebase-crashlytics-plugin = "3.0.3"
 
 # Android Specific
 coreKtx = "1.15.0"
-lifecycle = "2.8.4" # 2.8.7 대신 2.8.4
+lifecycle = "2.8.4" 
 activityCompose = "1.9.3"
-uiTooling = "1.7.6" # 추가
+uiTooling = "1.7.6"
 
 # Firebase
 firebase-bom = "33.9.0"
@@ -20,14 +20,14 @@ firebase-bom = "33.9.0"
 koin = "4.0.0"
 
 # Navigation (CMP Compatible)
-navigation = "2.8.0-alpha10" # 2.8.7 대신 CMP용 alpha 버전
+navigation = "2.8.0-alpha10" 
 kotlinxSerialization = "1.7.3"
 kotlinxCoroutines = "1.9.0"
 
 # Data Storage (KMP)
 datastore = "1.1.1"
-room = "2.7.0-alpha11"
-sqlite = "2.5.0-alpha11"
+room = "2.7.0-alpha13"
+sqlite = "2.5.0-alpha13"
 compottie = "2.0.0-rc02"
 google-admob = "23.6.0"
 androidx-work = "2.10.0"
@@ -43,7 +43,6 @@ compottie-resources = { module = "io.github.alexzhirkevich:compottie-resources",
 compottie-dot = { module = "io.github.alexzhirkevich:compottie-dot", version.ref = "compottie" }
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview", version.ref = "uiTooling" }
 androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "uiTooling" }
-# Android Core (only for androidMain)
 
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
