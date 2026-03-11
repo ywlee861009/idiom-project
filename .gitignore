@@ -9,3 +9,7 @@ build/
 .idea/
 *.iml
 local.properties
+*.jks
+*.keystore
+*.p12
+*.jks-private
