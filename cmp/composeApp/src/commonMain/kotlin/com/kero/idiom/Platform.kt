@@ -11,6 +11,8 @@ expect fun openFontSizeSettings()
 
 expect fun openStorePage()
 
+expect fun openBrowser(url: String)
+
 expect fun exitApp()
 
 expect fun currentMillis(): Long

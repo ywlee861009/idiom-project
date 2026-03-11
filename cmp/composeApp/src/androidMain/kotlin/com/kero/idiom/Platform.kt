@@ -21,10 +21,8 @@ actual fun showToast(message: String) {
 
 actual fun openFontSizeSettings() {
     IdiomApplication.instance?.let { context ->
-        // 1. 안내 메시지 표시 (어르신들을 위한 배려)
         Toast.makeText(context, "화면 설정에서 '글자 크기'를 조절해 주세요.", Toast.LENGTH_LONG).show()
 
-        // 2. 최대한 구체적인 폰트 설정 화면 시도
         val intent = try {
             Intent("android.settings.FONT_SIZE").apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -57,12 +55,24 @@ actual fun openStorePage() {
         try {
             context.startActivity(intent)
         } catch (e: Exception) {
-            // 플레이 스토어 앱이 없는 경우 브라우저로 열기
             val webIntent = Intent(Intent.ACTION_VIEW).apply {
                 data = Uri.parse("https://play.google.com/store/apps/details?id=$packageName")
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
             context.startActivity(webIntent)
+        }
+    }
+}
+
+actual fun openBrowser(url: String) {
+    IdiomApplication.instance?.let { context ->
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url)).apply {
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+        try {
+            context.startActivity(intent)
+        } catch (e: Exception) {
+            Toast.makeText(context, "브라우저를 열 수 없습니다.", Toast.LENGTH_SHORT).show()
         }
     }
 }

@@ -22,6 +22,10 @@ actual fun openStorePage() {
     // No-op for iOS
 }
 
+actual fun openBrowser(url: String) {
+    // No-op for iOS
+}
+
 actual fun exitApp() {
     // No-op for iOS
 }

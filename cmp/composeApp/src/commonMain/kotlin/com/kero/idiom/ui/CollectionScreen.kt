@@ -2,6 +2,7 @@ package com.kero.idiom.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -21,6 +22,7 @@ import com.kero.idiom.core.components.IdiomTabBar
 import com.kero.idiom.core.theme.*
 import com.kero.idiom.domain.model.Idiom
 import com.kero.idiom.domain.repository.IdiomRepository
+import com.kero.idiom.openBrowser
 import org.koin.compose.koinInject
 
 @Composable
@@ -141,6 +143,10 @@ private fun IdiomCollectionCard(idiom: Idiom) {
             .fillMaxWidth()
             .clip(RoundedCornerShape(12.dp))
             .background(BgDark)
+            .clickable { 
+                val searchUrl = "https://hanja.dict.naver.com/search?query=${idiom.word}"
+                openBrowser(searchUrl)
+            }
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(6.dp)
     ) {
@@ -163,11 +169,23 @@ private fun IdiomCollectionCard(idiom: Idiom) {
             color = Color.White.copy(alpha = 0.75f),
             lineHeight = 18.sp
         )
-        Spacer(Modifier.height(4.dp))
-        Text(
-            text = "획득 완료 ✓",
-            fontSize = 11.sp,
-            color = Color.White.copy(alpha = 0.4f)
-        )
+        Spacer(Modifier.height(6.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "상세 풀이 보기(네이버)",
+                fontSize = 10.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.White.copy(alpha = 0.5f)
+            )
+            Text(
+                text = "획득 완료 ✓",
+                fontSize = 11.sp,
+                color = Color.White.copy(alpha = 0.4f)
+            )
+        }
     }
 }
