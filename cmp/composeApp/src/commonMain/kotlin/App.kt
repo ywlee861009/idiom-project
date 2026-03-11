@@ -28,7 +28,6 @@ fun App() {
             var syncMessage by remember { mutableStateOf("서책을 정리 중입니다...") }
 
             LaunchedEffect(Unit) {
-                // 💡 동기화 상태 메시지를 콜백으로 받아 화면에 노출
                 repository.syncIfNeeded { message ->
                     syncMessage = message
                 }
@@ -45,17 +44,7 @@ fun App() {
                     startDestination = Screen.Home
                 ) {
                     composable<Screen.Home> {
-                        var lastBackPressTime by remember { mutableLongStateOf(0L) }
-                        
-                        BackPressHandler {
-                            val currentTime = currentMillis()
-                            if (currentTime - lastBackPressTime < 2000) {
-                                exitApp()
-                            } else {
-                                lastBackPressTime = currentTime
-                                showToast("뒤로가기 버튼을 한 번 더 누르면 종료됩니다.")
-                            }
-                        }
+                        DoubleBackExitHandler()
 
                         HomeScreen(
                             onTabSelected = { tab ->
@@ -75,6 +64,8 @@ fun App() {
                     }
 
                     composable<Screen.Collection> {
+                        DoubleBackExitHandler()
+
                         CollectionScreen(
                             onTabSelected = { tab ->
                                 when (tab) {
@@ -92,6 +83,8 @@ fun App() {
                     }
 
                     composable<Screen.Profile> {
+                        DoubleBackExitHandler()
+
                         ProfileScreen(
                             onTabSelected = { tab ->
                                 when (tab) {
@@ -141,6 +134,25 @@ fun App() {
                     }
                 }
             }
+        }
+    }
+}
+
+/**
+ * 뒤로가기 버튼을 두 번 누르면 앱을 종료하는 핸들러 컴포저블.
+ * 최상위 화면(Home, Collection, Profile)에서 사용됩니다.
+ */
+@Composable
+fun DoubleBackExitHandler() {
+    var lastBackPressTime by remember { mutableLongStateOf(0L) }
+    
+    BackPressHandler {
+        val currentTime = currentMillis()
+        if (currentTime - lastBackPressTime < 2000) {
+            exitApp()
+        } else {
+            lastBackPressTime = currentTime
+            showToast("뒤로가기 버튼을 한 번 더 누르면 종료됩니다.")
         }
     }
 }
