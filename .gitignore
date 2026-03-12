@@ -13,3 +13,7 @@ local.properties
 *.keystore
 *.p12
 *.jks-private
+
+# 🛡️ Release Signing Secrets
+cmp/keystore/
+keystore-info.md

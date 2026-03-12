@@ -27,6 +27,14 @@
     - `done.md`: 완료된 티켓 히스토리.
 - **`GUIDE_FOR_xxx.md`**: 각 전문가별 상세 가이드라인.
 
+## 🚀 5. 자동화 프로토콜 (Automation Protocols)
+- **`[upload release build]`**: 이 명령어가 입력되면 안드로이드 개발자 케로(Kero)는 다음 단계를 자동 수행함:
+    1. **Version Bump**: `cmp/composeApp/build.gradle.kts`의 `versionCode`를 읽어 기존 값에서 `+1` 업데이트.
+    2. **Keystore Load**: `cmp/keystore/keystore-info.md`에서 별칭(Alias), 비밀번호 등을 읽어옴. (보안상 절대 로그에 남기지 않음)
+    3. **Build & Sign**: `./gradlew :composeApp:bundleRelease`를 실행하며 서명 정보를 주입하여 `.aab` 생성.
+    4. **Artifact Delivery**: 생성된 `.aab` 파일을 프로젝트 루트(`/`)로 복사하고 `idiom_v{versionName}_{versionCode}.aab`로 이름 변경.
+    5. **Build-Verified Done**: 최종 빌드 성공 여부 확인 후 배포 준비 완료 보고.
+
 ---
-*Last Sync: 2026-03-11*  
-*Sync by: PM Mark*
+*Last Sync: 2026-03-12*  
+*Sync by: Android Dev Kero*
