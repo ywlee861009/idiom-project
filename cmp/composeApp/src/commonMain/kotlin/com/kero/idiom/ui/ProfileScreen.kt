@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -97,7 +98,7 @@ fun ProfileScreen(
                 }
             }
 
-            // 경험치 및 레벨 진척도 (SeekBar 형태)
+            // 경험치 및 레벨 진척도 (개선된 형태)
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -105,65 +106,122 @@ fun ProfileScreen(
                     .background(BgSurface)
                     .border(1.dp, BorderColor, RoundedCornerShape(16.dp))
                     .padding(20.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
+                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                val currentExp = stats.totalCorrectCount % 10
-                val progress = currentExp / 10f
-                val remaining = 10 - currentExp
+                val currentTitle = stats.currentTitleInfo
+                val nextTitle = stats.nextTitleInfo
+                val startLevel = currentTitle.minLevel
+                val endLevel = (nextTitle?.minLevel ?: currentTitle.maxLevel + 1)
+                val totalLevelsInTier = endLevel - startLevel // 보통 10
+
+                // 현재 레벨 내에서의 진행도 (0~9)
+                val currentLevelExp = stats.totalCorrectCount % 10
+                val currentLevelProgress = currentLevelExp / 10f
+                
+                // 티어 내에서의 전체 진행 레벨 (0~9)
+                val levelsCompletedInTier = stats.level - startLevel
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.Bottom
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(
-                        text = "현재 ${stats.level}단계 정진 중",
-                        style = MaterialTheme.typography.titleMedium,
-                        color = TextPrimary
-                    )
-                    Text(
-                        text = "다음 단계까지 ${remaining}문제",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = TextMuted
-                    )
+                    Column {
+                        Text(
+                            text = "현재 ${stats.level}단계 정진 중",
+                            style = MaterialTheme.typography.titleMedium,
+                            color = TextPrimary
+                        )
+                        Text(
+                            text = "다음 단계까지 ${10 - currentLevelExp}문제",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = TextMuted
+                        )
+                    }
+                    
+                    // 다음 타이틀 아이콘/텍스트 (작게)
+                    nextTitle?.let {
+                        Column(horizontalAlignment = Alignment.End) {
+                            Text("다음 목표", style = MaterialTheme.typography.labelSmall, color = TextSecondary)
+                            Text(it.title, fontWeight = FontWeight.Bold, fontSize = 14.sp, color = TextPrimary)
+                        }
+                    }
                 }
 
-                // 시니어 친화적인 두꺼운 프로그레스 바
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(12.dp)
-                        .clip(CircleShape)
-                        .background(BorderColor)
-                ) {
+                // 세분화된 프로그레스 바 (단계별 구분선 추가)
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     Box(
                         modifier = Modifier
-                            .fillMaxWidth(progress)
-                            .fillMaxHeight()
+                            .fillMaxWidth()
+                            .height(14.dp)
                             .clip(CircleShape)
-                            .background(BgDark)
-                    )
+                            .background(BorderColor.copy(alpha = 0.5f))
+                    ) {
+                        Row(modifier = Modifier.fillMaxSize()) {
+                            repeat(totalLevelsInTier) { index ->
+                                val isCompleted = index < levelsCompletedInTier
+                                val isCurrent = index == levelsCompletedInTier
+                                
+                                Box(
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .fillMaxHeight()
+                                        .padding(horizontal = 0.5.dp)
+                                        .clip(if (totalLevelsInTier == 1) CircleShape else RectangleShape) // 단순화 위해 Rectangle 사용 후 전체 Clip
+                                        .background(
+                                            when {
+                                                isCompleted -> BgDark
+                                                isCurrent -> BgDark.copy(alpha = 0.3f)
+                                                else -> Color.Transparent
+                                            }
+                                        )
+                                ) {
+                                    if (isCurrent) {
+                                        Box(
+                                            modifier = Modifier
+                                                .fillMaxWidth(currentLevelProgress)
+                                                .fillMaxHeight()
+                                                .background(BgDark)
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                    // 레벨 숫자 표시 (시작과 끝)
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text("Lv.$startLevel", style = MaterialTheme.typography.labelSmall, color = TextMuted)
+                        Text("Lv.$endLevel", style = MaterialTheme.typography.labelSmall, color = TextMuted)
+                    }
                 }
-                
-                Text(
-                    text = "현재 단계에서 ${currentExp}문제를 맞히셨습니다.",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = TextSecondary
-                )
 
-                // 다음 타이틀 예고 (명확한 수치 제공!)
-                stats.nextTitleInfo?.let { next ->
+                // 상세 설명 (아이콘과 함께 복구)
+                nextTitle?.let { next ->
                     HorizontalDivider(color = BorderColor.copy(alpha = 0.5f), thickness = 1.dp)
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(10.dp)
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
-                        Text("📜", fontSize = 18.sp)
+                        Box(
+                            modifier = Modifier
+                                .size(40.dp)
+                                .clip(CircleShape)
+                                .background(BgPrimary)
+                                .border(1.dp, BorderColor, CircleShape),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text("📜", fontSize = 20.sp)
+                        }
+                        
                         Column {
                             val steps = stats.levelsUntilNextTitle
                             Text(
-                                text = "앞으로 ${steps}번 더 정진하시면",
+                                text = "앞으로 ${steps}단계 더 정진하여 Lv.${endLevel}이 되면",
                                 style = MaterialTheme.typography.bodySmall,
                                 color = TextMuted
                             )
@@ -175,6 +233,14 @@ fun ProfileScreen(
                             )
                         }
                     }
+                } ?: run {
+                    // 최고 레벨 도달 시
+                    Text(
+                        text = "모든 정진을 마치고 최고 경지에 도달하셨습니다!",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = TextSecondary,
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
                 }
             }
 
