@@ -28,12 +28,19 @@
 - **`GUIDE_FOR_xxx.md`**: 각 전문가별 상세 가이드라인.
 
 ## 🚀 5. 자동화 프로토콜 (Automation Protocols)
-- **`[upload release build]`**: 이 명령어가 입력되면 안드로이드 개발자 케로(Kero)는 다음 단계를 자동 수행함:
-    1. **Version Bump**: `cmp/composeApp/build.gradle.kts`의 `versionCode`를 읽어 기존 값에서 `+1` 업데이트.
-    2. **Keystore Load**: `cmp/keystore/keystore-info.md`에서 별칭(Alias), 비밀번호 등을 읽어옴. (보안상 절대 로그에 남기지 않음)
-    3. **Build & Sign**: `./gradlew :composeApp:bundleRelease`를 실행하며 서명 정보를 주입하여 `.aab` 생성.
-    4. **Artifact Delivery**: 생성된 `.aab` 파일을 프로젝트 루트(`/`)로 복사하고 `idiom_v{versionName}_{versionCode}.aab`로 이름 변경.
-    5. **Build-Verified Done**: 최종 빌드 성공 여부 확인 후 배포 준비 완료 보고.
+- **`[upload release build]`**: 이 명령어가 입력되면 안드로이드 개발자 케로(Kero)는 다음 단계를 수행함:
+    1. **Version Strategy Inquiry**: 사용자에게 `versionName` 중 어느 부분(Major, Minor, Patch)을 올릴지 질문함.
+    2. **Version Bump**: 
+        - `versionCode`: 기존 값에서 `+1` 업데이트.
+        - `versionName`: 사용자의 선택에 따라 `x.y.z` 형태에서 해당 자리수 올림 (예: Patch 선택 시 1.0.0 -> 1.0.1).
+    3. **Keystore Load**: `cmp/keystore/keystore-info.md`에서 서명 정보를 읽어옴. (보안 준수)
+    4. **Build & Sign**: `./gradlew :composeApp:bundleRelease` 실행하여 `.aab` 생성.
+    5. **Artifact Delivery**: 생성된 `.aab`를 루트로 복사 및 `idiom_v{versionName}_{versionCode}.aab`로 이름 변경.
+    6. **Build-Verified Done**: 최종 빌드 성공 보고.
+    7. **Update Log Generation**: 
+        - 이전 빌드(Git Tag 또는 마지막 로그) 이후의 변경 사항을 상세 분석.
+        - `python/update-logs/YYYYMMDD-HHMMSS.md` 경로에 상세 업데이트 내역을 생성 (기존 파일이 있으면 추가 또는 신규 생성).
+        - 요약 내용에는 기능 추가, 버그 수정, UI 개선 사항 등을 포함.
 
 ---
 *Last Sync: 2026-03-12*  
