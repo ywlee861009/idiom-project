@@ -1,3 +1,6 @@
+# App Bundle
+*.aab
+
 # OS X
 .DS_Store
 
