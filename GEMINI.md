@@ -39,7 +39,7 @@
     6. **Build-Verified Done**: 최종 빌드 성공 보고.
     7. **Update Log Generation**: 
         - 이전 빌드(Git Tag 또는 마지막 로그) 이후의 변경 사항을 상세 분석.
-        - `python/update-logs/YYYYMMDD-HHMMSS.md` 경로에 상세 업데이트 내역을 생성 (기존 파일이 있으면 추가 또는 신규 생성).
+        - `app-update-log/YYYYMMDD-HHMMSS.md` 경로에 상세 업데이트 내역을 생성. (데이터 업데이트 로그 `python/update-logs/`와 구분 필수)
         - 요약 내용에는 기능 추가, 버그 수정, UI 개선 사항 등을 포함.
 
 ---
