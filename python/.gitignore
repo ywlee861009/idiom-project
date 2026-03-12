@@ -1,0 +1,19 @@
+# 결과 파일
+idioms-result.json
+
+# 바이트코드
+__pycache__/
+*.py[cod]
+
+# 가상환경
+.venv/
+venv/
+env/
+
+# 환경변수
+.env
+
+# 에디터
+.idea/
+.vscode/
+*.swp
