@@ -1,71 +1,60 @@
 package com.kero.idiom.data.repository
 
 import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.intPreferencesKey
-import com.kero.idiom.data.local.dao.UserStatsDao
-import com.kero.idiom.data.local.model.UserStatsEntity
+import androidx.datastore.preferences.core.*
 import com.kero.idiom.domain.model.UserStats
 import com.kero.idiom.domain.repository.UserStatsRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
+/**
+ * DataStore를 사용하여 사용자의 핵심 학습 통계를 관리하는 저장소 구현체.
+ * Key-Value 방식을 사용하여 DB 마이그레이션 예외로부터 데이터를 안전하게 보호합니다.
+ */
 class UserStatsRepositoryImpl(
-    private val userStatsDao: UserStatsDao,
-    private val dataStore: DataStore<Preferences> // 📜 서책 버전 확인용
+    private val dataStore: DataStore<Preferences>
 ) : UserStatsRepository {
 
-    private val IDIOM_VERSION = intPreferencesKey("idiom_version")
+    private object Keys {
+        val TOTAL_SOLVED = intPreferencesKey("total_solved_count")
+        val TOTAL_CORRECT = intPreferencesKey("total_correct_count")
+        val CURRENT_STREAK = intPreferencesKey("current_streak")
+        val MAX_STREAK = intPreferencesKey("max_streak")
+        val LAST_SOLVED_DATE = longPreferencesKey("last_solved_date_millis")
+        val NOTIFICATION_ENABLED = booleanPreferencesKey("is_notification_enabled")
+        val DATA_VERSION = intPreferencesKey("user_data_version")
+    }
 
     override fun getUserStats(): Flow<UserStats> {
-        val statsFlow = userStatsDao.getUserStatsFlow().map { it ?: UserStatsEntity() }
-        val versionFlow = dataStore.data.map { it[IDIOM_VERSION] ?: 0 }
-
-        // DB 통계와 DataStore 버전을 결합!
-        return statsFlow.combine(versionFlow) { entity, version ->
-            entity.toDomain(version)
+        return dataStore.data.map { prefs ->
+            UserStats(
+                totalSolvedCount = prefs[Keys.TOTAL_SOLVED] ?: 0,
+                totalCorrectCount = prefs[Keys.TOTAL_CORRECT] ?: 0,
+                currentStreak = prefs[Keys.CURRENT_STREAK] ?: 0,
+                maxStreak = prefs[Keys.MAX_STREAK] ?: 0,
+                lastSolvedDateMillis = prefs[Keys.LAST_SOLVED_DATE] ?: 0L,
+                isNotificationEnabled = prefs[Keys.NOTIFICATION_ENABLED] ?: true,
+                dataVersion = prefs[Keys.DATA_VERSION] ?: 0
+            )
         }
     }
 
     override suspend fun updateStats(correctCount: Int, solvedCount: Int) {
-        val currentEntity = userStatsDao.getUserStats() ?: UserStatsEntity()
-        val now = System.currentTimeMillis()
-        
-        val lastSolved = currentEntity.lastSolvedDateMillis
-        val diff = now - lastSolved
-        val oneDayMillis = 24 * 60 * 60 * 1000L
-        
-        val newStreak = when {
-            lastSolved == 0L -> 1
-            diff < oneDayMillis -> currentEntity.currentStreak
-            diff < 2 * oneDayMillis -> currentEntity.currentStreak + 1
-            else -> 1
+        dataStore.edit { prefs ->
+            val currentSolved = prefs[Keys.TOTAL_SOLVED] ?: 0
+            val currentCorrect = prefs[Keys.TOTAL_CORRECT] ?: 0
+            
+            prefs[Keys.TOTAL_SOLVED] = currentSolved + solvedCount
+            prefs[Keys.TOTAL_CORRECT] = currentCorrect + correctCount
+            
+            // 💡 여기서 스트릭(Streak) 계산 로직 등을 추가할 수 있습니다.
         }
-
-        val updatedEntity = currentEntity.copy(
-            totalSolvedCount = currentEntity.totalSolvedCount + solvedCount,
-            totalCorrectCount = currentEntity.totalCorrectCount + correctCount,
-            currentStreak = newStreak,
-            maxStreak = maxOf(currentEntity.maxStreak, newStreak),
-            lastSolvedDateMillis = now
-        )
-        
-        userStatsDao.upsertUserStats(updatedEntity)
     }
 
     override suspend fun updateNotificationEnabled(enabled: Boolean) {
-        val currentEntity = userStatsDao.getUserStats() ?: UserStatsEntity()
-        userStatsDao.upsertUserStats(currentEntity.copy(isNotificationEnabled = enabled))
+        dataStore.edit { prefs ->
+            prefs[Keys.NOTIFICATION_ENABLED] = enabled
+        }
     }
-
-    private fun UserStatsEntity.toDomain(version: Int) = UserStats(
-        totalSolvedCount = totalSolvedCount,
-        currentStreak = currentStreak,
-        maxStreak = maxStreak,
-        lastSolvedDateMillis = lastSolvedDateMillis,
-        totalCorrectCount = totalCorrectCount,
-        isNotificationEnabled = isNotificationEnabled,
-        dataVersion = version
-    )
 }

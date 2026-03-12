@@ -1,9 +1,11 @@
 [versions]
-# Build Stack (CMP Optimized 2025-2026)
+# Build Stack (CMP Optimized 2025-03)
 agp = "8.7.3"
-kotlin = "2.1.10"
-ksp = "2.1.10-1.0.29"
+kotlin = "2.0.21"
+ksp = "2.0.21-1.0.28"
 jetbrains-compose = "1.7.3"
+
+
 google-services = "4.4.2"
 firebase-crashlytics-plugin = "3.0.3"
 
@@ -31,12 +33,15 @@ kotlinxCoroutines = "1.9.0"
 datastore = "1.1.1"
 room = "2.7.0-alpha13"
 sqlite = "2.5.0-alpha13"
+realm = "3.0.0"
 compottie = "2.0.0-rc02"
 google-admob = "23.6.0"
 androidx-work = "2.10.0"
 
 [libraries]
+realm-library-base = { group = "io.realm.kotlin", name = "library-base", version.ref = "realm" }
 androidx-work-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "androidx-work" }
+
 google-admob = { group = "com.google.android.gms", name = "play-services-ads", version.ref = "google-admob" }
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
@@ -88,5 +93,7 @@ compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 room = { id = "androidx.room", version.ref = "room" }
+realm = { id = "io.realm.kotlin", version.ref = "realm" }
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
+
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics-plugin" }

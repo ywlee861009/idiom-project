@@ -4,8 +4,7 @@ plugins {
     alias(libs.plugins.compose.multiplatform)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.ksp)
-    alias(libs.plugins.room)
+    alias(libs.plugins.realm)
 }
 
 kotlin {
@@ -30,9 +29,8 @@ kotlin {
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.ktor.client.logging)
             
-            // Room KMP
-            implementation(libs.androidx.room.runtime)
-            implementation(libs.sqlite.bundled)
+            // Realm (KMP NoSQL)
+            implementation(libs.realm.library.base)
             
             // Koin (Core)
             implementation(libs.koin.core)
@@ -48,10 +46,6 @@ kotlin {
     }
 }
 
-room {
-    schemaDirectory("$projectDir/schemas")
-}
-
 compose.resources {
     packageOfResClass = "com.kero.idiom.data.resources"
 }
@@ -59,8 +53,4 @@ compose.resources {
 android {
     namespace = "com.kero.idiom.data"
     compileSdk = 35
-}
-
-dependencies {
-    add("kspAndroid", libs.androidx.room.compiler)
 }

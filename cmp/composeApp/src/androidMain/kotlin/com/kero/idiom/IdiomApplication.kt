@@ -3,7 +3,9 @@ package com.kero.idiom
 import android.app.Application
 import com.kero.idiom.ads.androidAdModule
 import com.kero.idiom.core.util.Logger
+import com.kero.idiom.data.di.androidDataModule
 import com.kero.idiom.data.di.dataModule
+import com.kero.idiom.data.di.networkModule
 import com.kero.idiom.domain.usecase.GetUserStatsUseCase
 import com.kero.idiom.domain.usecase.UpdateUserStatsUseCase
 import com.kero.idiom.feature.quiz.di.featureQuizModule
@@ -39,6 +41,8 @@ class IdiomApplication : Application() {
             androidContext(this@IdiomApplication)
             modules(
                 dataModule,
+                androidDataModule,
+                networkModule,
                 appModule,
                 featureQuizModule,
                 featureResultModule,
@@ -47,6 +51,6 @@ class IdiomApplication : Application() {
         }
 
         // 🌌 새로 만든 공통 Logger 사용
-        Logger.d("앱이 성공적으로 시작되었습니다. (:::> Logger 활용)")
+        Logger.d("앱이 성공적으로 시작되었습니다. (:::> HttpClient 주입 완료)")
     }
 }

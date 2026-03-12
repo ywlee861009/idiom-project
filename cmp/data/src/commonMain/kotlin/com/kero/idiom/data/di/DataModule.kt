@@ -2,63 +2,29 @@ package com.kero.idiom.data.di
 
 import com.kero.idiom.data.datasource.AssetIdiomDataSource
 import com.kero.idiom.data.datasource.remote.RemoteIdiomDataSource
-import com.kero.idiom.data.local.IdiomDatabase
+import com.kero.idiom.data.local.RealmDatabase
 import com.kero.idiom.data.repository.IdiomRepositoryImpl
 import com.kero.idiom.data.repository.UserStatsRepositoryImpl
 import com.kero.idiom.domain.repository.IdiomRepository
 import com.kero.idiom.domain.repository.UserStatsRepository
-import io.ktor.client.*
-import io.ktor.client.plugins.contentnegotiation.*
-import io.ktor.client.plugins.logging.*
-import io.ktor.serialization.kotlinx.json.*
-import kotlinx.serialization.json.Json
-import org.koin.core.module.Module
+import io.realm.kotlin.Realm
+import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
-internal expect val platformDataModule: Module
-
+/**
+ * 데이터 레이어 의존성 주입 모듈.
+ * Room 설정을 제거하고 Realm 인스턴스를 주입하도록 변경했습니다.
+ */
 val dataModule = module {
-    includes(platformDataModule)
+    // DataSource
+    singleOf(::AssetIdiomDataSource)
+    singleOf(::RemoteIdiomDataSource)
 
-    // Ktor HttpClient 공통 설정
-    single {
-        HttpClient {
-            install(ContentNegotiation) {
-                json(Json {
-                    ignoreUnknownKeys = true
-                    prettyPrint = true
-                    isLenient = true
-                }, contentType = io.ktor.http.ContentType.Any) // 💡 GitHub Raw(text/plain) 대응
-            }
-            install(Logging) {
-                logger = object : io.ktor.client.plugins.logging.Logger {
-                    override fun log(message: String) {
-                        com.kero.idiom.core.util.Logger.d("Network: $message")
-                    }
-                }
-                level = LogLevel.ALL
-            }
-        }
-    }
+    // Realm Database (Singleton)
+    single { RealmDatabase.realm }
 
-    single { AssetIdiomDataSource() }
-    single { RemoteIdiomDataSource(get()) }
-    single { get<IdiomDatabase>().idiomDao() }
-    single { get<IdiomDatabase>().userStatsDao() }
-    
-    single<IdiomRepository> {
-        IdiomRepositoryImpl(
-            dataStore = get(),
-            assetDataSource = get(),
-            remoteDataSource = get(),
-            idiomDao = get()
-        )
-    }
-    
-    single<UserStatsRepository> {
-        UserStatsRepositoryImpl(
-            userStatsDao = get(),
-            dataStore = get()
-        )
-    }
+    // Repository implementation
+    singleOf(::IdiomRepositoryImpl) bind IdiomRepository::class
+    singleOf(::UserStatsRepositoryImpl) bind UserStatsRepository::class
 }
