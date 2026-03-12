@@ -79,7 +79,18 @@ android {
             buildConfigField("String", "ADMOB_REWARDED_ID", "\"ca-app-pub-3940256099942544/5224354917\"") // Test Reward ID
         }
         getByName("release") {
-            isMinifyEnabled = false // 실제 배포 시에는 true 권장 (Proguard/R8)
+            isMinifyEnabled = true // 💡 R8/Proguard 활성화 (앱 크기 축소 및 난독화)
+            isShrinkResources = true // 미사용 리소스 제거
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+            
+            // 💡 네이티브 디버그 기호 업로드 경고 해결
+            ndk {
+                debugSymbolLevel = "full"
+            }
+
             manifestPlaceholders["admobAppId"] = "ca-app-pub-2103375309908918~7366320554" // Real App ID
             buildConfigField("String", "ADMOB_INTERSTITIAL_ID", "\"ca-app-pub-3940256099942544/1033173712\"") 
             buildConfigField("String", "ADMOB_REWARDED_ID", "\"ca-app-pub-2103375309908918/5518411052\"") // Real Reward ID
