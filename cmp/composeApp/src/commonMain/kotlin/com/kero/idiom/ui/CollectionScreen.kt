@@ -30,10 +30,12 @@ fun CollectionScreen(
     onTabSelected: (IdiomTab) -> Unit
 ) {
     val repository: IdiomRepository = koinInject()
-    var idioms by remember { mutableStateOf<List<Idiom>>(emptyList()) }
+    var acquiredIdioms by remember { mutableStateOf<List<Idiom>>(emptyList()) }
+    var totalIdiomsCount by remember { mutableIntStateOf(0) }
 
     LaunchedEffect(Unit) {
-        idioms = repository.getAcquiredIdioms()
+        acquiredIdioms = repository.getAcquiredIdioms()
+        totalIdiomsCount = repository.getAllIdioms().size
     }
 
     Column(
@@ -50,21 +52,47 @@ fun CollectionScreen(
         ) {
             Spacer(Modifier.height(8.dp))
 
-            // 타이틀
-            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                Text(
-                    text = "서고",
-                    style = MaterialTheme.typography.headlineLarge,
-                    color = TextPrimary
-                )
-                Text(
-                    text = "획득한 성어 카드 · ${idioms.size}개",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = TextMuted
-                )
+            // 타이틀 및 진행률
+            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                    Text(
+                        text = "서고",
+                        style = MaterialTheme.typography.headlineLarge,
+                        color = TextPrimary
+                    )
+                    Text(
+                        text = "서책 수집 현황 (${acquiredIdioms.size}/${totalIdiomsCount})",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = TextMuted
+                    )
+                }
+
+                // 진행률 바 (The Calm Ink 스타일)
+                Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                    val progress = if (totalIdiomsCount > 0) {
+                        acquiredIdioms.size.toFloat() / totalIdiomsCount.toFloat()
+                    } else 0f
+                    
+                    LinearProgressIndicator(
+                        progress = { progress },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(8.dp)
+                            .clip(RoundedCornerShape(4.dp)),
+                        color = BgDark,
+                        trackColor = BorderColor,
+                    )
+                    
+                    Text(
+                        text = "전체 중 ${(progress * 100).toInt()}% 완료",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = TextMuted,
+                        modifier = Modifier.align(Alignment.End)
+                    )
+                }
             }
 
-            Spacer(Modifier.height(20.dp))
+            Spacer(Modifier.height(24.dp))
 
             // 획득한 카드 섹션 헤더
             Row(
@@ -73,12 +101,12 @@ fun CollectionScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "획득한 카드",
+                    text = "나의 서첩",
                     style = MaterialTheme.typography.titleMedium,
                     color = TextPrimary
                 )
                 Text(
-                    text = "${idioms.size}",
+                    text = "${acquiredIdioms.size}권",
                     style = MaterialTheme.typography.bodySmall,
                     color = TextMuted
                 )
@@ -86,7 +114,7 @@ fun CollectionScreen(
 
             Spacer(Modifier.height(12.dp))
 
-            if (idioms.isEmpty()) {
+            if (acquiredIdioms.isEmpty()) {
                 // 빈 상태
                 Box(
                     modifier = Modifier
@@ -120,7 +148,7 @@ fun CollectionScreen(
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
                     modifier = Modifier.weight(1f)
                 ) {
-                    items(idioms) { idiom ->
+                    items(acquiredIdioms) { idiom ->
                         IdiomCollectionCard(idiom)
                     }
                     item { Spacer(Modifier.height(16.dp)) }
