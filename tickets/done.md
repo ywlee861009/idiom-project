@@ -4,6 +4,16 @@
 
 ---
 
+### [BUG-001] 사자성어 길이 불일치로 인한 StringIndexOutOfBoundsException 해결
+- **Completed Date**: 2026-03-13
+- **Build Verified**: [x] `./cmp/gradlew :composeApp:assembleDebug` SUCCESS
+- **Results**:
+    - [x] `GetRandomQuizUseCase` 내 하드코딩된 `(0 until 4)` 범위를 `(0 until idiom.word.length)`로 수정.
+    - [x] 2글자(`계륵` 등), 3글자(`노익장` 등), 5글자(`가정맹어호` 등) 성어 출제 시 인덱스 에러 방지.
+- **Priority**: Highest
+
+---
+
 ### [TASK-023] 힌트 보기 광고 UX 개선 및 로딩 지연 해결
 - **Completed Date**: 2026-03-11
 - **Build Verified**: [x] `./cmp/gradlew :composeApp:assembleDebug` SUCCESS
