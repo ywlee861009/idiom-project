@@ -25,6 +25,11 @@ import com.kero.idiom.domain.repository.IdiomRepository
 import com.kero.idiom.openBrowser
 import org.koin.compose.koinInject
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Clear
+import com.kero.idiom.core.util.KoreanUtils
+
 @Composable
 fun CollectionScreen(
     onTabSelected: (IdiomTab) -> Unit
@@ -32,6 +37,17 @@ fun CollectionScreen(
     val repository: IdiomRepository = koinInject()
     var acquiredIdioms by remember { mutableStateOf<List<Idiom>>(emptyList()) }
     var totalIdiomsCount by remember { mutableIntStateOf(0) }
+    var searchQuery by remember { mutableStateOf("") }
+
+    val filteredIdioms by remember(acquiredIdioms, searchQuery) {
+        derivedStateOf {
+            if (searchQuery.isBlank()) acquiredIdioms
+            else acquiredIdioms.filter { idiom ->
+                KoreanUtils.matches(idiom.word, searchQuery) || 
+                KoreanUtils.matches(idiom.meaning, searchQuery)
+            }
+        }
+    }
 
     LaunchedEffect(Unit) {
         acquiredIdioms = repository.getAcquiredIdioms()
@@ -82,15 +98,49 @@ fun CollectionScreen(
                         color = BgDark,
                         trackColor = BorderColor,
                     )
-                    
-                    Text(
-                        text = "전체 중 ${(progress * 100).toInt()}% 완료",
-                        style = MaterialTheme.typography.labelSmall,
-                        color = TextMuted,
-                        modifier = Modifier.align(Alignment.End)
-                    )
                 }
             }
+
+            Spacer(Modifier.height(20.dp))
+
+            // 검색바
+            OutlinedTextField(
+                value = searchQuery,
+                onValueChange = { searchQuery = it },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp),
+                placeholder = { 
+                    Text(
+                        "성어 또는 의미 검색 (예: ㄱㄹ, 계륵)", 
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = TextMuted 
+                    ) 
+                },
+                leadingIcon = { 
+                    Icon(
+                        Icons.Default.Search, 
+                        contentDescription = null, 
+                        tint = TextMuted 
+                    ) 
+                },
+                trailingIcon = {
+                    if (searchQuery.isNotEmpty()) {
+                        IconButton(onClick = { searchQuery = "" }) {
+                            Icon(Icons.Default.Clear, contentDescription = "Clear", tint = TextMuted)
+                        }
+                    }
+                },
+                singleLine = true,
+                shape = RoundedCornerShape(12.dp),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = BgDark,
+                    unfocusedBorderColor = BorderColor,
+                    focusedContainerColor = Color.White.copy(alpha = 0.5f),
+                    unfocusedContainerColor = Color.White.copy(alpha = 0.3f),
+                    cursorColor = BgDark
+                )
+            )
 
             Spacer(Modifier.height(24.dp))
 
@@ -101,12 +151,12 @@ fun CollectionScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "나의 서첩",
+                    text = if (searchQuery.isEmpty()) "나의 서첩" else "검색 결과",
                     style = MaterialTheme.typography.titleMedium,
                     color = TextPrimary
                 )
                 Text(
-                    text = "${acquiredIdioms.size}권",
+                    text = "${filteredIdioms.size}권",
                     style = MaterialTheme.typography.bodySmall,
                     color = TextMuted
                 )
@@ -114,7 +164,7 @@ fun CollectionScreen(
 
             Spacer(Modifier.height(12.dp))
 
-            if (acquiredIdioms.isEmpty()) {
+            if (filteredIdioms.isEmpty()) {
                 // 빈 상태
                 Box(
                     modifier = Modifier
@@ -126,14 +176,14 @@ fun CollectionScreen(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
-                        Text("📖", fontSize = 48.sp)
+                        Text(if (searchQuery.isEmpty()) "📖" else "🔍", fontSize = 48.sp)
                         Text(
-                            text = "아직 획득한 성어가 없어요",
+                            text = if (searchQuery.isEmpty()) "아직 획득한 성어가 없어요" else "검색 결과가 없습니다",
                             style = MaterialTheme.typography.titleMedium,
                             color = TextPrimary
                         )
                         Text(
-                            text = "퀴즈에서 정답을 맞히면\n성어 카드를 획득할 수 있어요",
+                            text = if (searchQuery.isEmpty()) "퀴즈에서 정답을 맞히면\n성어 카드를 획득할 수 있어요" else "다른 검색어로 다시 시도해 보세요",
                             style = MaterialTheme.typography.bodyMedium,
                             color = TextMuted,
                             textAlign = androidx.compose.ui.text.style.TextAlign.Center
@@ -148,7 +198,7 @@ fun CollectionScreen(
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
                     modifier = Modifier.weight(1f)
                 ) {
-                    items(acquiredIdioms) { idiom ->
+                    items(filteredIdioms) { idiom ->
                         IdiomCollectionCard(idiom)
                     }
                     item { Spacer(Modifier.height(16.dp)) }
