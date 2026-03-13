@@ -34,7 +34,13 @@
         - `versionCode`: 기존 값에서 `+1` 업데이트.
         - `versionName`: 사용자의 선택에 따라 `x.y.z` 형태에서 해당 자리수 올림 (예: Patch 선택 시 1.0.0 -> 1.0.1).
     3. **Keystore Load**: `cmp/keystore/keystore-info.md`에서 서명 정보를 읽어옴. (보안 준수)
-    4. **Build & Sign**: `./gradlew :composeApp:bundleRelease` 실행하여 `.aab` 생성.
+    4. **Build & Sign**: 
+        - `build.gradle.kts` 파일을 절대 직접 수정하지 마십시오. (Git 추적 방지)
+        - `./gradlew :composeApp:bundleRelease` 명령 실행 시, `cmp/keystore/keystore-info.md`에서 읽어온 정보를 다음 Gradle 프로젝트 속성으로 주입하여 실행하십시오:
+            - `-Pandroid.injected.signing.store.file=../keystore/kero-studio.jks`
+            - `-Pandroid.injected.signing.store.password=[STORE_PASSWORD]`
+            - `-Pandroid.injected.signing.key.alias=[KEY_ALIAS]`
+            - `-Pandroid.injected.signing.key.password=[KEY_PASSWORD]`
     5. **Artifact Delivery**: 생성된 `.aab`를 루트로 복사 및 `idiom_v{versionName}_{versionCode}.aab`로 이름 변경.
     6. **Build-Verified Done**: 최종 빌드 성공 보고.
     7. **Update Log Generation**: 
