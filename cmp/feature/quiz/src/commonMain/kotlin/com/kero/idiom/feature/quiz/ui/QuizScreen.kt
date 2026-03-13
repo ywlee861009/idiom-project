@@ -9,6 +9,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -19,6 +22,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kero.idiom.core.theme.*
@@ -26,11 +30,7 @@ import com.kero.idiom.domain.model.QuizType
 import com.kero.idiom.feature.quiz.contract.QuizIntent
 import com.kero.idiom.feature.quiz.contract.QuizSideEffect
 import com.kero.idiom.feature.quiz.viewmodel.QuizViewModel
-import io.github.alexzhirkevich.compottie.LottieCompositionSpec
-import io.github.alexzhirkevich.compottie.animateLottieCompositionAsState
-import io.github.alexzhirkevich.compottie.rememberLottieComposition
-import io.github.alexzhirkevich.compottie.rememberLottiePainter
-import io.github.alexzhirkevich.compottie.DotLottie
+import io.github.alexzhirkevich.compottie.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.ExperimentalResourceApi
@@ -152,8 +152,8 @@ fun QuizScreen(
     var animationFile by remember { mutableStateOf<String?>(null) }
     val scope = rememberCoroutineScope()
 
-    val focusRequester = remember { FocusRequester() }
     val keyboardController = LocalSoftwareKeyboardController.current
+    val focusRequester = remember { FocusRequester() }
 
     LaunchedEffect(state.currentQuiz) {
         if (state.currentQuiz != null && state.currentQuiz?.options?.isEmpty() == true) {
@@ -163,7 +163,6 @@ fun QuizScreen(
         }
     }
 
-    // animationFile을 key로 전달하여 상태가 바뀔 때마다 다시 로드하도록 강제함
     val compositionResult = rememberLottieComposition(animationFile) {
         val path = when (animationFile) {
             "success" -> "files/success.lottie"
@@ -172,10 +171,8 @@ fun QuizScreen(
         }
         
         if (path != null) {
-            // .lottie(ZIP) 파일이므로 DotLottie 사용
             LottieCompositionSpec.DotLottie(Res.readBytes(path))
         } else {
-            // null 대신 빈 JSON으로 초기화 에러 방지
             LottieCompositionSpec.JsonString("{}")
         }
     }
@@ -211,7 +208,7 @@ fun QuizScreen(
                 .background(BgPrimary)
                 .statusBarsPadding()
                 .navigationBarsPadding()
-                .imePadding() // 💡 키보드가 올라올 때 UI를 밀어 올림
+                .imePadding()
         ) {
             if (state.isLoading) {
                 Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -219,7 +216,6 @@ fun QuizScreen(
                 }
             } else {
                 state.currentQuiz?.let { quiz ->
-                    // 상단 바
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -244,7 +240,6 @@ fun QuizScreen(
                         )
                     }
 
-                    // 진행 바
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -271,7 +266,6 @@ fun QuizScreen(
                     ) {
                         Spacer(Modifier.height(24.dp))
 
-                        // 질문 박스
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -299,7 +293,6 @@ fun QuizScreen(
                                     letterSpacing = 1.sp
                                 )
 
-                                // 🌟 정진 포인트(XP) 배지 추가
                                 Row(
                                     modifier = Modifier
                                         .clip(RoundedCornerShape(6.dp))
@@ -317,8 +310,15 @@ fun QuizScreen(
                                     )
                                 }
                             }
+                            val isSubjective = quiz.options.isEmpty()
+                            val showFullAnswer = state.isCorrect != null
+                            
                             Text(
-                                text = if (state.isCorrect == true) quiz.answer else quiz.questionText,
+                                text = when {
+                                    showFullAnswer -> quiz.answer // 정답 확인 후에는 전체 성어 표시
+                                    isSubjective -> quiz.originalIdiom.hanja // 주관식 정답 전에는 한자 표시 (중복 제거)
+                                    else -> quiz.questionText // 객관식은 기존대로 질문 텍스트 표시
+                                },
                                 style = MaterialTheme.typography.headlineMedium,
                                 color = TextPrimary,
                                 modifier = Modifier.fillMaxWidth(),
@@ -345,7 +345,6 @@ fun QuizScreen(
                             Spacer(Modifier.height(12.dp))
                         }
 
-                        // 선택지 또는 입력 필드
                         if (quiz.options.isNotEmpty()) {
                             quiz.options.forEachIndexed { index, option ->
                                 val isSelected = state.selectedOption == option
@@ -404,63 +403,111 @@ fun QuizScreen(
                                 }
                             }
                         } else {
-                            // 주관식 입력 필드
-                            Column(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalAlignment = Alignment.CenterHorizontally,
-                                verticalArrangement = Arrangement.spacedBy(16.dp)
-                            ) {
-                                OutlinedTextField(
+                            val idiomWord = quiz.originalIdiom.word
+                            val blankIndices = quiz.blankIndices
+                            
+                            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                                BasicTextField(
                                     value = state.inputText,
-                                    onValueChange = { 
-                                        if (it.length <= 4 && state.isCorrect == null) {
-                                            viewModel.handleIntent(QuizIntent.InputAnswer(it))
+                                    onValueChange = { newValue ->
+                                        if (state.isCorrect != null) return@BasicTextField
+                                        if (newValue.length <= blankIndices.size) {
+                                            viewModel.handleIntent(QuizIntent.InputAnswer(newValue))
                                         }
                                     },
                                     modifier = Modifier
-                                        .fillMaxWidth()
+                                        .size(1.dp)
                                         .focusRequester(focusRequester),
-                                    textStyle = MaterialTheme.typography.headlineSmall.copy(
-                                        textAlign = androidx.compose.ui.text.style.TextAlign.Center,
-                                        letterSpacing = 8.sp
+                                    keyboardOptions = KeyboardOptions(
+                                        imeAction = ImeAction.Done
                                     ),
-                                    placeholder = {
-                                        Text(
-                                            "${quiz.blankIndices.size}글자 또는 4글자 입력",
-                                            modifier = Modifier.fillMaxWidth(),
-                                            textAlign = androidx.compose.ui.text.style.TextAlign.Center,
-                                            fontSize = 18.sp,
-                                            color = TextMuted
-                                        )
-                                    },
-                                    singleLine = true,
-                                    shape = RoundedCornerShape(14.dp),
-                                    colors = OutlinedTextFieldDefaults.colors(
-                                        focusedBorderColor = BgDark,
-                                        unfocusedBorderColor = BorderColor,
-                                        focusedContainerColor = BgSurface,
-                                        unfocusedContainerColor = BgSurface,
-                                        disabledContainerColor = if (state.isCorrect == true) CorrectBg else WrongBg,
-                                        disabledBorderColor = if (state.isCorrect == true) CorrectGreen else WrongRed
-                                    ),
-                                    enabled = state.isCorrect == null
+                                    keyboardActions = KeyboardActions(
+                                        onDone = {
+                                            if (state.inputText.length == blankIndices.size) {
+                                                keyboardController?.hide()
+                                                viewModel.handleIntent(QuizIntent.SubmitAnswer)
+                                            }
+                                        }
+                                    )
                                 )
 
-                                if (state.isCorrect == false) {
-                                    Text(
-                                        text = "정답은 '${quiz.answer}' 입니다.",
-                                        color = WrongRed,
-                                        fontWeight = FontWeight.Medium,
-                                        fontSize = 16.sp
-                                    )
+                                Row(
+                                    modifier = Modifier.clickable { focusRequester.requestFocus() },
+                                    horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally)
+                                ) {
+                                    idiomWord.forEachIndexed { index, char ->
+                                        val isBlank = index in blankIndices
+                                        
+                                        if (isBlank) {
+                                            val blankPos = blankIndices.indexOf(index)
+                                            val charValue = state.inputText.getOrNull(blankPos)?.toString() ?: ""
+                                            val isCurrent = blankPos == state.inputText.length && state.isCorrect == null
+                                            
+                                            val borderColor = when {
+                                                state.isCorrect == true -> CorrectGreen
+                                                state.isCorrect == false -> WrongRed
+                                                isCurrent -> BgDark
+                                                else -> BorderColor
+                                            }
+                                            
+                                            val bgColor = when {
+                                                state.isCorrect == true -> CorrectBg
+                                                state.isCorrect == false -> WrongBg
+                                                else -> BgSurface
+                                            }
+
+                                            Box(
+                                                modifier = Modifier
+                                                    .size(width = 64.dp, height = 72.dp)
+                                                    .clip(RoundedCornerShape(12.dp))
+                                                    .background(bgColor)
+                                                    .border(if (isCurrent) 2.dp else 1.dp, borderColor, RoundedCornerShape(12.dp)),
+                                                contentAlignment = Alignment.Center
+                                            ) {
+                                                Text(
+                                                    text = charValue,
+                                                    style = MaterialTheme.typography.headlineSmall,
+                                                    fontWeight = FontWeight.Bold,
+                                                    color = TextPrimary
+                                                )
+                                            }
+                                        } else {
+                                            Box(
+                                                modifier = Modifier
+                                                    .size(width = 64.dp, height = 72.dp)
+                                                    .clip(RoundedCornerShape(12.dp))
+                                                    .background(BgSurface)
+                                                    .border(1.dp, BorderColor, RoundedCornerShape(12.dp)),
+                                                contentAlignment = Alignment.Center
+                                            ) {
+                                                Text(
+                                                    text = char.toString(),
+                                                    style = MaterialTheme.typography.headlineSmall,
+                                                    fontWeight = FontWeight.Bold,
+                                                    color = TextPrimary.copy(alpha = 0.4f)
+                                                )
+                                            }
+                                        }
+                                    }
                                 }
+                            }
+
+                            if (state.isCorrect == false) {
+                                Spacer(Modifier.height(16.dp))
+                                Text(
+                                    text = "정답은 '${quiz.answer}' 입니다.",
+                                    color = WrongRed,
+                                    fontWeight = FontWeight.Medium,
+                                    fontSize = 16.sp,
+                                    modifier = Modifier.fillMaxWidth(),
+                                    textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                                )
                             }
                         }
 
                         Spacer(Modifier.height(16.dp))
                     }
 
-                    // 🌌 [통합 버튼] 상태에 따라 정답 확인 또는 다음 문제로 동작
                     val isSubjective = quiz.options.isEmpty()
                     val hasSubmittedSubjective = state.isCorrect != null
                     val hasSelectedObjective = state.selectedOption != null
@@ -473,7 +520,7 @@ fun QuizScreen(
                     }
 
                     val buttonEnabled = when {
-                        isSubjective && !hasSubmittedSubjective -> state.inputText.isNotBlank()
+                        isSubjective && !hasSubmittedSubjective -> state.inputText.length == quiz.blankIndices.size
                         else -> (hasSelectedObjective || hasSubmittedSubjective) && animationFile == null
                     }
 
@@ -508,8 +555,7 @@ fun QuizScreen(
                 }
             }
         }
-
-        // 🍞 커스텀 스낵바 (어르신들을 위해 크게 표시)
+        
         SnackbarHost(
             hostState = snackbarHostState,
             modifier = Modifier
@@ -532,7 +578,6 @@ fun QuizScreen(
             }
         }
 
-        // Lottie Overlay (animationFile이 있을 때만 렌더링)
         if (animationFile != null) {
             Box(
                 modifier = Modifier
