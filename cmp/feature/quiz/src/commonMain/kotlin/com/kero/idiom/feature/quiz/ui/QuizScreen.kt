@@ -315,9 +315,9 @@ fun QuizScreen(
                             
                             Text(
                                 text = when {
-                                    showFullAnswer -> quiz.answer // 정답 확인 후에는 전체 성어 표시
-                                    isSubjective -> quiz.originalIdiom.hanja // 주관식 정답 전에는 한자 표시 (중복 제거)
-                                    else -> quiz.questionText // 객관식은 기존대로 질문 텍스트 표시
+                                    showFullAnswer -> quiz.originalIdiom.word // 🌟 정답 확인 후에는 항상 전체 성어(한글) 표시
+                                    isSubjective -> quiz.originalIdiom.hanja // 주관식 정답 전에는 한자 표시
+                                    else -> quiz.questionText // 객관식은 질문 텍스트(예: 백전백_) 표시
                                 },
                                 style = MaterialTheme.typography.headlineMedium,
                                 color = TextPrimary,
