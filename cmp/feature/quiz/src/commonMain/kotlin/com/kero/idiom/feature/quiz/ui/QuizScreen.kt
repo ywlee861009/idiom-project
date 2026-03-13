@@ -280,19 +280,43 @@ fun QuizScreen(
                                 .padding(horizontal = 24.dp, vertical = 28.dp),
                             verticalArrangement = Arrangement.spacedBy(12.dp)
                         ) {
-                            Text(
-                                text = when (quiz.type) {
-                                    QuizType.FILL_BLANK -> "빈칸에 들어갈 글자는?"
-                                    QuizType.MEANING_TO_WORD -> "뜻을 보고 맞히기"
-                                    QuizType.HANJA_TO_HANGUL -> "한자를 읽어보세요"
-                                    QuizType.FILL_BLANKS_2 -> "빈칸 두 개를 채워보세요"
-                                    QuizType.FILL_BLANKS_4 -> "사자성어를 완성해 보세요"
-                                },
-                                fontSize = 12.sp,
-                                fontWeight = FontWeight.Medium,
-                                color = TextMuted,
-                                letterSpacing = 1.sp
-                            )
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = when (quiz.type) {
+                                        QuizType.FILL_BLANK -> "빈칸에 들어갈 글자는?"
+                                        QuizType.MEANING_TO_WORD -> "뜻을 보고 맞히기"
+                                        QuizType.HANJA_TO_HANGUL -> "한자를 읽어보세요"
+                                        QuizType.FILL_BLANKS_2 -> "빈칸 두 개를 채워보세요"
+                                        QuizType.FILL_BLANKS_4 -> "사자성어를 완성해 보세요"
+                                    },
+                                    fontSize = 12.sp,
+                                    fontWeight = FontWeight.Medium,
+                                    color = TextMuted,
+                                    letterSpacing = 1.sp
+                                )
+
+                                // 🌟 정진 포인트(XP) 배지 추가
+                                Row(
+                                    modifier = Modifier
+                                        .clip(RoundedCornerShape(6.dp))
+                                        .background(HintOrange.copy(alpha = 0.1f))
+                                        .border(0.5.dp, HintOrange.copy(alpha = 0.5f), RoundedCornerShape(6.dp))
+                                        .padding(horizontal = 8.dp, vertical = 4.dp),
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                                ) {
+                                    Text(
+                                        text = "${quiz.originalIdiom.level} XP",
+                                        fontSize = 11.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        color = HintDarkOrange
+                                    )
+                                }
+                            }
                             Text(
                                 text = if (state.isCorrect == true) quiz.answer else quiz.questionText,
                                 style = MaterialTheme.typography.headlineMedium,
