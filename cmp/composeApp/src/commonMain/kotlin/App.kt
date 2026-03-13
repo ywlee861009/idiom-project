@@ -103,8 +103,8 @@ fun App() {
 
                     composable<Screen.Quiz> {
                         QuizScreen(
-                            onNavigateToResult = { score, total ->
-                                navController.navigate(Screen.Reward(score, total)) {
+                            onNavigateToResult = { score, total, xpGained ->
+                                navController.navigate(Screen.Reward(score, total, xpGained)) {
                                     popUpTo(Screen.Quiz) { inclusive = true }
                                 }
                             },
@@ -119,6 +119,7 @@ fun App() {
                         RewardScreen(
                             score = reward.score,
                             total = reward.total,
+                            xpGained = reward.xpGained,
                             onNavigateToCollection = {
                                 navController.navigate(Screen.Collection) {
                                     popUpTo(Screen.Home) { inclusive = false }

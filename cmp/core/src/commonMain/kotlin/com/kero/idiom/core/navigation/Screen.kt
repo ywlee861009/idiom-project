@@ -17,5 +17,5 @@ sealed interface Screen {
     data object Quiz : Screen
 
     @Serializable
-    data class Reward(val score: Int, val total: Int) : Screen
+    data class Reward(val score: Int, val total: Int, val xpGained: Int) : Screen
 }

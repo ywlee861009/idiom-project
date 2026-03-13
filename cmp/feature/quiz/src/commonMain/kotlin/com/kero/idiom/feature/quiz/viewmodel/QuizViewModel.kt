@@ -61,9 +61,9 @@ class QuizViewModel(
         if (state.value.quizCount >= TOTAL_QUIZ_COUNT) {
             viewModelScope.launch {
                 // 통계 업데이트
-                updateUserStatsUseCase(state.value.score, TOTAL_QUIZ_COUNT)
+                updateUserStatsUseCase(state.value.score, TOTAL_QUIZ_COUNT, state.value.totalXpGained)
                 
-                _sideEffect.send(QuizSideEffect.NavigateToResult(state.value.score, TOTAL_QUIZ_COUNT))
+                _sideEffect.send(QuizSideEffect.NavigateToResult(state.value.score, TOTAL_QUIZ_COUNT, state.value.totalXpGained))
             }
         } else {
             loadNextQuiz()
@@ -125,7 +125,8 @@ class QuizViewModel(
                 selectedOption = if (currentQuiz.options.isNotEmpty()) option else null,
                 inputText = if (currentQuiz.options.isEmpty()) option else it.inputText,
                 isCorrect = isCorrect,
-                score = if (isCorrect) it.score + 1 else it.score
+                score = if (isCorrect) it.score + 1 else it.score,
+                totalXpGained = if (isCorrect) it.totalXpGained + currentQuiz.originalIdiom.level else it.totalXpGained
             )
         }
     }

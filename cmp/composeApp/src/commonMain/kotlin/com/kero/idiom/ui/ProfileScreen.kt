@@ -114,9 +114,10 @@ fun ProfileScreen(
                 val endLevel = (nextTitle?.minLevel ?: currentTitle.maxLevel + 1)
                 val totalLevelsInTier = endLevel - startLevel // 보통 10
 
-                // 현재 레벨 내에서의 진행도 (0~9)
-                val currentLevelExp = stats.totalCorrectCount % 10
-                val currentLevelProgress = currentLevelExp / 10f
+                // 현재 레벨 내에서의 진행도 (개편된 XP 기반)
+                val currentLevelExp = stats.currentXp
+                val currentLevelProgress = stats.xpProgress
+                val nextLevelXp = stats.nextLevelXp
                 
                 // 티어 내에서의 전체 진행 레벨 (0~9)
                 val levelsCompletedInTier = stats.level - startLevel
@@ -133,7 +134,7 @@ fun ProfileScreen(
                             color = TextPrimary
                         )
                         Text(
-                            text = "다음 단계까지 ${10 - currentLevelExp}문제",
+                            text = "다음 단계까지 ${nextLevelXp - currentLevelExp} XP",
                             style = MaterialTheme.typography.bodySmall,
                             color = TextMuted
                         )

@@ -2,12 +2,13 @@ package com.kero.idiom.feature.result.contract
 
 data class ResultState(
     val score: Int = 0,
+    val xpGained: Int = 0,
     val isLoading: Boolean = false,
     val isNewHighScore: Boolean = false
 )
 
 sealed interface ResultIntent {
-    data class Init(val score: Int) : ResultIntent
+    data class Init(val score: Int, val xpGained: Int) : ResultIntent
     data object OnRetryClick : ResultIntent
     data object OnHomeClick : ResultIntent
 }

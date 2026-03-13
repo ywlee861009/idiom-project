@@ -7,11 +7,18 @@ data class UserStats(
     val lastSolvedDateMillis: Long = 0,
     val totalCorrectCount: Int = 0,
     val isNotificationEnabled: Boolean = true,
-    val dataVersion: Int = 0 // 📜 서책(데이터) 버전 추가
+    val dataVersion: Int = 0, // 📜 서책(데이터) 버전 추가
+    val level: Int = 1, // 🌟 현재 레벨 (개편: 영구 저장)
+    val currentXp: Int = 0 // 🌟 현재 레벨에서의 경험치 (개편: 영구 저장)
 ) {
-    // 맞힌 개수에 따른 레벨 계산 (정답 10개당 1레벨 상승)
-    val level: Int get() = (totalCorrectCount / 10).coerceIn(0, 49) + 1
-    
+    // 다음 레벨까지 필요한 경험치 (개편 공식: Level * 20)
+    val nextLevelXp: Int get() = level * 20
+
+    // UI용 경험치 진행률
+    val xpProgress: Float get() = if (nextLevelXp > 0) {
+        (currentXp.toFloat() / nextLevelXp.toFloat()).coerceIn(0f, 1f)
+    } else 0f
+
     // 현재 타이틀 정보
     val currentTitleInfo: UserTitle get() = UserTitle.fromLevel(level)
     

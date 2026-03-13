@@ -144,7 +144,7 @@ private fun HintRevealCard(word: String, blankIndices: List<Int>) {
 @Composable
 fun QuizScreen(
     viewModel: QuizViewModel = koinViewModel(),
-    onNavigateToResult: (Int, Int) -> Unit,
+    onNavigateToResult: (Int, Int, Int) -> Unit,
     onNavigateBack: () -> Unit
 ) {
     val state by viewModel.state.collectAsState()
@@ -186,7 +186,7 @@ fun QuizScreen(
         viewModel.sideEffect.collect { effect ->
             when (effect) {
                 is QuizSideEffect.NavigateToResult ->
-                    onNavigateToResult(effect.score, effect.total)
+                    onNavigateToResult(effect.score, effect.total, effect.xpGained)
                 QuizSideEffect.ShowCorrectEffect -> scope.launch {
                     animationFile = "success"
                     delay(500)

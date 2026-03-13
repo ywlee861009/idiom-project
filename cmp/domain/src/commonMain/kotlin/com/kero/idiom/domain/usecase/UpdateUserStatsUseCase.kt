@@ -5,7 +5,7 @@ import com.kero.idiom.domain.repository.UserStatsRepository
 class UpdateUserStatsUseCase(
     private val repository: UserStatsRepository
 ) {
-    suspend operator fun invoke(correctCount: Int, solvedCount: Int) {
-        repository.updateStats(correctCount, solvedCount)
+    suspend operator fun invoke(correctCount: Int, solvedCount: Int, xpGained: Int) {
+        repository.updateStats(correctCount, solvedCount, xpGained)
     }
 }

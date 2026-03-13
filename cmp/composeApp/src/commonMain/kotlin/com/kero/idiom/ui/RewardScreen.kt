@@ -24,6 +24,7 @@ import org.koin.compose.koinInject
 fun RewardScreen(
     score: Int,
     total: Int,
+    xpGained: Int,
     onNavigateToCollection: () -> Unit,
     onNavigateToHome: () -> Unit
 ) {
@@ -73,11 +74,30 @@ fun RewardScreen(
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = "$total 문제를 모두 완료했습니다 🎋  (${score}/${total} 정답)",
+                    text = "$total 문제를 모두 완료했습니다 🎋",
                     style = MaterialTheme.typography.bodyMedium,
                     color = TextMuted,
                     textAlign = TextAlign.Center
                 )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Text(
+                        text = "(${score}/${total} 정답)",
+                        style = MaterialTheme.typography.labelLarge,
+                        color = if (score == total) CorrectGreen else TextMuted,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                    if (xpGained > 0) {
+                        Text(
+                            text = "|  +${xpGained} XP 획득",
+                            style = MaterialTheme.typography.labelLarge,
+                            color = HintDarkOrange,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
             }
 
             // 보상 성어 카드 (검정 배경)

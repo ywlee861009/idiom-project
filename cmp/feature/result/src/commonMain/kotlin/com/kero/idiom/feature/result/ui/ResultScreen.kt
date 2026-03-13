@@ -16,13 +16,33 @@ import com.kero.idiom.feature.result.contract.ResultIntent
 import com.kero.idiom.feature.result.viewmodel.ResultViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import com.kero.idiom.core.components.HanjiBackground
+import com.kero.idiom.core.components.IdiomBaseCard
+import com.kero.idiom.core.components.IdiomPrimaryButton
+import com.kero.idiom.feature.result.contract.ResultIntent
+import com.kero.idiom.feature.result.viewmodel.ResultViewModel
+import org.koin.compose.viewmodel.koinViewModel
+
 @Composable
 fun ResultScreen(
     score: Int,
     total: Int,
+    xpGained: Int,
     viewModel: ResultViewModel = koinViewModel(),
     onRestart: () -> Unit
 ) {
+    LaunchedEffect(score, xpGained) {
+        viewModel.handleIntent(ResultIntent.Init(score, xpGained))
+    }
+
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background
     ) { paddingValues ->
@@ -70,6 +90,16 @@ fun ResultScreen(
                             fontWeight = FontWeight.ExtraBold,
                             color = MaterialTheme.colorScheme.primary
                         )
+
+                        if (xpGained > 0) {
+                            Spacer(modifier = Modifier.height(24.dp))
+                            Text(
+                                text = "획득한 경험치: +${xpGained} XP",
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.secondary
+                            )
+                        }
                     }
                 }
 
