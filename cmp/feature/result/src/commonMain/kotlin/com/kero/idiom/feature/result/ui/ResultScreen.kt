@@ -3,22 +3,6 @@ package com.kero.idiom.feature.result.ui
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.kero.idiom.core.components.HanjiBackground
-import com.kero.idiom.core.components.IdiomBaseCard
-import com.kero.idiom.core.components.IdiomPrimaryButton
-import com.kero.idiom.feature.result.contract.ResultIntent
-import com.kero.idiom.feature.result.viewmodel.ResultViewModel
-import org.koin.compose.viewmodel.koinViewModel
-
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier

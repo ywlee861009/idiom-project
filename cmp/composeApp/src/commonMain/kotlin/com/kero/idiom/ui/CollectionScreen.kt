@@ -43,8 +43,7 @@ fun CollectionScreen(
         derivedStateOf {
             if (searchQuery.isBlank()) acquiredIdioms
             else acquiredIdioms.filter { idiom ->
-                KoreanUtils.matches(idiom.word, searchQuery) || 
-                KoreanUtils.matches(idiom.meaning, searchQuery)
+                KoreanUtils.matches(idiom.word, searchQuery)
             }
         }
     }
@@ -112,7 +111,7 @@ fun CollectionScreen(
                     .height(56.dp),
                 placeholder = { 
                     Text(
-                        "성어 또는 의미 검색 (예: ㄱㄹ, 계륵)", 
+                        "사자성어 검색 (예: ㄱㄹ, 계륵)", 
                         style = MaterialTheme.typography.bodyMedium,
                         color = TextMuted 
                     ) 
