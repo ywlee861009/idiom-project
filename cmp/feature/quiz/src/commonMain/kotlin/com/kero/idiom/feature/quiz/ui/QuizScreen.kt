@@ -432,7 +432,10 @@ fun QuizScreen(
                                 )
 
                                 Row(
-                                    modifier = Modifier.clickable { focusRequester.requestFocus() },
+                                    modifier = Modifier.clickable { 
+                                        focusRequester.requestFocus()
+                                        keyboardController?.show() // 🌟 강제로 키보드 다시 띄우기
+                                    },
                                     horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally)
                                 ) {
                                     idiomWord.forEachIndexed { index, char ->
