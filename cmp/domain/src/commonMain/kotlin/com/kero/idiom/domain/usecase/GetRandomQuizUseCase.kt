@@ -54,7 +54,7 @@ class GetRandomQuizUseCase(
      * @return 생성된 [Quiz] 객체
      */
     private fun createFillMultipleBlanksQuiz(idiom: Idiom, blankCount: Int): Quiz {
-        val blankIndices = (0 until 4).shuffled().take(blankCount).sorted()
+        val blankIndices = (0 until idiom.word.length).shuffled().take(blankCount).sorted()
         val questionText = idiom.word.mapIndexed { index, c ->
             if (index in blankIndices) '_' else c
         }.joinToString("")
@@ -78,7 +78,7 @@ class GetRandomQuizUseCase(
      * @return 생성된 [Quiz] 객체
      */
     private fun createFillBlankQuiz(idiom: Idiom, samples: List<Idiom>): Quiz {
-        val blankIndex = (0 until 4).random()
+        val blankIndex = (0 until idiom.word.length).random()
         val answerChar = idiom.word[blankIndex].toString()
         val questionText = idiom.word.mapIndexed { index, c ->
             if (index == blankIndex) '_' else c
