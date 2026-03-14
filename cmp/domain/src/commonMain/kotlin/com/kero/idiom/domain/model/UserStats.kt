@@ -32,5 +32,5 @@ data class UserStats(
     }
 
     val title: String get() = currentTitleInfo.title
-    val titleDescription: String get() = currentTitleInfo.description
+    val titleDescription: String get() = currentTitleInfo.getDescription(level)
 }

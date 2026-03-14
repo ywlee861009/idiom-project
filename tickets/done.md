@@ -4,6 +4,17 @@
 
 ---
 
+### [PM-001] `UserTitle` 레벨별 상세 설명(Description) 세분화
+- **Completed Date**: 2026-03-14
+- **Build Verified**: [x] `./cmp/gradlew assembleDebug` SUCCESS (in `cmp` dir)
+- **Results**:
+    - [x] `UserTitle` enum에 `defaultDescription` 및 `getDescription(level: Int)` 추가.
+    - [x] 1~50 레벨별 50개의 고유한 상세 설명 문구 기획 및 구현.
+    - [x] `UserStats`에서 레벨 기반 동적 설명(`titleDescription`) 노출 로직 연동.
+- **Priority**: Medium
+
+---
+
 ### [BUG-001] 사자성어 길이 불일치로 인한 StringIndexOutOfBoundsException 해결
 - **Completed Date**: 2026-03-13
 - **Build Verified**: [x] `./cmp/gradlew :composeApp:assembleDebug` SUCCESS
