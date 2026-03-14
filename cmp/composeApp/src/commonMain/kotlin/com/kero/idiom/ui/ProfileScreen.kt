@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.sp
 import com.kero.idiom.core.components.IdiomTab
 import com.kero.idiom.core.components.IdiomTabBar
 import com.kero.idiom.core.theme.*
+import com.kero.idiom.getAppVersion
 import com.kero.idiom.openFontSizeSettings
 import com.kero.idiom.openStorePage
 import com.kero.idiom.ui.profile.ProfileViewModel
@@ -390,7 +391,7 @@ fun ProfileScreen(
                             )
                         }
                         Text(
-                            text = "최신 버전 v2.0.0",
+                            text = "최신 버전 v${getAppVersion()}",
                             style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
                             color = BgDark // 강조색
                         )

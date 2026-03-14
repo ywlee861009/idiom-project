@@ -22,3 +22,5 @@ expect fun openNotificationSettings()
 expect fun exitApp()
 
 expect fun currentMillis(): Long
+
+expect fun getAppVersion(): String

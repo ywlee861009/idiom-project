@@ -127,3 +127,5 @@ actual fun exitApp() {
 }
 
 actual fun currentMillis(): Long = System.currentTimeMillis()
+
+actual fun getAppVersion(): String = BuildConfig.VERSION_NAME

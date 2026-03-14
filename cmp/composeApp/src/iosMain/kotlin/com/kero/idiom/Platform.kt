@@ -1,6 +1,6 @@
 package com.kero.idiom
 
-import androidx.compose.runtime.Composable
+import platform.Foundation.NSBundle
 import platform.Foundation.NSDate
 import platform.Foundation.date
 import platform.Foundation.timeIntervalSince1970
@@ -41,3 +41,7 @@ actual fun exitApp() {
 }
 
 actual fun currentMillis(): Long = (NSDate.date().timeIntervalSince1970 * 1000).toLong()
+
+actual fun getAppVersion(): String {
+    return NSBundle.mainBundle.infoDictionary?.get("CFBundleShortVersionString") as? String ?: "Unknown"
+}
