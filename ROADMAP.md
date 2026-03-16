@@ -13,7 +13,7 @@
 - [x] **M22. Smart Quiz Engine**: `exposureCount` 기반 지능적 출제 알고리즘.
 - [x] **M23. AdMob Integration**: 전면 광고(Interstitial) 및 기초 수익화 구조 구축.
 - [x] **M24. Firebase SDK**: Crashlytics 및 Analytics 연동 완료.
-- [ ] **M25. Reward System Fix**: 퀴즈 완료 보상 시 '서고' 수집 로직 최종 연동 (진행 중).
+- [x] **M25. Reward System**: 콤보 시스템(연속 정답 보너스 XP) 및 서고 수집 로직 연동 완료. (2026-03-17)
 
 ## Phase 9: Monetization & Polish (Final Sprint 🏃‍♂️)
 - [ ] **M26. Google Play Billing**: 인앱 결제 모듈 연동 및 테마 구매 로직 구현.

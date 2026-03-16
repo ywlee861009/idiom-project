@@ -113,21 +113,34 @@ class QuizViewModel(
         
         viewModelScope.launch {
             if (isCorrect) {
+                val newComboCount = state.value.comboCount + 1
                 _sideEffect.send(QuizSideEffect.ShowCorrectEffect)
+                if (newComboCount >= 2) {
+                    _sideEffect.send(QuizSideEffect.ShowComboEffect(newComboCount))
+                }
                 recordCorrectAnswerUseCase(currentQuiz.originalIdiom.word)
+                
+                _state.update {
+                    it.copy(
+                        selectedOption = if (currentQuiz.options.isNotEmpty()) option else null,
+                        inputText = if (currentQuiz.options.isEmpty()) option else it.inputText,
+                        isCorrect = true,
+                        score = it.score + 1,
+                        comboCount = newComboCount,
+                        totalXpGained = it.totalXpGained + currentQuiz.originalIdiom.level + (if (newComboCount >= 2) 1 else 0)
+                    )
+                }
             } else {
                 _sideEffect.send(QuizSideEffect.ShowWrongEffect)
+                _state.update {
+                    it.copy(
+                        selectedOption = if (currentQuiz.options.isNotEmpty()) option else null,
+                        inputText = if (currentQuiz.options.isEmpty()) option else it.inputText,
+                        isCorrect = false,
+                        comboCount = 0 // 오답 시 콤보 초기화
+                    )
+                }
             }
-        }
-
-        _state.update {
-            it.copy(
-                selectedOption = if (currentQuiz.options.isNotEmpty()) option else null,
-                inputText = if (currentQuiz.options.isEmpty()) option else it.inputText,
-                isCorrect = isCorrect,
-                score = if (isCorrect) it.score + 1 else it.score,
-                totalXpGained = if (isCorrect) it.totalXpGained + currentQuiz.originalIdiom.level else it.totalXpGained
-            )
         }
     }
 }

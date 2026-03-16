@@ -58,9 +58,29 @@ class IdiomRepositoryImpl(
             if (remoteIdioms.isNotEmpty()) {
                 Logger.d("Syncing ${remoteIdioms.size} idioms from remote...")
                 realm.write {
-                    val all = query<IdiomEntity>().find()
-                    delete(all) // 기존 데이터 초기화 (deleteAll() 대신 명시적 삭제)
-                    remoteIdioms.forEach { copyToRealm(it.toEntity()) }
+                    val remoteWords = remoteIdioms.map { it.word }.toSet()
+                    
+                    // 1. 서버에 없는 데이터 삭제 (선택적)
+                    val allLocal = query<IdiomEntity>().find()
+                    allLocal.forEach { local ->
+                        if (!remoteWords.contains(local.word)) {
+                            delete(local)
+                        }
+                    }
+
+                    // 2. 스마트 병합: 기존 데이터는 보존하고 정보만 업데이트
+                    remoteIdioms.forEach { remote ->
+                        val existing = query<IdiomEntity>("word == $0", remote.word).first().find()
+                        if (existing != null) {
+                            // 메타데이터만 업데이트하고 진행상황(count)은 유지
+                            existing.meaning = remote.meaning
+                            existing.hanja = remote.hanja
+                            existing.level = remote.level
+                        } else {
+                            // 신규 성어인 경우에만 새로 추가
+                            copyToRealm(remote.toEntity())
+                        }
+                    }
                 }
                 dataStore.edit { it[IDIOM_VERSION] = remoteVersion }
                 onStatusChanged?.invoke("서책 업데이트 완료!")
@@ -83,9 +103,16 @@ class IdiomRepositoryImpl(
         if (idioms.isNotEmpty()) {
             Logger.d("Syncing ${idioms.size} idioms from assets...")
             realm.write {
-                val all = query<IdiomEntity>().find()
-                delete(all)
-                idioms.forEach { copyToRealm(it.toEntity()) }
+                idioms.forEach { remote ->
+                    val existing = query<IdiomEntity>("word == $0", remote.word).first().find()
+                    if (existing != null) {
+                        existing.meaning = remote.meaning
+                        existing.hanja = remote.hanja
+                        existing.level = remote.level
+                    } else {
+                        copyToRealm(remote.toEntity())
+                    }
+                }
             }
             dataStore.edit { it[IDIOM_VERSION] = 0 }
             onStatusChanged?.invoke("서책 준비 완료!")
@@ -94,12 +121,18 @@ class IdiomRepositoryImpl(
     }
 
     override suspend fun getRandomIdioms(limit: Int): List<Idiom> {
-        // [Smart Revisit] 노출 빈도가 적은 순서로 정렬 후 랜덤 추출
+        // [Smart Revisit] 노출 빈도가 적고 정답률이 낮은 순서로 정렬 후 랜덤 추출
+        // poolSize를 limit * 10 (최소 30개)으로 늘려 중복 노출 패턴을 깨트림
+        val poolSize = (limit * 10).coerceAtLeast(30)
+        
         return realm.query<IdiomEntity>()
             .find()
-            .sortedBy { it.exposureCount } // 노출 적은 순
-            .take(limit * 3) // 여유있게 가져와서
-            .shuffled() // 섞고
+            .sortedWith(
+                compareBy<IdiomEntity> { it.exposureCount }
+                    .thenBy { it.correctCount } // 미수집(정답 0회) 성어 우선
+            )
+            .take(poolSize) // 넉넉한 풀에서 가져와서
+            .shuffled() // 완전히 섞고
             .take(limit) // 최종 개수 추출
             .map { it.toDomain() }
     }

@@ -150,6 +150,7 @@ fun QuizScreen(
     val state by viewModel.state.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
     var animationFile by remember { mutableStateOf<String?>(null) }
+    var showCombo by remember { mutableStateOf<Int?>(null) } // 콤보 노출 상태
     val scope = rememberCoroutineScope()
 
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -193,6 +194,11 @@ fun QuizScreen(
                     animationFile = "wrong"
                     delay(500)
                     animationFile = null
+                }
+                is QuizSideEffect.ShowComboEffect -> scope.launch {
+                    showCombo = effect.comboCount
+                    delay(1200) // 1.2초 동안 노출
+                    showCombo = null
                 }
                 is QuizSideEffect.ShowToast -> scope.launch {
                     snackbarHostState.showSnackbar(effect.message)
@@ -609,6 +615,49 @@ fun QuizScreen(
                     )
                 } else {
                     CircularProgressIndicator(color = BgDark, modifier = Modifier.size(48.dp))
+                }
+            }
+        }
+
+        // 콤보 애니메이션 UI 추가
+        androidx.compose.animation.AnimatedVisibility(
+            visible = showCombo != null,
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .padding(top = 100.dp),
+            enter = androidx.compose.animation.fadeIn() + androidx.compose.animation.expandVertically(),
+            exit = androidx.compose.animation.fadeOut() + androidx.compose.animation.shrinkVertically()
+        ) {
+            showCombo?.let { count ->
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    Surface(
+                        color = BgDark,
+                        shape = RoundedCornerShape(20.dp),
+                        tonalElevation = 4.dp,
+                        shadowElevation = 8.dp
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(horizontal = 24.dp, vertical = 12.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            Text(
+                                text = "연속 ${count}정답!",
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.ExtraBold,
+                                color = TextOnDark
+                            )
+                            Text(
+                                text = "+1 XP",
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = HintOrange
+                            )
+                        }
+                    }
                 }
             }
         }

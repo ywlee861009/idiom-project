@@ -10,6 +10,7 @@ data class QuizState(
     val isCorrect: Boolean? = null,
     val score: Int = 0,
     val totalXpGained: Int = 0,
+    val comboCount: Int = 0, // 연속 정답 횟수 추가
     val quizCount: Int = 0,
     val isHintRevealed: Boolean = false
 )
@@ -25,5 +26,6 @@ sealed interface QuizSideEffect {
     data class NavigateToResult(val score: Int, val total: Int, val xpGained: Int) : QuizSideEffect
     data object ShowCorrectEffect : QuizSideEffect
     data object ShowWrongEffect : QuizSideEffect
+    data class ShowComboEffect(val comboCount: Int) : QuizSideEffect // 콤보 효과 추가
     data class ShowToast(val message: String) : QuizSideEffect
 }
