@@ -4,6 +4,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
 import com.kero.idiom.domain.model.UserStats
 import com.kero.idiom.domain.repository.UserStatsRepository
+import com.kero.idiom.core.util.DateUtils
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -65,7 +66,45 @@ class UserStatsRepositoryImpl(
             prefs[Keys.LEVEL] = currentLevel
             prefs[Keys.CURRENT_XP] = newXp
             
-            // 💡 여기서 스트릭(Streak) 계산 로직 등을 추가할 수 있습니다.
+            // 💡 스트릭(Streak) 계산 로직
+            val currentMillis = DateUtils.getCurrentTimeMillis()
+            val currentEpochDay = DateUtils.getEpochDay(currentMillis)
+            
+            val lastSolvedMillis = prefs[Keys.LAST_SOLVED_DATE] ?: 0L
+            val lastSolvedEpochDay = if (lastSolvedMillis == 0L) 0L else DateUtils.getEpochDay(lastSolvedMillis)
+            
+            var currentStreak = prefs[Keys.CURRENT_STREAK] ?: 0
+            var maxStreak = prefs[Keys.MAX_STREAK] ?: 0
+
+            if (lastSolvedEpochDay == 0L) {
+                // 처음 문제를 푸는 경우
+                currentStreak = 1
+            } else {
+                val dayDifference = currentEpochDay - lastSolvedEpochDay
+                when {
+                    dayDifference == 1L -> {
+                        // 어제 풀고 오늘 또 푸는 경우 (스트릭 유지)
+                        currentStreak += 1
+                    }
+                    dayDifference > 1L -> {
+                        // 하루 이상 건너뛴 경우 (스트릭 초기화)
+                        currentStreak = 1
+                    }
+                    // dayDifference == 0L 인 경우 (오늘 이미 푼 경우) 스트릭 변화 없음
+                }
+            }
+
+            if (currentStreak > maxStreak) {
+                maxStreak = currentStreak
+            }
+
+            // 오늘 푼 경우에만 최근 푼 날짜 업데이트 (연속 학습일수 계산용)
+            if (currentEpochDay > lastSolvedEpochDay || lastSolvedMillis == 0L) {
+                prefs[Keys.LAST_SOLVED_DATE] = currentMillis
+            }
+            
+            prefs[Keys.CURRENT_STREAK] = currentStreak
+            prefs[Keys.MAX_STREAK] = maxStreak
         }
     }
 
