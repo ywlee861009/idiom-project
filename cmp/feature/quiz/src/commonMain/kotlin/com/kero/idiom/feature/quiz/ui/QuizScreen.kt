@@ -23,6 +23,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kero.idiom.core.theme.*
@@ -411,14 +413,27 @@ fun QuizScreen(
                         } else {
                             val idiomWord = quiz.originalIdiom.word
                             val blankIndices = quiz.blankIndices
+
+                            // [Kero] 한글 조합 중 포커스 이동 방지를 위해 TextFieldValue 사용
+                            var textFieldValue by remember { mutableStateOf(TextFieldValue(text = state.inputText, selection = TextRange(state.inputText.length))) }
+
+                            // 외부 상태(state.inputText)가 변경되면(예: 초기화) 내부 상태 동기화
+                            LaunchedEffect(state.inputText) {
+                                if (state.inputText != textFieldValue.text) {
+                                    textFieldValue = TextFieldValue(text = state.inputText, selection = TextRange(state.inputText.length))
+                                }
+                            }
                             
                             Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                                 BasicTextField(
-                                    value = state.inputText,
+                                    value = textFieldValue,
                                     onValueChange = { newValue ->
                                         if (state.isCorrect != null) return@BasicTextField
-                                        if (newValue.length <= blankIndices.size) {
-                                            viewModel.handleIntent(QuizIntent.InputAnswer(newValue))
+                                        if (newValue.text.length <= blankIndices.size) {
+                                            textFieldValue = newValue
+                                            if (newValue.text != state.inputText) {
+                                                viewModel.handleIntent(QuizIntent.InputAnswer(newValue.text))
+                                            }
                                         }
                                     },
                                     modifier = Modifier
@@ -450,7 +465,11 @@ fun QuizScreen(
                                         if (isBlank) {
                                             val blankPos = blankIndices.indexOf(index)
                                             val charValue = state.inputText.getOrNull(blankPos)?.toString() ?: ""
-                                            val isCurrent = blankPos == state.inputText.length && state.isCorrect == null
+                                            
+                                            // [Kero] 조합 중일 때는 포커스를 현재 칸에 유지
+                                            val isComposing = textFieldValue.composition != null
+                                            val currentLength = if (isComposing && state.inputText.isNotEmpty()) state.inputText.length - 1 else state.inputText.length
+                                            val isCurrent = blankPos == currentLength && state.isCorrect == null
                                             
                                             val borderColor = when {
                                                 state.isCorrect == true -> CorrectGreen

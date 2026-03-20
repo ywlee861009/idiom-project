@@ -1,3 +1,24 @@
+# 🎫 Ticket: [Quiz] 주관식 입력 포커스 UX 개선
+
+## 📌 상태 (Status)
+- **ID**: TKT-20260320-01
+- **담당자**: Kero (Android Dev)
+- **우선순위**: High
+- **상태**: Done (Build-Verified)
+
+## 📖 요구사항 (Requirements)
+- 주관식 퀴즈 입력 시 한글 조합 중에도 포커스가 다음 칸으로 넘어가는 UX 문제 해결.
+- 한 글자가 온전히 완성될 때까지(조합이 끝날 때까지) 현재 칸에 포커스를 유지.
+
+## 🛠️ 작업 내역 (Tasks)
+- [x] `QuizScreen.kt`: `BasicTextField`의 `value`를 `String`에서 `TextFieldValue`로 변경하여 `composition` 상태 관리.
+- [x] `QuizScreen.kt`: `LaunchedEffect`를 추가하여 외부 상태(`inputText`) 변경 시 내부 상태(`TextFieldValue`) 동기화 로직 구현.
+- [x] `QuizScreen.kt`: `isCurrent` 계산 로직에 `composition` 여부를 반영하여 조합 중 포커스 이동 방지.
+
+## ✅ 검증 결과 (Verification)
+- 코드 리뷰 및 논리 검증 완료.
+- `BasicTextField`의 `TextFieldValue` 사용 및 `composition` 체크 로직 적용.
+
 # 🎫 Ticket: 연속 정답(콤보) 시스템 도입
 
 ## 📌 상태 (Status)
