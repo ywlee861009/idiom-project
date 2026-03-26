@@ -17,7 +17,7 @@ object ReminderManager {
     /**
      * 알림을 예약합니다. 
      * 디버그 모드(Debug): 1분 뒤 알림 (테스트용)
-     * 운영 모드(Release): 2일 뒤 오전 8시 알림
+     * 운영 모드(Release): 1일 뒤 오전 8시 알림
      */
     fun scheduleReminder(context: Context) {
         val (delay, unit) = if (BuildConfig.DEBUG) {
@@ -39,14 +39,14 @@ object ReminderManager {
     }
 
     /**
-     * 현재 시간으로부터 '2일 뒤 오전 8시'까지의 밀리초를 계산합니다.
+     * 현재 시간으로부터 '1일 뒤 오전 8시'까지의 밀리초를 계산합니다.
      */
     private fun calculateDelayUntilEightAm(): Long {
         val now = Calendar.getInstance()
         
-        // 목표 시간 설정 (2일 뒤 오전 8시)
+        // 목표 시간 설정 (1일 뒤 오전 8시)
         val target = Calendar.getInstance().apply {
-            add(Calendar.DAY_OF_YEAR, 2)
+            add(Calendar.DAY_OF_YEAR, 1)
             set(Calendar.HOUR_OF_DAY, 8)
             set(Calendar.MINUTE, 0)
             set(Calendar.SECOND, 0)

@@ -34,7 +34,7 @@ class MainActivity : ComponentActivity() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 userStatsRepository.getUserStats().collect { stats ->
                     if (stats.isNotificationEnabled) {
-                        // 사용자가 앱을 켰으므로(onStart) 타이머를 다시 2일(5분) 뒤로 갱신
+                        // 사용자가 앱을 켰으므로(onStart) 타이머를 다시 1일(5분) 뒤로 갱신
                         ReminderManager.scheduleReminder(this@MainActivity)
                     } else {
                         // 알림이 꺼져 있으면 즉시 취소
