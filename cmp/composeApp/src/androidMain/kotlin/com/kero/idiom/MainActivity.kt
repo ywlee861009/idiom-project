@@ -19,6 +19,7 @@ import com.kero.idiom.domain.repository.UserStatsRepository
 import com.kero.idiom.notification.ReminderManager
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
+import java.lang.ref.WeakReference
 
 class MainActivity : ComponentActivity() {
 
@@ -27,7 +28,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        currentActivity = this
+        currentActivityRef = WeakReference(this)
 
         // 알림 설정 상태 관찰 및 실시간 반영
         lifecycleScope.launch {
@@ -80,14 +81,15 @@ class MainActivity : ComponentActivity() {
     }
 
     override fun onDestroy() {
-        if (currentActivity == this) {
-            currentActivity = null
+        if (currentActivityRef?.get() == this) {
+            currentActivityRef = null
         }
         super.onDestroy()
     }
 
     companion object {
-        var currentActivity: MainActivity? = null
-            private set
+        private var currentActivityRef: WeakReference<MainActivity>? = null
+        val currentActivity: MainActivity?
+            get() = currentActivityRef?.get()
     }
 }

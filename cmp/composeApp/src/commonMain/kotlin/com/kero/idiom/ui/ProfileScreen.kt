@@ -78,7 +78,7 @@ fun ProfileScreen(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = stats.title.first().toString(),
+                        text = stats.title.firstOrNull()?.toString() ?: "",
                         fontSize = 22.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.White
