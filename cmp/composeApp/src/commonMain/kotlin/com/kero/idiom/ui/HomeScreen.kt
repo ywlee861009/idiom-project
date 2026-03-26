@@ -21,15 +21,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.kero.idiom.core.components.IdiomDivider
 import com.kero.idiom.core.components.IdiomTab
 import com.kero.idiom.core.components.IdiomTabBar
 import com.kero.idiom.core.theme.*
 import com.kero.idiom.domain.model.Idiom
-import com.kero.idiom.domain.model.UserStats
-import com.kero.idiom.domain.repository.IdiomRepository
-import com.kero.idiom.domain.usecase.GetUserStatsUseCase
-import org.koin.compose.koinInject
+import com.kero.idiom.ui.home.HomeViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun HomeScreen(
@@ -37,11 +34,11 @@ fun HomeScreen(
     onStartQuiz: () -> Unit,
     onNavigateToProfile: () -> Unit
 ) {
-    val repository: IdiomRepository = koinInject()
-    val getUserStatsUseCase: GetUserStatsUseCase = koinInject()
-    
-    var todayIdiom by remember { mutableStateOf<Idiom?>(null) }
-    val userStats by getUserStatsUseCase().collectAsState(UserStats())
+    val viewModel: HomeViewModel = koinViewModel()
+    val state by viewModel.state.collectAsState()
+
+    val userStats = state.userStats
+    val todayIdiom = state.todayIdiom
 
     val infiniteTransition = rememberInfiniteTransition(label = "breathing")
     val scale by infiniteTransition.animateFloat(
@@ -53,10 +50,6 @@ fun HomeScreen(
         ),
         label = "scale"
     )
-
-    LaunchedEffect(Unit) {
-        todayIdiom = repository.getRandomIdioms(1).firstOrNull()
-    }
 
     Column(
         modifier = Modifier

@@ -10,6 +10,7 @@ import com.kero.idiom.domain.usecase.GetUserStatsUseCase
 import com.kero.idiom.domain.usecase.UpdateUserStatsUseCase
 import com.kero.idiom.feature.quiz.di.featureQuizModule
 import com.kero.idiom.feature.result.di.featureResultModule
+import com.kero.idiom.ui.home.HomeViewModel
 import com.kero.idiom.ui.profile.ProfileViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -33,6 +34,7 @@ class IdiomApplication : Application() {
             factory { UpdateUserStatsUseCase(get()) }
             
             // ViewModels
+            viewModel { HomeViewModel(get(), get()) }
             viewModel { ProfileViewModel(get(), get()) }
         }
 
