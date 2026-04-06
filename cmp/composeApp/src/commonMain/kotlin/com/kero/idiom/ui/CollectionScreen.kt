@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kero.idiom.core.components.IdiomTab
@@ -38,6 +39,7 @@ fun CollectionScreen(
     var acquiredIdioms by remember { mutableStateOf<List<Idiom>>(emptyList()) }
     var totalIdiomsCount by remember { mutableIntStateOf(0) }
     var searchQuery by remember { mutableStateOf("") }
+    var selectedIdiom by remember { mutableStateOf<Idiom?>(null) }
 
     val filteredIdioms by remember(acquiredIdioms, searchQuery) {
         derivedStateOf {
@@ -198,7 +200,7 @@ fun CollectionScreen(
                     modifier = Modifier.weight(1f)
                 ) {
                     items(filteredIdioms) { idiom ->
-                        IdiomCollectionCard(idiom)
+                        IdiomCollectionCard(idiom, onClick = { selectedIdiom = idiom })
                     }
                     item { Spacer(Modifier.height(16.dp)) }
                     item { Spacer(Modifier.height(16.dp)) }
@@ -211,19 +213,23 @@ fun CollectionScreen(
             onTabSelected = onTabSelected
         )
     }
+
+    selectedIdiom?.let { idiom ->
+        IdiomDetailBottomSheet(
+            idiom = idiom,
+            onDismiss = { selectedIdiom = null }
+        )
+    }
 }
 
 @Composable
-private fun IdiomCollectionCard(idiom: Idiom) {
+private fun IdiomCollectionCard(idiom: Idiom, onClick: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(12.dp))
             .background(BgDark)
-            .clickable { 
-                val searchUrl = "https://hanja.dict.naver.com/search?query=${idiom.word}"
-                openBrowser(searchUrl)
-            }
+            .clickable(onClick = onClick)
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(6.dp)
     ) {
@@ -253,7 +259,7 @@ private fun IdiomCollectionCard(idiom: Idiom) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "상세 풀이 보기(네이버)",
+                text = "탭하여 자세히 보기",
                 fontSize = 10.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.White.copy(alpha = 0.5f)
@@ -263,6 +269,137 @@ private fun IdiomCollectionCard(idiom: Idiom) {
                 fontSize = 11.sp,
                 color = Color.White.copy(alpha = 0.4f)
             )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun IdiomDetailBottomSheet(idiom: Idiom, onDismiss: () -> Unit) {
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+
+    ModalBottomSheet(
+        onDismissRequest = onDismiss,
+        sheetState = sheetState,
+        containerColor = BgPrimary,
+        shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
+        dragHandle = {
+            Box(
+                modifier = Modifier
+                    .padding(top = 12.dp, bottom = 8.dp)
+                    .width(40.dp)
+                    .height(4.dp)
+                    .clip(RoundedCornerShape(2.dp))
+                    .background(BorderColor)
+            )
+        }
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 28.dp)
+                .padding(top = 8.dp, bottom = 40.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(20.dp)
+        ) {
+            // 한자 + 발음 (글자별 배열)
+            val hanjaChars = idiom.hanja.toList()
+            val hangulChars = idiom.word.toList()
+            if (hanjaChars.size == hangulChars.size && hanjaChars.isNotEmpty()) {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    verticalAlignment = Alignment.Bottom
+                ) {
+                    hanjaChars.zip(hangulChars).forEach { (hanja, hangul) ->
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.spacedBy(4.dp)
+                        ) {
+                            Text(
+                                text = hanja.toString(),
+                                fontSize = 36.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = TextPrimary,
+                                letterSpacing = 0.sp
+                            )
+                            Text(
+                                text = hangul.toString(),
+                                fontSize = 14.sp,
+                                color = TextMuted,
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                    }
+                }
+            } else {
+                // 글자 수 불일치 시 통합 표시
+                Text(
+                    text = idiom.hanja,
+                    style = MaterialTheme.typography.titleLarge,
+                    color = TextPrimary
+                )
+                Text(
+                    text = idiom.word,
+                    style = MaterialTheme.typography.titleMedium,
+                    color = TextMuted
+                )
+            }
+
+            // 구분선
+            HorizontalDivider(color = BorderColor)
+
+            // 뜻 풀이
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Text(
+                    text = "뜻",
+                    style = MaterialTheme.typography.titleMedium,
+                    color = TextPrimary
+                )
+                Text(
+                    text = idiom.meaning,
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = TextMuted,
+                    lineHeight = 26.sp
+                )
+            }
+
+            // 난이도
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Text(
+                    text = "난이도",
+                    style = MaterialTheme.typography.titleMedium,
+                    color = TextPrimary
+                )
+                Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                    repeat(5) { index ->
+                        Text(
+                            text = if (index < idiom.level) "★" else "☆",
+                            fontSize = 20.sp,
+                            color = if (index < idiom.level) TextPrimary else BorderColor
+                        )
+                    }
+                }
+            }
+
+            // 네이버 링크
+            TextButton(
+                onClick = {
+                    openBrowser("https://hanja.dict.naver.com/search?query=${idiom.word}")
+                },
+                modifier = Modifier.align(Alignment.Start)
+            ) {
+                Text(
+                    text = "네이버 한자사전에서 더 보기 →",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = TextSecondary
+                )
+            }
         }
     }
 }
