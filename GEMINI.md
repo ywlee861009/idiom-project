@@ -49,5 +49,5 @@
         - 요약 내용에는 기능 추가, 버그 수정, UI 개선 사항 등을 포함.
 
 ---
-*Last Sync: 2026-03-28*  
+*Last Sync: 2026-03-12*  
 *Sync by: Android Dev Kero*

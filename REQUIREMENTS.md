@@ -28,7 +28,7 @@
 - **학습 상세**: 서고 메뉴에서 수집한 성어의 상세 풀이 및 음성(TTS) 제공.
 
 ## 4. 기술 스택 (Technical Stack)
-- **Language**: Kotlin (2.0.21)
+- **Language**: Kotlin (2.1.10)
 - **UI Framework**: Compose Multiplatform (CMP)
 - **Dependency Injection**: Koin
 - **Data**: Room KMP (Local Persistence), DataStore (Settings)

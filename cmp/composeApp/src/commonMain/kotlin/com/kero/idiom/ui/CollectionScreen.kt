@@ -22,10 +22,6 @@ import com.kero.idiom.core.components.IdiomTabBar
 import com.kero.idiom.core.theme.*
 import com.kero.idiom.domain.model.Idiom
 import com.kero.idiom.domain.repository.IdiomRepository
-import com.kero.idiom.domain.repository.UserStatsRepository
-import com.kero.idiom.ui.collection.components.FoldingScreenScrollable
-import com.kero.idiom.ui.collection.model.FoldingScreenPanelData
-import com.kero.idiom.ui.collection.model.PanelType
 import com.kero.idiom.openBrowser
 import org.koin.compose.koinInject
 
@@ -39,42 +35,9 @@ fun CollectionScreen(
     onTabSelected: (IdiomTab) -> Unit
 ) {
     val repository: IdiomRepository = koinInject()
-    val userStatsRepository: UserStatsRepository = koinInject()
-    
-    val userStats by userStatsRepository.getUserStats().collectAsState(null)
     var acquiredIdioms by remember { mutableStateOf<List<Idiom>>(emptyList()) }
     var totalIdiomsCount by remember { mutableIntStateOf(0) }
     var searchQuery by remember { mutableStateOf("") }
-
-    // 병풍 데이터 계산
-    val foldingPanels by remember(userStats, acquiredIdioms, totalIdiomsCount) {
-        derivedStateOf {
-            userStats?.let { stats ->
-                listOf(
-                    FoldingScreenPanelData(
-                        title = "제1폭: 태동 (Level ${stats.level})",
-                        progress = stats.xpProgress,
-                        type = PanelType.MOUNTAIN
-                    ),
-                    FoldingScreenPanelData(
-                        title = "제2폭: 성장 (${acquiredIdioms.size}권 수집)",
-                        progress = if (totalIdiomsCount > 0) acquiredIdioms.size.toFloat() / totalIdiomsCount.toFloat() else 0f,
-                        type = PanelType.FOREST
-                    ),
-                    FoldingScreenPanelData(
-                        title = "제3폭: 류 (${stats.currentStreak}일 정진)",
-                        progress = (stats.currentStreak.toFloat() / 7f).coerceIn(0.1f, 1f), // 7일 기준
-                        type = PanelType.WATER
-                    ),
-                    FoldingScreenPanelData(
-                        title = "제4폭: 비상 (정진의 결실)",
-                        progress = if (stats.totalSolvedCount > 0) stats.totalCorrectCount.toFloat() / stats.totalSolvedCount.toFloat() else 0f,
-                        type = PanelType.CRANE
-                    )
-                )
-            } ?: emptyList()
-        }
-    }
 
     val filteredIdioms by remember(acquiredIdioms, searchQuery) {
         derivedStateOf {
@@ -137,13 +100,7 @@ fun CollectionScreen(
                 }
             }
 
-            Spacer(Modifier.height(24.dp))
-
-            // 🚀 정진의 병풍 추가
-            if (foldingPanels.isNotEmpty()) {
-                FoldingScreenScrollable(panels = foldingPanels)
-                Spacer(Modifier.height(24.dp))
-            }
+            Spacer(Modifier.height(20.dp))
 
             // 검색바
             OutlinedTextField(

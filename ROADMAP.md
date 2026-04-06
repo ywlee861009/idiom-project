@@ -8,7 +8,7 @@
 - [x] **M15. Screen Separation**: 서당(Home), 서고(Collection), 내 정보(Profile) 분리.
 - [x] **M16. Local DB Sync**: Room KMP 기반 `idioms.json` 자동 동기화.
 
-## Phase 8: Advanced Quiz & Infra (100% 완료)
+## Phase 8: Advanced Quiz & Infra (90% 완료)
 - [x] **M21. Mixed Quiz Types**: 4지 선다, 빈칸 2/4칸 등 퀴즈 다양화.
 - [x] **M22. Smart Quiz Engine**: `exposureCount` 기반 지능적 출제 알고리즘.
 - [x] **M23. AdMob Integration**: 전면 광고(Interstitial) 및 기초 수익화 구조 구축.
@@ -19,17 +19,11 @@
 - [ ] **M26. Google Play Billing**: 인앱 결제 모듈 연동 및 테마 구매 로직 구현.
 - [ ] **M27. Theme Locking**: 유료 테마 잠금 처리 및 구매 후 해제 로직.
 - [ ] **M28. Collection Detail**: '서고' 내 성어 상세 풀이 및 TTS(음성) 지원.
-- [ ] **M29. Visual Polish**: 전반적인 폰트 가독성(20sp 이상) 및 디자인 시스템(#F9F7F2, #2C2C2C) 최종 적용.
+- [ ] **M29. Visual Polish**: 전반적인 폰트 가독성(20sp 이상) 최종 검수 및 애니메이션 튜닝.
 
 ## Phase 10: Store Delivery
 - [ ] **M30. Store Assets**: 스토어용 스크린샷, 아이콘, 설명문 작성.
 - [ ] **M31. Build-Verified Release**: Proguard(R8) 적용 및 AAB 빌드 검증 후 배포.
 
-## Phase 11: Emotional Retention (New 🚀)
-- [ ] **M32. Ink-Wash Folding Screen**: XP/수집수 기반 동적 산수화 시스템 구축.
-- [ ] **M33. Achievement Seals**: 마일스톤 달성 시 낙관(Seal) 애니메이션 구현.
-- [ ] **M34. Artwork Export**: 완성된 병풍 이미지 저장 및 공유 기능.
-
 ---
-*Last Updated: 2026-03-28*
-*Sync by: Android Dev Kero*
+*Last Updated: 2026-03-11*
