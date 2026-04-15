@@ -93,6 +93,10 @@ fun HomeScreen(
                 }
                 
                 Row(verticalAlignment = Alignment.CenterVertically) {
+                    if (userStats.globalCombo >= 2) {
+                        CompactStatItem("${userStats.globalCombo}연", "콤보")
+                        Spacer(Modifier.width(16.dp))
+                    }
                     CompactStatItem("${userStats.currentStreak}일", "연속")
                     Spacer(Modifier.width(16.dp))
                     CompactStatItem("Lv.${userStats.level}", "단계")

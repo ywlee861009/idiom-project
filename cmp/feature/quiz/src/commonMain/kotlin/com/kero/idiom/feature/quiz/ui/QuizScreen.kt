@@ -670,7 +670,7 @@ fun QuizScreen(
                                 color = TextOnDark
                             )
                             Text(
-                                text = "+1 XP",
+                                text = "+${(count - 1).coerceIn(0, 5)} XP",
                                 fontSize = 16.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = HintOrange

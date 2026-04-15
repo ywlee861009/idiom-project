@@ -1,6 +1,7 @@
 package com.kero.idiom.feature.quiz.di
 
 import com.kero.idiom.domain.usecase.GetRandomQuizUseCase
+import com.kero.idiom.domain.usecase.GetUserStatsUseCase
 import com.kero.idiom.domain.usecase.RecordCorrectAnswerUseCase
 import com.kero.idiom.domain.usecase.UpdateUserStatsUseCase
 import com.kero.idiom.feature.quiz.viewmodel.QuizViewModel
@@ -12,12 +13,13 @@ val featureQuizModule = module {
     factory { RecordCorrectAnswerUseCase(get()) }
     factory { UpdateUserStatsUseCase(get()) }
     
-    viewModel { 
+    viewModel {
         QuizViewModel(
             getRandomQuizUseCase = get(),
             recordCorrectAnswerUseCase = get(),
             updateUserStatsUseCase = get(),
+            getUserStatsUseCase = get(),
             adController = get()
-        ) 
+        )
     }
 }

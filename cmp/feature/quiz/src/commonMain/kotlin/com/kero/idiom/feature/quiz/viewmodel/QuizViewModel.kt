@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kero.idiom.core.ads.AdController
 import com.kero.idiom.domain.usecase.GetRandomQuizUseCase
+import com.kero.idiom.domain.usecase.GetUserStatsUseCase
 import com.kero.idiom.domain.usecase.RecordCorrectAnswerUseCase
 import com.kero.idiom.domain.usecase.UpdateUserStatsUseCase
 import com.kero.idiom.feature.quiz.contract.QuizIntent
@@ -13,6 +14,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -23,6 +25,7 @@ class QuizViewModel(
     private val getRandomQuizUseCase: GetRandomQuizUseCase,
     private val recordCorrectAnswerUseCase: RecordCorrectAnswerUseCase,
     private val updateUserStatsUseCase: UpdateUserStatsUseCase,
+    private val getUserStatsUseCase: GetUserStatsUseCase,
     private val adController: AdController
 ) : ViewModel() {
 
@@ -33,6 +36,11 @@ class QuizViewModel(
     val sideEffect = _sideEffect.receiveAsFlow()
 
     init {
+        viewModelScope.launch {
+            // 전역 콤보를 불러와 세션 시작 콤보로 설정
+            val globalCombo = getUserStatsUseCase().first().globalCombo
+            _state.update { it.copy(comboCount = globalCombo) }
+        }
         loadNextQuiz()
         adController.loadInterstitial() // 전면 광고 미리 로드
         adController.loadRewardedAd()   // 리워드 광고 미리 로드
@@ -61,8 +69,8 @@ class QuizViewModel(
         if (state.value.quizCount >= TOTAL_QUIZ_COUNT) {
             viewModelScope.launch {
                 // 통계 업데이트
-                updateUserStatsUseCase(state.value.score, TOTAL_QUIZ_COUNT, state.value.totalXpGained)
-                
+                updateUserStatsUseCase(state.value.score, TOTAL_QUIZ_COUNT, state.value.totalXpGained, state.value.comboCount)
+
                 _sideEffect.send(QuizSideEffect.NavigateToResult(state.value.score, TOTAL_QUIZ_COUNT, state.value.totalXpGained))
             }
         } else {
@@ -87,6 +95,9 @@ class QuizViewModel(
             }
         }
     }
+
+    // 연속 정답 XP 보너스: combo 2→+1, 3→+2, 4→+3, 5→+4, 6+→+5 (최대)
+    private fun comboXpBonus(combo: Int): Int = (combo - 1).coerceIn(0, 5)
 
     private fun checkAnswer(option: String) {
         // 이미 답변을 선택했거나 정답 처리가 완료된 경우 무시
@@ -127,7 +138,7 @@ class QuizViewModel(
                         isCorrect = true,
                         score = it.score + 1,
                         comboCount = newComboCount,
-                        totalXpGained = it.totalXpGained + currentQuiz.originalIdiom.level + (if (newComboCount >= 2) 1 else 0)
+                        totalXpGained = it.totalXpGained + currentQuiz.originalIdiom.level + comboXpBonus(newComboCount)
                     )
                 }
             } else {
