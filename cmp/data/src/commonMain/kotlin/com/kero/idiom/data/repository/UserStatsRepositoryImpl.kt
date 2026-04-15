@@ -27,6 +27,7 @@ class UserStatsRepositoryImpl(
         val DATA_VERSION = intPreferencesKey("user_data_version")
         val LEVEL = intPreferencesKey("current_level")
         val CURRENT_XP = intPreferencesKey("current_xp")
+        val GLOBAL_COMBO = intPreferencesKey("global_combo")
     }
 
     override fun getUserStats(): Flow<UserStats> {
@@ -40,12 +41,13 @@ class UserStatsRepositoryImpl(
                 isNotificationEnabled = prefs[Keys.NOTIFICATION_ENABLED] ?: true,
                 dataVersion = prefs[Keys.DATA_VERSION] ?: 0,
                 level = prefs[Keys.LEVEL] ?: 1,
-                currentXp = prefs[Keys.CURRENT_XP] ?: 0
+                currentXp = prefs[Keys.CURRENT_XP] ?: 0,
+                globalCombo = prefs[Keys.GLOBAL_COMBO] ?: 0
             )
         }
     }
 
-    override suspend fun updateStats(correctCount: Int, solvedCount: Int, xpGained: Int) {
+    override suspend fun updateStats(correctCount: Int, solvedCount: Int, xpGained: Int, comboCount: Int) {
         dataStore.edit { prefs ->
             val currentSolved = prefs[Keys.TOTAL_SOLVED] ?: 0
             val currentCorrect = prefs[Keys.TOTAL_CORRECT] ?: 0
@@ -65,7 +67,8 @@ class UserStatsRepositoryImpl(
             
             prefs[Keys.LEVEL] = currentLevel
             prefs[Keys.CURRENT_XP] = newXp
-            
+            prefs[Keys.GLOBAL_COMBO] = comboCount
+
             // 💡 스트릭(Streak) 계산 로직
             val currentMillis = DateUtils.getCurrentTimeMillis()
             val currentEpochDay = DateUtils.getEpochDay(currentMillis)

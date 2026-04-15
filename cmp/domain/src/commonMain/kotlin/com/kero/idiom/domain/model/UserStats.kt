@@ -9,7 +9,8 @@ data class UserStats(
     val isNotificationEnabled: Boolean = true,
     val dataVersion: Int = 0, // 📜 서책(데이터) 버전 추가
     val level: Int = 1, // 🌟 현재 레벨 (개편: 영구 저장)
-    val currentXp: Int = 0 // 🌟 현재 레벨에서의 경험치 (개편: 영구 저장)
+    val currentXp: Int = 0, // 🌟 현재 레벨에서의 경험치 (개편: 영구 저장)
+    val globalCombo: Int = 0 // 전역 연속 정답 횟수 (세션을 넘어 유지)
 ) {
     // 다음 레벨까지 필요한 경험치 (개편 공식: Level * 20)
     val nextLevelXp: Int get() = level * 20
