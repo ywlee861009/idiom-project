@@ -38,6 +38,10 @@ compottie = "2.0.0-rc02"
 google-admob = "23.6.0"
 androidx-work = "2.10.0"
 
+# Testing
+kotlinxCoroutinesTest = "1.9.0"
+turbine = "1.2.0"
+
 [libraries]
 realm-library-base = { group = "io.realm.kotlin", name = "library-base", version.ref = "realm" }
 androidx-work-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "androidx-work" }
@@ -83,6 +87,11 @@ androidx-datastore-preferences-core = { group = "androidx.datastore", name = "da
 androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 sqlite-bundled = { group = "androidx.sqlite", name = "sqlite-bundled", version.ref = "sqlite" }
+
+# Testing
+kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin" }
+kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
+turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

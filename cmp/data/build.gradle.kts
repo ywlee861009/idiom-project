@@ -39,6 +39,10 @@ kotlin {
             implementation(compose.runtime)
             implementation(compose.components.resources)
         }
+        commonTest.dependencies {
+            implementation(libs.kotlin.test)
+            implementation(libs.kotlinx.coroutines.test)
+        }
         androidMain.dependencies {
             implementation(libs.androidx.datastore.preferences)
             implementation(libs.koin.android)

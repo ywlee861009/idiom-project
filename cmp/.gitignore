@@ -46,3 +46,7 @@ Pods/
 
 # Compose Resources (generated)
 **/generated/compose/
+
+# Realm test artifacts
+*.realm.lock
+*.realm.management/
