@@ -11,7 +11,7 @@ import org.koin.dsl.module
 val featureQuizModule = module {
     factory { GetRandomQuizUseCase(get()) }
     factory { RecordCorrectAnswerUseCase(get()) }
-    factory { UpdateUserStatsUseCase(get()) }
+    factory { UpdateUserStatsUseCase(get(), get()) }
     
     viewModel {
         QuizViewModel(

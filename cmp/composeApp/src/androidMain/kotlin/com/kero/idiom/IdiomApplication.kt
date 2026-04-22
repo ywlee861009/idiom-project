@@ -7,6 +7,7 @@ import com.kero.idiom.data.di.androidDataModule
 import com.kero.idiom.data.di.dataModule
 import com.kero.idiom.data.di.networkModule
 import com.kero.idiom.domain.usecase.GetUserStatsUseCase
+import com.kero.idiom.domain.usecase.GetWeeklyStatsUseCase
 import com.kero.idiom.domain.usecase.UpdateUserStatsUseCase
 import com.kero.idiom.feature.quiz.di.featureQuizModule
 import com.kero.idiom.feature.result.di.featureResultModule
@@ -31,11 +32,12 @@ class IdiomApplication : Application() {
         val appModule = module {
             // UseCases
             factory { GetUserStatsUseCase(get()) }
-            factory { UpdateUserStatsUseCase(get()) }
-            
+            factory { UpdateUserStatsUseCase(get(), get()) }
+            factory { GetWeeklyStatsUseCase(get()) }
+
             // ViewModels
             viewModel { HomeViewModel(get(), get()) }
-            viewModel { ProfileViewModel(get(), get()) }
+            viewModel { ProfileViewModel(get(), get(), get()) }
         }
 
         startKoin {

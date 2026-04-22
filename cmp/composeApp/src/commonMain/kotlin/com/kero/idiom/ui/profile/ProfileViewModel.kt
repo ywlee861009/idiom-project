@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kero.idiom.domain.repository.UserStatsRepository
 import com.kero.idiom.domain.usecase.GetUserStatsUseCase
+import com.kero.idiom.domain.usecase.GetWeeklyStatsUseCase
 import com.kero.idiom.isSystemNotificationEnabled
 import com.kero.idiom.openNotificationSettings
 import com.kero.idiom.ui.profile.contract.ProfileIntent
@@ -19,7 +20,8 @@ import kotlinx.coroutines.launch
 
 class ProfileViewModel(
     private val getUserStatsUseCase: GetUserStatsUseCase,
-    private val userStatsRepository: UserStatsRepository
+    private val userStatsRepository: UserStatsRepository,
+    private val getWeeklyStatsUseCase: GetWeeklyStatsUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(ProfileState())
@@ -27,6 +29,7 @@ class ProfileViewModel(
 
     init {
         observeStats()
+        loadWeeklyStats()
         syncSystemNotificationStatus()
     }
 
@@ -58,7 +61,10 @@ class ProfileViewModel(
                     }
                 }
             }
-            ProfileIntent.Refresh -> observeStats()
+            ProfileIntent.Refresh -> {
+                observeStats()
+                loadWeeklyStats()
+            }
         }
     }
 
@@ -68,5 +74,12 @@ class ProfileViewModel(
                 _state.update { it.copy(userStats = stats) }
             }
             .launchIn(viewModelScope)
+    }
+
+    private fun loadWeeklyStats() {
+        viewModelScope.launch {
+            val records = getWeeklyStatsUseCase()
+            _state.update { it.copy(weeklyRecords = records) }
+        }
     }
 }

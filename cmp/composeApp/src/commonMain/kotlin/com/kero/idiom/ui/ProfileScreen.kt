@@ -25,6 +25,7 @@ import com.kero.idiom.getAppVersion
 import com.kero.idiom.openFontSizeSettings
 import com.kero.idiom.openStorePage
 import com.kero.idiom.ui.profile.ProfileViewModel
+import com.kero.idiom.ui.profile.components.WeeklyActivityChart
 import com.kero.idiom.ui.profile.contract.ProfileIntent
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -244,6 +245,11 @@ fun ProfileScreen(
                         modifier = Modifier.padding(top = 8.dp)
                     )
                 }
+            }
+
+            // 주간 활동 차트
+            if (state.weeklyRecords.isNotEmpty()) {
+                WeeklyActivityChart(weeklyRecords = state.weeklyRecords)
             }
 
             // 학습 통계

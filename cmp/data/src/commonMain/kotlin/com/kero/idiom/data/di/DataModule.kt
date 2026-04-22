@@ -3,8 +3,10 @@ package com.kero.idiom.data.di
 import com.kero.idiom.data.datasource.AssetIdiomDataSource
 import com.kero.idiom.data.datasource.remote.RemoteIdiomDataSource
 import com.kero.idiom.data.local.RealmDatabase
+import com.kero.idiom.data.repository.DailyRecordRepositoryImpl
 import com.kero.idiom.data.repository.IdiomRepositoryImpl
 import com.kero.idiom.data.repository.UserStatsRepositoryImpl
+import com.kero.idiom.domain.repository.DailyRecordRepository
 import com.kero.idiom.domain.repository.IdiomRepository
 import com.kero.idiom.domain.repository.UserStatsRepository
 import io.realm.kotlin.Realm
@@ -27,4 +29,5 @@ val dataModule = module {
     // Repository implementation
     singleOf(::IdiomRepositoryImpl) bind IdiomRepository::class
     singleOf(::UserStatsRepositoryImpl) bind UserStatsRepository::class
+    singleOf(::DailyRecordRepositoryImpl) bind DailyRecordRepository::class
 }

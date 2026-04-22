@@ -1,5 +1,6 @@
 package com.kero.idiom.data.local
 
+import com.kero.idiom.data.local.model.DailyRecordEntity
 import com.kero.idiom.data.local.model.IdiomEntity
 import io.realm.kotlin.Realm
 import io.realm.kotlin.RealmConfiguration
@@ -14,10 +15,10 @@ object RealmDatabase {
      * [schema]에 사용할 RealmObject 클래스들을 등록합니다.
      */
     val config = RealmConfiguration.Builder(
-        schema = setOf(IdiomEntity::class)
+        schema = setOf(IdiomEntity::class, DailyRecordEntity::class)
     )
     .name("idiom.realm") // DB 파일명
-    .schemaVersion(1)    // 마이그레이션 버전
+    .schemaVersion(2)    // 마이그레이션 버전 (v2: DailyRecordEntity 추가)
     .deleteRealmIfMigrationNeeded() // 💡 마이그레이션 실패 시 DB 초기화 (개발 편의성 최고!)
     .build()
 

@@ -1,9 +1,13 @@
 package com.kero.idiom.core.util
 
+import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Locale
 import java.util.TimeZone
 
 actual object DateUtils {
+    private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+
     actual fun getCurrentTimeMillis(): Long = System.currentTimeMillis()
 
     actual fun getEpochDay(millis: Long): Long {
@@ -11,5 +15,31 @@ actual object DateUtils {
         calendar.timeInMillis = millis
         val offset = calendar.timeZone.getOffset(millis)
         return (millis + offset) / (1000 * 60 * 60 * 24)
+    }
+
+    actual fun getTodayDateString(): String {
+        return dateFormat.format(Calendar.getInstance().time)
+    }
+
+    actual fun getDateStringDaysAgo(daysAgo: Int): String {
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.DAY_OF_YEAR, -daysAgo)
+        return dateFormat.format(calendar.time)
+    }
+
+    actual fun getDayOfWeekLabel(dateString: String): String {
+        val date = dateFormat.parse(dateString) ?: return ""
+        val calendar = Calendar.getInstance()
+        calendar.time = date
+        return when (calendar.get(Calendar.DAY_OF_WEEK)) {
+            Calendar.MONDAY -> "월"
+            Calendar.TUESDAY -> "화"
+            Calendar.WEDNESDAY -> "수"
+            Calendar.THURSDAY -> "목"
+            Calendar.FRIDAY -> "금"
+            Calendar.SATURDAY -> "토"
+            Calendar.SUNDAY -> "일"
+            else -> ""
+        }
     }
 }
