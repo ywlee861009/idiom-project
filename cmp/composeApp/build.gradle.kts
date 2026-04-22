@@ -64,8 +64,8 @@ android {
         applicationId = "com.kero.idiom"
         minSdk = 24
         targetSdk = 36
-        versionCode = 14
-        versionName = "1.0.10"
+        versionCode = 16
+        versionName = "1.0.12"
     }
 
     buildFeatures {
