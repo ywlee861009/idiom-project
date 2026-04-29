@@ -42,4 +42,44 @@ actual object DateUtils {
             else -> ""
         }
     }
+
+    private val yearMonthFormat = SimpleDateFormat("yyyy-MM", Locale.getDefault())
+
+    actual fun getYearMonthString(): String {
+        return yearMonthFormat.format(Calendar.getInstance().time)
+    }
+
+    actual fun getFirstDayOfWeekInMonth(yearMonth: String): Int {
+        val parts = yearMonth.split("-")
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.YEAR, parts[0].toInt())
+        calendar.set(Calendar.MONTH, parts[1].toInt() - 1)
+        calendar.set(Calendar.DAY_OF_MONTH, 1)
+        // Calendar.SUNDAY=1 -> 0, MONDAY=2 -> 1, ... SATURDAY=7 -> 6
+        return (calendar.get(Calendar.DAY_OF_WEEK) + 5) % 7 // 월=0, 화=1, ..., 일=6
+    }
+
+    actual fun getDaysInMonth(yearMonth: String): Int {
+        val parts = yearMonth.split("-")
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.YEAR, parts[0].toInt())
+        calendar.set(Calendar.MONTH, parts[1].toInt() - 1)
+        return calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
+    }
+
+    actual fun getYearMonthOffset(yearMonth: String, offset: Int): String {
+        val parts = yearMonth.split("-")
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.YEAR, parts[0].toInt())
+        calendar.set(Calendar.MONTH, parts[1].toInt() - 1)
+        calendar.add(Calendar.MONTH, offset)
+        return yearMonthFormat.format(calendar.time)
+    }
+
+    actual fun getDayOfMonth(dateString: String): Int {
+        val date = dateFormat.parse(dateString) ?: return 0
+        val calendar = Calendar.getInstance()
+        calendar.time = date
+        return calendar.get(Calendar.DAY_OF_MONTH)
+    }
 }
