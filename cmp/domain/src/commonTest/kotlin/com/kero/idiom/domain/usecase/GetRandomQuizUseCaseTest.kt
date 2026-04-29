@@ -9,6 +9,7 @@ import kotlin.test.assertFailsWith
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
+/** 퀴즈 생성 UseCase가 5가지 유형의 퀴즈를 올바른 구조로 생성하는지 검증 */
 class GetRandomQuizUseCaseTest {
 
     private val fakeRepo = FakeIdiomRepository()
@@ -37,6 +38,7 @@ class GetRandomQuizUseCaseTest {
         Idiom("조삼모사", "朝三暮四", "간사한 꾀로 남을 속임", 1),
     )
 
+    /** 퀴즈 생성 시 유효한 Quiz 객체가 반환되고, 퀴즈 유형이 5가지 중 하나인지 검증 */
     @Test
     fun invoke_returnsQuiz() = runTest {
         fakeRepo.idioms.addAll(sampleIdioms)
@@ -47,6 +49,7 @@ class GetRandomQuizUseCaseTest {
         assertTrue(QuizType.entries.contains(quiz.type))
     }
 
+    /** 퀴즈 생성 시 출제된 사자성어의 노출 기록(exposure)이 저장되는지 검증 */
     @Test
     fun invoke_recordsExposure() = runTest {
         fakeRepo.idioms.addAll(sampleIdioms)
@@ -56,6 +59,7 @@ class GetRandomQuizUseCaseTest {
         assertEquals(1, fakeRepo.exposedWords.size)
     }
 
+    /** DB가 비어있을 때 IllegalStateException이 발생하는지 검증 (데이터 없는 상태 방어) */
     @Test
     fun invoke_emptyDB_throwsException() = runTest {
         assertFailsWith<IllegalStateException> {
@@ -63,11 +67,11 @@ class GetRandomQuizUseCaseTest {
         }
     }
 
+    /** FILL_BLANK(한 글자 빈칸 객관식): 보기 4개, 빈칸 1개, 정답이 보기에 포함되는지 검증 */
     @Test
     fun invoke_fillBlank_hasCorrectStructure() = runTest {
         fakeRepo.idioms.addAll(sampleIdioms)
 
-        // 여러 번 실행해서 FILL_BLANK 유형이 나올 때까지 시도
         repeat(50) {
             val quiz = useCase()
             if (quiz.type == QuizType.FILL_BLANK) {
@@ -80,6 +84,7 @@ class GetRandomQuizUseCaseTest {
         }
     }
 
+    /** MEANING_TO_WORD(뜻→단어 객관식): 뜻이 문제로, 보기 4개에 정답 포함 검증 */
     @Test
     fun invoke_meaningToWord_hasCorrectStructure() = runTest {
         fakeRepo.idioms.addAll(sampleIdioms)
@@ -95,6 +100,7 @@ class GetRandomQuizUseCaseTest {
         }
     }
 
+    /** HANJA_TO_HANGUL(한자→한글 객관식): 한자가 문제로, 보기 4개에 정답 포함 검증 */
     @Test
     fun invoke_hanjaToHangul_hasCorrectStructure() = runTest {
         fakeRepo.idioms.addAll(sampleIdioms)
@@ -110,6 +116,7 @@ class GetRandomQuizUseCaseTest {
         }
     }
 
+    /** FILL_BLANKS_2(주관식 2칸): 빈칸 2개, 보기 없음, 정답이 원본 단어와 일치하는지 검증 */
     @Test
     fun invoke_fillBlanks2_hasCorrectStructure() = runTest {
         fakeRepo.idioms.addAll(sampleIdioms)
@@ -125,6 +132,7 @@ class GetRandomQuizUseCaseTest {
         }
     }
 
+    /** FILL_BLANKS_4(주관식 4칸): 빈칸 4개, 보기 없음, 정답이 원본 단어와 일치하는지 검증 */
     @Test
     fun invoke_fillBlanks4_hasCorrectStructure() = runTest {
         fakeRepo.idioms.addAll(sampleIdioms)

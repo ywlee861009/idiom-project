@@ -22,6 +22,7 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
+/** 퀴즈 진행(QuizViewModel)의 초기화, 정답/오답 처리, 콤보, 힌트, 화면 전환 로직 검증 */
 @OptIn(ExperimentalCoroutinesApi::class)
 class QuizViewModelTest {
 
@@ -47,7 +48,7 @@ class QuizViewModelTest {
         )
     }
 
-    /** 퀴즈 유형에 관계없이 정답을 제출하는 헬퍼 */
+    /** 퀴즈 유형(객관식/주관식)에 관계없이 정답을 제출하는 헬퍼 */
     private fun QuizViewModel.submitCorrectAnswer(quiz: Quiz) {
         if (quiz.options.isNotEmpty()) {
             handleIntent(QuizIntent.SelectOption(quiz.answer))
@@ -58,7 +59,7 @@ class QuizViewModelTest {
         }
     }
 
-    /** 퀴즈 유형에 관계없이 오답을 제출하는 헬퍼 */
+    /** 퀴즈 유형(객관식/주관식)에 관계없이 오답을 제출하는 헬퍼 */
     private fun QuizViewModel.submitWrongAnswer(quiz: Quiz) {
         if (quiz.options.isNotEmpty()) {
             val wrongOption = quiz.options.first { it != quiz.answer }
@@ -69,6 +70,7 @@ class QuizViewModelTest {
         }
     }
 
+    /** ViewModel 생성 시 첫 번째 퀴즈가 자동 로드되고, 로딩이 완료되는지 검증 */
     @Test
     fun init_loadsFirstQuiz() = runTest(testDispatcher) {
         val vm = createViewModel()
@@ -80,6 +82,7 @@ class QuizViewModelTest {
         assertFalse(state.isLoading)
     }
 
+    /** ViewModel 생성 시 DataStore에 저장된 글로벌 콤보가 세션에 복원되는지 검증 */
     @Test
     fun init_loadsGlobalCombo() = runTest(testDispatcher) {
         val deps = createTestDependencies()
@@ -91,6 +94,7 @@ class QuizViewModelTest {
         assertEquals(5, vm.state.value.comboCount)
     }
 
+    /** ViewModel 생성 시 전면 광고와 리워드 광고가 미리 로드(preload)되는지 검증 */
     @Test
     fun init_loadsAds() = runTest(testDispatcher) {
         val deps = createTestDependencies()
@@ -101,12 +105,12 @@ class QuizViewModelTest {
         assertTrue(deps.adController.rewardedAdLoaded)
     }
 
+    /** 정답 제출 시 isCorrect=true로 변경되고 점수가 1 증가하는지 검증 */
     @Test
     fun correctAnswer_updatesState() = runTest(testDispatcher) {
         val vm = createViewModel()
         advanceUntilIdle()
 
-        // sideEffect 채널을 드레인하여 send()가 suspend되지 않도록 함
         val collector = launch { vm.sideEffect.collect {} }
 
         val quiz = vm.state.value.currentQuiz!!
@@ -118,6 +122,7 @@ class QuizViewModelTest {
         collector.cancel()
     }
 
+    /** 오답 제출 시 isCorrect=false로 변경되고 콤보가 0으로 초기화되는지 검증 */
     @Test
     fun wrongAnswer_resetsCombo() = runTest(testDispatcher) {
         val vm = createViewModel()
@@ -134,6 +139,7 @@ class QuizViewModelTest {
         collector.cancel()
     }
 
+    /** 이미 답변한 퀴즈에 중복 제출해도 점수가 변하지 않는지 검증 (이중 클릭 방어) */
     @Test
     fun alreadyAnswered_isIgnored() = runTest(testDispatcher) {
         val vm = createViewModel()
@@ -153,6 +159,7 @@ class QuizViewModelTest {
         collector.cancel()
     }
 
+    /** 주관식 입력 시 inputText 상태가 실시간으로 업데이트되는지 검증 */
     @Test
     fun inputAnswer_updatesInputText() = runTest(testDispatcher) {
         val vm = createViewModel()
@@ -164,6 +171,7 @@ class QuizViewModelTest {
         assertEquals(input, vm.state.value.inputText)
     }
 
+    /** NextQuiz 시 새 퀴즈가 로드되고, 이전 답변 상태가 초기화되는지 검증 */
     @Test
     fun nextQuiz_loadsNewQuiz() = runTest(testDispatcher) {
         val vm = createViewModel()
@@ -178,6 +186,7 @@ class QuizViewModelTest {
         assertEquals("", vm.state.value.inputText)
     }
 
+    /** 5문제 완료 후 NextQuiz 시 결과 화면으로 네비게이션되는지 검증 */
     @Test
     fun nextQuiz_afterAllQuizzes_navigatesToResult() = runTest(testDispatcher) {
         val vm = createViewModel()
@@ -198,6 +207,7 @@ class QuizViewModelTest {
         }
     }
 
+    /** 리워드 광고가 준비되어 있을 때 힌트가 공개되는지 검증 */
     @Test
     fun showHint_whenAdAvailable_revealsHint() = runTest(testDispatcher) {
         val deps = createTestDependencies()
@@ -210,6 +220,7 @@ class QuizViewModelTest {
         assertTrue(vm.state.value.isHintRevealed)
     }
 
+    /** 리워드 광고가 준비되지 않았을 때 토스트 메시지가 표시되는지 검증 */
     @Test
     fun showHint_whenAdUnavailable_showsToast() = runTest(testDispatcher) {
         val deps = createTestDependencies()
@@ -226,6 +237,7 @@ class QuizViewModelTest {
         }
     }
 
+    /** 정답 시 콤보 카운트가 증가하고 XP가 획득되는지 검증 */
     @Test
     fun correctAnswer_incrementsComboAndXp() = runTest(testDispatcher) {
         val vm = createViewModel()
@@ -242,6 +254,7 @@ class QuizViewModelTest {
         collector.cancel()
     }
 
+    /** 콤보 2 이상일 때 XP 보너스가 (combo-1) 만큼 추가되는지 검증 (콤보 보상 공식) */
     @Test
     fun comboXpBonus_correctCalculation() = runTest(testDispatcher) {
         val deps = createTestDependencies()

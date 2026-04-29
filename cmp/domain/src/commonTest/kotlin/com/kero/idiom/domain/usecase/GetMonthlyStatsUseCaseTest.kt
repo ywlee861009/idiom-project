@@ -6,11 +6,13 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
+/** 월간 학습 통계 조회�� yearMonth 키로 올바른 데이터를 반환하는지 검증 */
 class GetMonthlyStatsUseCaseTest {
 
     private val fakeRepo = FakeDailyRecordRepository()
     private val useCase = GetMonthlyStatsUseCase(fakeRepo)
 
+    /** 해당 월의 기록이 있을 때 전체 데이터가 반환되는지 검증 */
     @Test
     fun invoke_returnsRecordsForMonth() = runTest {
         val aprilRecords = listOf(
@@ -26,12 +28,14 @@ class GetMonthlyStatsUseCaseTest {
         assertEquals(aprilRecords, result)
     }
 
+    /** 기록이 없는 월을 조회할 때 빈 리스트를 반환하는지 검증 (크래시 방지) */
     @Test
     fun invoke_noData_returnsEmpty() = runTest {
         val result = useCase("2026-03")
         assertTrue(result.isEmpty())
     }
 
+    /** 서로 다른 월의 데이터가 혼동 없이 각각 올바르게 반환되는지 검증 */
     @Test
     fun invoke_differentMonths_returnCorrectData() = runTest {
         fakeRepo.monthlyRecords["2026-04"] = listOf(

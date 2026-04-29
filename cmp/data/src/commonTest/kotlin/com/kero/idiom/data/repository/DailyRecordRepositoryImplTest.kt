@@ -10,6 +10,7 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
+/** DailyRecordRepository의 Realm 구현체가 일일 기록 CRUD를 올바르게 수행하는지 검증 */
 class DailyRecordRepositoryImplTest {
 
     private lateinit var realm: Realm
@@ -32,6 +33,7 @@ class DailyRecordRepositoryImplTest {
         realm.close()
     }
 
+    /** 오늘 첫 기록 시 Realm에 새 엔티티가 생성되고 값이 정확한지 검증 */
     @Test
     fun recordToday_createsNewRecord() = runTest {
         repository.recordToday(solvedCount = 5, correctCount = 4, earnedXp = 12)
@@ -43,6 +45,7 @@ class DailyRecordRepositoryImplTest {
         assertEquals(12, entities[0].earnedXp)
     }
 
+    /** 같은 날 두 번 기록 시 새 엔티티 생성이 아닌 기존 값에 누적되는지 검증 */
     @Test
     fun recordToday_calledTwice_accumulatesValues() = runTest {
         repository.recordToday(solvedCount = 5, correctCount = 4, earnedXp = 12)
@@ -55,6 +58,7 @@ class DailyRecordRepositoryImplTest {
         assertEquals(20, entities[0].earnedXp)
     }
 
+    /** 주간 조회 시 항상 7일치 데이터가 반환되고 오늘 데이터가 포함되는지 검증 */
     @Test
     fun getWeeklyRecords_returns7Days() = runTest {
         repository.recordToday(solvedCount = 5, correctCount = 5, earnedXp = 15)
@@ -62,13 +66,13 @@ class DailyRecordRepositoryImplTest {
         val records = repository.getWeeklyRecords()
 
         assertEquals(7, records.size)
-        // 마지막 항목(오늘)에 데이터가 있어야 함
         val today = records.last()
         assertEquals(5, today.solvedCount)
         assertEquals(5, today.correctCount)
         assertEquals(15, today.earnedXp)
     }
 
+    /** 기록이 없는 날은 solvedCount/correctCount/earnedXp가 모두 0으로 채워지는지 검증 */
     @Test
     fun getWeeklyRecords_emptyDaysHaveZeroValues() = runTest {
         val records = repository.getWeeklyRecords()
@@ -81,6 +85,7 @@ class DailyRecordRepositoryImplTest {
         }
     }
 
+    /** 주간 기록의 날짜가 오래된 순서→최신 순서(시간순)로 정렬되는지 검증 */
     @Test
     fun getWeeklyRecords_datesAreChronological() = runTest {
         val records = repository.getWeeklyRecords()
@@ -93,6 +98,7 @@ class DailyRecordRepositoryImplTest {
         }
     }
 
+    /** 모든 값이 0이어도 Realm 엔티티가 정상적으로 생성되는지 검증 (빈 세션 기록 허용) */
     @Test
     fun recordToday_withZeroValues_stillCreatesRecord() = runTest {
         repository.recordToday(solvedCount = 0, correctCount = 0, earnedXp = 0)
