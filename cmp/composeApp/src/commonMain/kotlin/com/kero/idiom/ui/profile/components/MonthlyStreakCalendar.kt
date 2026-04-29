@@ -101,7 +101,7 @@ fun MonthlyStreakCalendar(
         }
 
         // 요일 헤더
-        val dayLabels = listOf("월", "화", "수", "목", "금", "토", "일")
+        val dayLabels = listOf("일", "월", "화", "수", "목", "금", "토")
         Row(modifier = Modifier.fillMaxWidth()) {
             dayLabels.forEach { label ->
                 Text(
