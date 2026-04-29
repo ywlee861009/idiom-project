@@ -1,0 +1,142 @@
+package com.kero.idiom.domain.usecase
+
+import com.kero.idiom.domain.model.Idiom
+import com.kero.idiom.domain.model.QuizType
+import kotlinx.coroutines.test.runTest
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
+import kotlin.test.assertNotNull
+import kotlin.test.assertTrue
+
+class GetRandomQuizUseCaseTest {
+
+    private val fakeRepo = FakeIdiomRepository()
+    private val useCase = GetRandomQuizUseCase(fakeRepo)
+
+    private val sampleIdioms = listOf(
+        Idiom("일석이조", "一石二鳥", "하나의 돌로 두 마리 새를 잡음", 1),
+        Idiom("사면초가", "四面楚歌", "사방이 모두 적에게 둘러싸임", 2),
+        Idiom("오매불망", "寤寐不忘", "자나 깨나 잊지 못함", 1),
+        Idiom("사필귀정", "事必歸正", "모든 일은 반드시 바른 길로 돌아옴", 2),
+        Idiom("고진감래", "苦盡甘來", "고생 끝에 즐거움이 옴", 1),
+        Idiom("삼고초려", "三顧草廬", "인재를 얻기 위해 참을성 있게 노력함", 2),
+        Idiom("유비무환", "有備無患", "준비가 있으면 걱정이 없음", 1),
+        Idiom("백문불여일견", "百聞不如一見", "백 번 듣는 것이 한 번 보는 것만 못함", 2),
+        Idiom("자업자득", "自業自得", "자기가 저지른 일의 결과를 자기가 받음", 1),
+        Idiom("동고동락", "同苦同樂", "괴로움과 즐거움을 함께 함", 1),
+        Idiom("온고지신", "溫故知新", "옛것을 익혀 새것을 앎", 2),
+        Idiom("풍전등화", "風前燈火", "매우 위태로운 처지", 1),
+        Idiom("이심전심", "以心傳心", "마음에서 마음으로 전함", 1),
+        Idiom("격물치지", "格物致知", "사물의 이치를 연구하여 지식을 넓힘", 3),
+        Idiom("대기만성", "大器晩成", "큰 인물은 늦게 이루어짐", 2),
+        Idiom("마이동풍", "馬耳東風", "남의 말을 귀담아듣지 않음", 1),
+        Idiom("역지사지", "易地思之", "상대방의 처지에서 생각함", 1),
+        Idiom("청출어람", "靑出於藍", "제자가 스승보다 나음", 2),
+        Idiom("결초보은", "結草報恩", "죽어서도 은혜를 갚음", 2),
+        Idiom("조삼모사", "朝三暮四", "간사한 꾀로 남을 속임", 1),
+    )
+
+    @Test
+    fun invoke_returnsQuiz() = runTest {
+        fakeRepo.idioms.addAll(sampleIdioms)
+
+        val quiz = useCase()
+
+        assertNotNull(quiz)
+        assertTrue(QuizType.entries.contains(quiz.type))
+    }
+
+    @Test
+    fun invoke_recordsExposure() = runTest {
+        fakeRepo.idioms.addAll(sampleIdioms)
+
+        useCase()
+
+        assertEquals(1, fakeRepo.exposedWords.size)
+    }
+
+    @Test
+    fun invoke_emptyDB_throwsException() = runTest {
+        assertFailsWith<IllegalStateException> {
+            useCase()
+        }
+    }
+
+    @Test
+    fun invoke_fillBlank_hasCorrectStructure() = runTest {
+        fakeRepo.idioms.addAll(sampleIdioms)
+
+        // 여러 번 실행해서 FILL_BLANK 유형이 나올 때까지 시도
+        repeat(50) {
+            val quiz = useCase()
+            if (quiz.type == QuizType.FILL_BLANK) {
+                assertEquals(4, quiz.options.size)
+                assertEquals(1, quiz.blankIndices.size)
+                assertTrue(quiz.questionText.contains('_'))
+                assertTrue(quiz.options.contains(quiz.answer))
+                return@runTest
+            }
+        }
+    }
+
+    @Test
+    fun invoke_meaningToWord_hasCorrectStructure() = runTest {
+        fakeRepo.idioms.addAll(sampleIdioms)
+
+        repeat(50) {
+            val quiz = useCase()
+            if (quiz.type == QuizType.MEANING_TO_WORD) {
+                assertEquals(4, quiz.options.size)
+                assertEquals(quiz.originalIdiom.meaning, quiz.questionText)
+                assertTrue(quiz.options.contains(quiz.answer))
+                return@runTest
+            }
+        }
+    }
+
+    @Test
+    fun invoke_hanjaToHangul_hasCorrectStructure() = runTest {
+        fakeRepo.idioms.addAll(sampleIdioms)
+
+        repeat(50) {
+            val quiz = useCase()
+            if (quiz.type == QuizType.HANJA_TO_HANGUL) {
+                assertEquals(4, quiz.options.size)
+                assertEquals(quiz.originalIdiom.hanja, quiz.questionText)
+                assertTrue(quiz.options.contains(quiz.answer))
+                return@runTest
+            }
+        }
+    }
+
+    @Test
+    fun invoke_fillBlanks2_hasCorrectStructure() = runTest {
+        fakeRepo.idioms.addAll(sampleIdioms)
+
+        repeat(50) {
+            val quiz = useCase()
+            if (quiz.type == QuizType.FILL_BLANKS_2) {
+                assertEquals(2, quiz.blankIndices.size)
+                assertTrue(quiz.options.isEmpty())
+                assertEquals(quiz.originalIdiom.word, quiz.answer)
+                return@runTest
+            }
+        }
+    }
+
+    @Test
+    fun invoke_fillBlanks4_hasCorrectStructure() = runTest {
+        fakeRepo.idioms.addAll(sampleIdioms)
+
+        repeat(50) {
+            val quiz = useCase()
+            if (quiz.type == QuizType.FILL_BLANKS_4) {
+                assertEquals(4, quiz.blankIndices.size)
+                assertTrue(quiz.options.isEmpty())
+                assertEquals(quiz.originalIdiom.word, quiz.answer)
+                return@runTest
+            }
+        }
+    }
+}

@@ -1,8 +1,21 @@
 #!/bin/sh
 
-echo "🔨 빌드 검증 중... (push 전 빌드 체크)"
-
 cd "$(git rev-parse --show-toplevel)/cmp" || exit 1
+
+echo "🧪 테스트 실행 중..."
+
+./gradlew :domain:testDebugUnitTest :feature:quiz:testDebugUnitTest :feature:result:testDebugUnitTest --quiet 2>&1
+
+if [ $? -ne 0 ]; then
+    echo ""
+    echo "❌ 테스트 실패! push가 취소되었습니다."
+    echo "   테스트를 수정한 후 다시 시도해주세요."
+    exit 1
+fi
+
+echo "✅ 테스트 통과!"
+echo ""
+echo "🔨 빌드 검증 중..."
 
 ./gradlew :composeApp:assembleDebug --quiet 2>&1
 

@@ -31,6 +31,11 @@ kotlin {
             implementation(libs.compottie.resources)
             implementation(libs.compottie.dot)
         }
+        commonTest.dependencies {
+            implementation(libs.kotlin.test)
+            implementation(libs.kotlinx.coroutines.test)
+            implementation(libs.turbine)
+        }
     }
 }
 
