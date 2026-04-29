@@ -52,18 +52,21 @@ actual object DateUtils {
     actual fun getFirstDayOfWeekInMonth(yearMonth: String): Int {
         val parts = yearMonth.split("-")
         val calendar = Calendar.getInstance()
+        calendar.clear()
         calendar.set(Calendar.YEAR, parts[0].toInt())
         calendar.set(Calendar.MONTH, parts[1].toInt() - 1)
         calendar.set(Calendar.DAY_OF_MONTH, 1)
         // Calendar.SUNDAY=1 -> 0, MONDAY=2 -> 1, ... SATURDAY=7 -> 6
-        return (calendar.get(Calendar.DAY_OF_WEEK) + 5) % 7 // 월=0, 화=1, ..., 일=6
+        return calendar.get(Calendar.DAY_OF_WEEK) - 1 // 일=0, 월=1, ..., 토=6
     }
 
     actual fun getDaysInMonth(yearMonth: String): Int {
         val parts = yearMonth.split("-")
         val calendar = Calendar.getInstance()
+        calendar.clear()
         calendar.set(Calendar.YEAR, parts[0].toInt())
         calendar.set(Calendar.MONTH, parts[1].toInt() - 1)
+        calendar.set(Calendar.DAY_OF_MONTH, 1)
         return calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
     }
 
