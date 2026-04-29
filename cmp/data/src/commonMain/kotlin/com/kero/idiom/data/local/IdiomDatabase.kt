@@ -19,7 +19,6 @@ object RealmDatabase {
     )
     .name("idiom.realm") // DB 파일명
     .schemaVersion(2)    // 마이그레이션 버전 (v2: DailyRecordEntity 추가)
-    .deleteRealmIfMigrationNeeded() // 💡 마이그레이션 실패 시 DB 초기화 (개발 편의성 최고!)
     .build()
 
     /**

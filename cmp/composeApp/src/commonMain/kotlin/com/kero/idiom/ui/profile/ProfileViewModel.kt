@@ -2,7 +2,9 @@ package com.kero.idiom.ui.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kero.idiom.core.util.DateUtils
 import com.kero.idiom.domain.repository.UserStatsRepository
+import com.kero.idiom.domain.usecase.GetMonthlyStatsUseCase
 import com.kero.idiom.domain.usecase.GetUserStatsUseCase
 import com.kero.idiom.domain.usecase.GetWeeklyStatsUseCase
 import com.kero.idiom.isSystemNotificationEnabled
@@ -21,15 +23,19 @@ import kotlinx.coroutines.launch
 class ProfileViewModel(
     private val getUserStatsUseCase: GetUserStatsUseCase,
     private val userStatsRepository: UserStatsRepository,
-    private val getWeeklyStatsUseCase: GetWeeklyStatsUseCase
+    private val getWeeklyStatsUseCase: GetWeeklyStatsUseCase,
+    private val getMonthlyStatsUseCase: GetMonthlyStatsUseCase
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(ProfileState())
+    private val _state = MutableStateFlow(
+        ProfileState(selectedYearMonth = DateUtils.getYearMonthString())
+    )
     val state: StateFlow<ProfileState> = _state.asStateFlow()
 
     init {
         observeStats()
         loadWeeklyStats()
+        loadMonthlyStats()
         syncSystemNotificationStatus()
     }
 
@@ -64,6 +70,21 @@ class ProfileViewModel(
             ProfileIntent.Refresh -> {
                 observeStats()
                 loadWeeklyStats()
+                loadMonthlyStats()
+            }
+            ProfileIntent.PreviousMonth -> {
+                val newMonth = DateUtils.getYearMonthOffset(_state.value.selectedYearMonth, -1)
+                _state.update { it.copy(selectedYearMonth = newMonth) }
+                loadMonthlyStats()
+            }
+            ProfileIntent.NextMonth -> {
+                val current = _state.value.selectedYearMonth
+                val currentMonth = DateUtils.getYearMonthString()
+                if (current < currentMonth) {
+                    val newMonth = DateUtils.getYearMonthOffset(current, 1)
+                    _state.update { it.copy(selectedYearMonth = newMonth) }
+                    loadMonthlyStats()
+                }
             }
         }
     }
@@ -80,6 +101,14 @@ class ProfileViewModel(
         viewModelScope.launch {
             val records = getWeeklyStatsUseCase()
             _state.update { it.copy(weeklyRecords = records) }
+        }
+    }
+
+    private fun loadMonthlyStats() {
+        viewModelScope.launch {
+            val yearMonth = _state.value.selectedYearMonth
+            val records = getMonthlyStatsUseCase(yearMonth)
+            _state.update { it.copy(monthlyRecords = records) }
         }
     }
 }

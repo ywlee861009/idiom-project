@@ -25,6 +25,7 @@ import com.kero.idiom.getAppVersion
 import com.kero.idiom.openFontSizeSettings
 import com.kero.idiom.openStorePage
 import com.kero.idiom.ui.profile.ProfileViewModel
+import com.kero.idiom.ui.profile.components.MonthlyStreakCalendar
 import com.kero.idiom.ui.profile.components.WeeklyActivityChart
 import com.kero.idiom.ui.profile.contract.ProfileIntent
 import org.koin.compose.viewmodel.koinViewModel
@@ -250,6 +251,18 @@ fun ProfileScreen(
             // 주간 활동 차트
             if (state.weeklyRecords.isNotEmpty()) {
                 WeeklyActivityChart(weeklyRecords = state.weeklyRecords)
+            }
+
+            // 월간 학습 캘린더
+            if (state.selectedYearMonth.isNotEmpty()) {
+                val activeDays = state.monthlyRecords.count { it.solvedCount > 0 }
+                MonthlyStreakCalendar(
+                    yearMonth = state.selectedYearMonth,
+                    monthlyRecords = state.monthlyRecords,
+                    activeDaysCount = activeDays,
+                    onPreviousMonth = { viewModel.onIntent(ProfileIntent.PreviousMonth) },
+                    onNextMonth = { viewModel.onIntent(ProfileIntent.NextMonth) }
+                )
             }
 
             // 학습 통계

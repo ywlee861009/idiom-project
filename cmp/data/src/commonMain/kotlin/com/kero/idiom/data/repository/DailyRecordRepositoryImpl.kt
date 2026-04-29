@@ -30,6 +30,23 @@ class DailyRecordRepositoryImpl(
         }
     }
 
+    override suspend fun getMonthlyRecords(yearMonth: String): List<DailyRecord> {
+        val startDate = "$yearMonth-01"
+        val daysInMonth = DateUtils.getDaysInMonth(yearMonth)
+        val endDate = "$yearMonth-${daysInMonth.toString().padStart(2, '0')}"
+
+        return realm.query<DailyRecordEntity>(
+            "date >= $0 AND date <= $1", startDate, endDate
+        ).find().map { entity ->
+            DailyRecord(
+                date = entity.date,
+                solvedCount = entity.solvedCount,
+                correctCount = entity.correctCount,
+                earnedXp = entity.earnedXp
+            )
+        }
+    }
+
     override suspend fun getWeeklyRecords(): List<DailyRecord> {
         val today = DateUtils.getTodayDateString()
         val weekAgo = DateUtils.getDateStringDaysAgo(6)
