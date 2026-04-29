@@ -73,8 +73,10 @@ actual object DateUtils {
     actual fun getYearMonthOffset(yearMonth: String, offset: Int): String {
         val parts = yearMonth.split("-")
         val calendar = Calendar.getInstance()
+        calendar.clear()
         calendar.set(Calendar.YEAR, parts[0].toInt())
         calendar.set(Calendar.MONTH, parts[1].toInt() - 1)
+        calendar.set(Calendar.DAY_OF_MONTH, 1)
         calendar.add(Calendar.MONTH, offset)
         return yearMonthFormat.format(calendar.time)
     }
