@@ -15,8 +15,8 @@
 ## 🎨 2. 프로젝트 정체성 및 원칙 (Identity & Principles)
 - **컨셉**: Extreme Minimalism (Material 3) + 실버 세대를 위한 UX.
 - **디자인 시스템 (The Calm Ink)**: 한지 느낌의 미색(#F9F7F2) 배경과 먹색(#2C2C2C) 타이포그래피. 여백의 미 강조.
-- **기술 스택**: Kotlin (2.1.10), Compose Multiplatform, Koin, Coroutines, Repository Pattern, Room DB (KMP).
-- **품질 원칙**: 모든 티켓 완료 전 `./cmp/gradlew assembleDebug` 빌드 검증 필수 (**Build-Verified Done**).
+- **기술 스택**: Kotlin (2.0.21), Compose Multiplatform 1.7.3, Koin 4.0.0, Coroutines 1.9.0, Repository Pattern, Realm Kotlin 3.0.0.
+- **품질 원칙**: 모든 티켓 완료 전 빌드 검증 필수 (**Build-Verified Done**). pre-push hook으로 빌드 + 테스트 자동 검증.
 
 ## 📂 4. 문서 구조 (Doc Structure)
 - **`README.md`**: 실행 방법 및 전체 소개.
@@ -28,26 +28,26 @@
 - **`GUIDE_FOR_xxx.md`**: 각 전문가별 상세 가이드라인.
 
 ## 🚀 5. 자동화 프로토콜 (Automation Protocols)
-- **`[upload release build]`**: 이 명령어가 입력되면 안드로이드 개발자 케로(Kero)는 다음 단계를 수행함:
-    1. **Version Strategy Inquiry**: 사용자에게 `versionName` 중 어느 부분(Major, Minor, Patch)을 올릴지 질문함.
-    2. **Version Bump**: 
+- **`deploy`**: 이 명령어가 입력되면 다음 단계를 수행함 (CLAUDE.md 참조):
+    1. **Version Strategy Inquiry**: 사용자에게 `major / minor / patch` 중 어느 것을 올릴지 질문.
+    2. **Version Bump** (`cmp/composeApp/build.gradle.kts` 직접 수정):
         - `versionCode`: 기존 값에서 `+1` 업데이트.
-        - `versionName`: 사용자의 선택에 따라 `x.y.z` 형태에서 해당 자리수 올림 (예: Patch 선택 시 1.0.0 -> 1.0.1).
-    3. **Keystore Load**: `cmp/keystore/keystore-info.md`에서 서명 정보를 읽어옴. (보안 준수)
+        - `versionName`: 선택에 따라 semver 증가.
+    3. **Keystore Load**: `cmp/keystore/keystore-info.md`에서 서명 정보 읽어옴.
     4. **Build & Sign**: 
-        - `build.gradle.kts` 파일을 절대 직접 수정하지 마십시오. (Git 추적 방지)
-        - `./gradlew :composeApp:bundleRelease` 명령 실행 시, `cmp/keystore/keystore-info.md`에서 읽어온 정보를 다음 Gradle 프로젝트 속성으로 주입하여 실행하십시오:
-            - `-Pandroid.injected.signing.store.file=../keystore/kero-studio.jks`
-            - `-Pandroid.injected.signing.store.password=[STORE_PASSWORD]`
-            - `-Pandroid.injected.signing.key.alias=[KEY_ALIAS]`
-            - `-Pandroid.injected.signing.key.password=[KEY_PASSWORD]`
-    5. **Artifact Delivery**: 생성된 `.aab`를 루트로 복사 및 `idiom_v{versionName}_{versionCode}.aab`로 이름 변경.
+        ```bash
+        cd cmp && ./gradlew :composeApp:bundleRelease \
+          -Pandroid.injected.signing.store.file="$(pwd)/keystore/kero-studio.jks" \
+          -Pandroid.injected.signing.store.password=<StorePassword> \
+          -Pandroid.injected.signing.key.alias=<KeyAlias> \
+          -Pandroid.injected.signing.key.password=<KeyPassword>
+        ```
+    5. **Artifact Delivery**: 생성된 `.aab`를 프로젝트 루트로 이동 및 `app-{versionName}-{versionCode}.aab`로 이름 변경.
     6. **Build-Verified Done**: 최종 빌드 성공 보고.
     7. **Update Log Generation**: 
-        - 이전 빌드(Git Tag 또는 마지막 로그) 이후의 변경 사항을 상세 분석.
-        - `app-update-log/YYYYMMDD-HHMMSS.md` 경로에 상세 업데이트 내역을 생성. (데이터 업데이트 로그 `python/update-logs/`와 구분 필수)
-        - 요약 내용에는 기능 추가, 버그 수정, UI 개선 사항 등을 포함.
+        - 이전 빌드 이후의 변경 사항을 상세 분석.
+        - `app-update-log/YYYYMMDD-HHMMSS.md` 경로에 상세 업데이트 내역 생성.
 
 ---
-*Last Sync: 2026-03-12*  
-*Sync by: Android Dev Kero*
+*Last Sync: 2026-05-07*  
+*Sync by: Claude Code*

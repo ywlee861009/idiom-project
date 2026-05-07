@@ -12,9 +12,9 @@
 ---
 
 ## 📍 현재 디자인 상태 (Current Status)
-- **마지막 업데이트**: 2026-03-09
-- **현재 작업**: `design/idiom.pen` 파일을 통한 메인 퀴즈 및 결과 화면 와이어프레임 설계.
-- **다음 단계**: 결과 화면의 시각적 피드백(정답/오답 애니메이션) 디테일 보완.
+- **마지막 업데이트**: 2026-05-07
+- **완료된 작업**: 메인 퀴즈, 결과 화면, 서고 상세 바텀시트, 프로필 주간/월간 차트 와이어프레임 설계.
+- **다음 단계**: Visual Polish(M29) — 전반적인 20sp 이상 가독성 최종 검수 및 애니메이션 튜닝.
 
 ---
 
@@ -34,7 +34,8 @@
 
 ## 3. 주요 자산 위치 (Assets)
 - **Wireframes/Design**: `design/idiom.pen`
-- **Theme Definition**: `android/core/src/main/java/com/kero/idiom/core/theme/` (케로와 협업 지점)
+- **Lottie Animations**: `design/success.lottie`, `design/wrong.lottie`
+- **Theme Definition**: `cmp/core/src/commonMain/kotlin/com/kero/idiom/core/theme/` (케로와 협업 지점)
 
 ---
 *디자인 관련 수정이 필요하면 "제니, GUIDE_FOR_DESIGNER.md 확인하고 디자인 가이드 수정해줘"라고 말해줘.*

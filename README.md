@@ -9,9 +9,9 @@
 ## 🛠️ 기술 스택 상세 명세 (Full Technical Stack)
 
 ### 1. 핵심 언어 및 프레임워크 (Core Stack)
-- **Kotlin 2.1.10**: 최신 Kotlin K2 컴파일러를 사용하여 빌드 속도와 런타임 성능을 극대화했습니다.
+- **Kotlin 2.0.21**: Kotlin K2 컴파일러를 사용하여 빌드 속도와 런타임 성능을 극대화했습니다.
 - **Compose Multiplatform (CMP) 1.7.3**: 선언형 UI 프레임워크를 통해 Android와 차후 확장될 iOS 플랫폼 간의 UI 로직 100% 공유를 실현했습니다.
-- **Jetpack Compose Compiler 2.1.10**: 최신 컴파일러를 통한 강력한 상태 관리와 UI 최적화를 적용했습니다.
+- **Jetpack Compose Compiler**: Kotlin 2.0.21 내장 Compose 컴파일러 플러그인을 통한 강력한 상태 관리와 UI 최적화를 적용했습니다.
 
 ### 2. 아키텍처 및 상태 관리 (Architecture)
 - **MVI (Model-View-Intent)**: 단방향 데이터 흐름(UDF) 아키텍처를 채택하여 복잡한 퀴즈 상태를 예측 가능하게 관리합니다.
@@ -21,9 +21,9 @@
 - **Kotlinx Serialization 1.7.3**: JSON 데이터(idioms.json)를 고속으로 파싱하고 타입 안정성을 보장합니다.
 
 ### 3. 데이터 및 영속성 (Data Storage)
-- **Room DB 2.7.0-alpha11 (KMP)**: 최신 Room KMP 버전을 사용하여 로컬 데이터베이스를 관리하며, SQLite Bundled 버전을 통해 일관된 DB 성능을 보장합니다.
+- **Realm Kotlin 3.0.0**: KMP 네이티브 NoSQL 데이터베이스를 사용하여 사자성어 및 학습 기록을 관리합니다. 현재 스키마 버전 2 (`IdiomEntity`, `DailyRecordEntity`).
 - **DataStore Preferences 1.1.1**: 유저의 설정값(알림 설정, 동기화 버전 등)을 안전하게 저장합니다.
-- **Repository Pattern**: `AssetIdiomDataSource`와 `IdiomDao`를 결합하여 단일 데이터 소스 원칙(Single Source of Truth)을 준수합니다.
+- **Repository Pattern**: `AssetIdiomDataSource`와 Realm DB를 결합하여 단일 데이터 소스 원칙(Single Source of Truth)을 준수합니다.
 
 ### 4. 시각 및 애니메이션 (UI/UX)
 - **Material 3 (M3)**: 최신 디자인 가이드를 준수하면서도 'The Calm Ink'만의 미니멀리즘을 구현했습니다.
@@ -56,6 +56,18 @@
 - **Level 3**: 주관식 전체 채우기 (고급)
 - **Level 4-5**: 상황 매칭 및 단기 기억력 테스트 (준비 중)
 
+### 🔥 콤보 & 보상 시스템
+- 2개 이상 연속 정답 시 콤보 활성화, 최대 **+5 XP** 보너스 (6연속 이상 시 캡).
+- 콤보 발생 시 전용 애니메이션 및 보너스 XP 표시.
+- 오답 시 콤보 카운트 즉시 초기화.
+
+### 📊 프로필 학습 분석
+- **주간 학습 통계 차트**: Canvas 기반 막대 차트로 주간 풀이 수, 정답률, 활동일 시각화.
+- **월간 학습 캘린더**: 스트릭 히트맵으로 월별 학습 활동 한눈에 파악. 월 이동 네비게이션 지원.
+
+### 📚 서고 상세 뷰
+- 수집한 성어 터치 시 **바텀시트**로 한자, 독음, 뜻풀이, 난이도 별점, 네이버 사전 외부 링크 제공.
+
 ---
-*Last Updated: 2026-03-11*  
+*Last Updated: 2026-05-07*  
 *Architected & Documented by PM Mark*

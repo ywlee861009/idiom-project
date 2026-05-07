@@ -14,14 +14,16 @@
 ---
 
 ## 1. 기술 스택 (Technical Stack)
-- **Language**: Kotlin 2.1.10 (K2 Compiler)
+- **Language**: Kotlin 2.0.21 (K2 Compiler)
 - **Framework**: Compose Multiplatform (CMP) 1.7.3
 - **Architecture**: MVI (Model-View-Intent) + Clean Architecture
 - **Dependency Injection**: Koin 4.0.0 (CMP Native DI)
-- **Navigation**: Jetpack Navigation Compose (KMP Optimized)
-- **Data Storage**: Room 2.7.0 (KMP), DataStore 1.1.1 (KMP)
-- **Animation**: Compottie (Lottie for CMP)
-- **Build Tool**: Gradle (Kotlin DSL) with Version Catalog (`libs.versions.toml`)
+- **Navigation**: Jetpack Navigation Compose 2.8.0-alpha10 (KMP Optimized)
+- **Data Storage**: Realm Kotlin 3.0.0 (NoSQL, KMP), DataStore 1.1.1 (KMP)
+- **Animation**: Compottie 2.0.0-rc02 (Lottie for CMP)
+- **Infra**: Firebase 33.9.0 (Analytics + Crashlytics), Google AdMob 23.6.0
+- **Testing**: kotlin-test, Turbine 1.2.0, Coroutines Test 1.9.0
+- **Build Tool**: Gradle 8.10.2 (Kotlin DSL) with Version Catalog (`libs.versions.toml`)
 
 ## 2. 프로젝트 아키텍처 (Architecture)
 
@@ -67,25 +69,35 @@
     }
     ```
 
-## 5. 데이터베이스 관리 및 마이그레이션 (Room Strategy)
+## 5. 데이터베이스 관리 및 마이그레이션 (Realm Strategy)
 사용자의 소중한 학습 데이터를 보호하기 위해 다음 원칙을 엄격히 준수합니다.
 
+### 현재 스키마 (Schema v2)
+- **IdiomEntity**: 사자성어 데이터 (word, hanja, meaning, level, exposureCount, correctCount)
+- **DailyRecordEntity**: 일일 학습 기록 (date, solvedCount, correctCount, earnedXp)
+
 ### 스키마 변경 및 버전 관리
-- **버전 상향 필성**: `@Entity` 클래스에 필드를 추가, 삭제, 수정할 경우 반드시 `IdiomDatabase`의 `version`을 1 상향해야 합니다. (미이행 시 런타임 에러 발생)
-- **휴먼 에러 방지**: `exportSchema = true` 설정을 유지하여 빌드 시 생성되는 `schemas/*.json` 파일을 Git으로 관리합니다. 이를 통해 버전 누락을 코드 리뷰 단계에서 차단합니다.
+- **버전 상향 필수**: `RealmObject` 클래스에 필드를 추가, 삭제, 수정할 경우 반드시 `schemaVersion`을 1 상향해야 합니다.
+- **절대 금지**: `deleteRealmIfMigrationNeeded()` 사용 금지 — 프로덕션 사용자 데이터 파괴 위험.
 
 ### 마이그레이션 전략 (Migration Policy)
-- **개발 단계 (Alpha/Beta)**: `fallbackToDestructiveMigration(true)`를 사용하여 스키마 변경 시 데이터를 초기화합니다. 개발 속도를 우선합니다.
-- **운영 단계 (Production)**: 
-    - 반드시 `autoMigrations`를 사용하여 데이터를 보존해야 합니다.
-    - 복잡한 변경(테이블 분리 등)은 `Migration` 클래스를 직접 작성하여 대응합니다.
-    - 출시 후에는 어떠한 경우에도 `DestructiveMigration`이 발생해서는 안 됩니다.
+- 새 필드 추가 시 기본값을 반드시 제공합니다.
+- 복잡한 변경은 `.migration {}` 블록을 작성하여 대응합니다.
+- 단순 필드 추가는 Realm의 auto-migration으로 처리합니다.
+- 상세 규칙은 `cmp/data/CLAUDE.md` 참조.
 
-## 6. 주요 파일 위치
+## 6. 품질 관리 (Quality Gate)
+- **Build-Verified Done**: 티켓 완료 전 반드시 빌드 성공 확인.
+- **pre-push hook**: `git push` 시 자동으로 빌드 + 테스트 실행. 실패 시 push 차단.
+- **테스트 커버리지**: domain/feature 레이어에 단위 테스트 작성 (Turbine + Coroutines Test).
+
+## 7. 주요 파일 위치
 - **의존성 관리**: `cmp/gradle/libs.versions.toml`
 - **MVI 샘플**: `cmp/feature/quiz/src/commonMain/kotlin/com/kero/idiom/feature/quiz/`
 - **공통 테마**: `cmp/core/src/commonMain/kotlin/com/kero/idiom/core/theme/`
 - **데이터 저장소**: `cmp/data/src/commonMain/kotlin/com/kero/idiom/data/`
+- **Realm DB 설정**: `cmp/data/src/commonMain/kotlin/com/kero/idiom/data/local/IdiomDatabase.kt`
+- **프로필 컴포넌트**: `cmp/composeApp/src/commonMain/kotlin/com/kero/idiom/ui/profile/components/`
 
 ---
 *케로와 함께라면 어떤 복잡한 비즈니스 로직도 깔끔한 MVI로 풀어낼 수 있어!*

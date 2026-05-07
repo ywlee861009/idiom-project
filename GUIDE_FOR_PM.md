@@ -5,9 +5,10 @@
 ---
 
 ## 1. 프로젝트 개요 (Overview)
-- **프로젝트 명**: 사자성어 퀴즈 (Idiom Quiz Project)
-- **핵심 목표**: 사용자가 사자성어 퀴즈를 풀고 점수를 획득하는 학습형 앱 개발.
-- **현재 단계**: [아이디어 구체화 단계] (2026-03-07 기준)
+- **프로젝트 명**: 사자성어 퀴즈 (Idiom Quiz Project) — "The Calm Ink"
+- **핵심 목표**: 40대 이상 사용자를 위한 사자성어 학습 앱. 퀴즈·수집·분석 기능 제공.
+- **현재 단계**: Phase 9 — Monetization & Polish (Final Sprint). 핵심 기능 구현 완료, 수익화 및 스토어 배포 준비 중.
+- **현재 버전**: v1.0.13 (versionCode 17)
 
 ## 2. 업무 수행 주체 (Roles)
 - **PM (AI)**: 아이디어 구체화, `REQUIREMENTS.md` 관리, `ROADMAP.md` 일정 관리, `TICKETS.md` 발행.
@@ -45,11 +46,16 @@
 3.  **티켓 발행**: 개발 단계에 맞춰 `TICKETS.md`에 새로운 할 일을 추가합니다.
 4.  **개발 및 검증**: 개발자가 코드를 작성하면 PM은 `REQUIREMENTS.md`의 체크박스를 업데이트합니다.
 
-## 6. 현재 미결정 사항 (Pending Decisions)
-- [ ] 퀴즈의 구체적인 UI/UX 방식 (한 글자 비우기 vs 전체 입력)
-- [ ] 최종 기술 스택 (Python CLI vs Web/React)
-- [ ] 데이터 관리 방식 (JSON 파일 vs 외부 API)
+## 6. 결정 완료 사항 (Resolved Decisions)
+- [x] **퀴즈 UI/UX**: 3종 혼합 출제 (객관식, 빈칸 2/4칸 채우기, 순서 맞히기) — `TextFieldValue` 기반 한글 조합 처리.
+- [x] **기술 스택**: Kotlin 2.0.21 + Compose Multiplatform (CMP) + Realm Kotlin 3.0.0.
+- [x] **데이터 관리**: `idioms.json` 로컬 에셋 + Realm DB 동기화. Python 스크립트로 데이터 검증/업데이트.
+
+## 7. 현재 미결정 사항 (Pending Decisions)
+- [ ] Google Play Billing 연동 범위 및 테마 팩 구성
+- [ ] TTS 엔진 선택 (Android 내장 vs 외부 API)
+- [ ] 스토어 출시 일정
 
 ---
-*Last Updated: 2026-03-07*
-*Author: Project Manager Mark (Gemini CLI)*
+*Last Updated: 2026-05-07*
+*Author: Project Manager Mark*
