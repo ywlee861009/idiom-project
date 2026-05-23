@@ -41,5 +41,5 @@ kotlin {
 
 android {
     namespace = "com.kero.idiom.core"
-    compileSdk = 35
+    compileSdk = 36
 }

@@ -6,7 +6,7 @@
 - [x] **M13. Intro Motion**: 붓글씨 애니메이션 스플래시 구현.
 - [x] **M14. Floating Tab System**: 캡슐형 네비게이션 적용.
 - [x] **M15. Screen Separation**: 서당(Home), 서고(Collection), 내 정보(Profile) 분리.
-- [x] **M16. Local DB Sync**: Room KMP 기반 `idioms.json` 자동 동기화.
+- [x] **M16. Local DB Sync**: Realm Kotlin 3.0.0 기반 `idioms.json` 자동 동기화.
 
 ## Phase 8: Advanced Quiz & Infra (100% 완료)
 - [x] **M21. Mixed Quiz Types**: 4지 선다, 빈칸 2/4칸 등 퀴즈 다양화.
@@ -17,11 +17,13 @@
 - [x] **M25-1. Profile Analytics**: 주간 학습 통계 차트 + 월간 학습 캘린더(스트릭 히트맵) 구현 완료. (2026-04)
 - [x] **M25-2. Collection Detail**: 서고 성어 상세 바텀시트(한자, 독음, 뜻풀이, 난이도, 네이버 사전 링크) 구현 완료. (2026-04)
 - [x] **M25-3. Quality Gate**: pre-push hook(빌드 + 테스트 검증) 및 domain/feature 테스트 추가. (2026-05)
+- [x] **M25-4. Reminder Notification**: WorkManager 기반 학습 알림 및 프로필 알림 토글 구현 완료. (2026-05)
 
 ## Phase 9: Monetization & Polish (Final Sprint 🏃‍♂️)
 - [ ] **M26. Google Play Billing**: 인앱 결제 모듈 연동 및 테마 구매 로직 구현.
 - [ ] **M27. Theme Locking**: 유료 테마 잠금 처리 및 구매 후 해제 로직.
 - [ ] **M28. TTS Support**: '서고' 상세 바텀시트에 음성(TTS) 지원 추가.
+- [ ] **M28-1. Order Quiz Type**: "순서 맞히기" 퀴즈 타입 구현 (성어 글자 순서 배열).
 - [ ] **M29. Visual Polish**: 전반적인 폰트 가독성(20sp 이상) 최종 검수 및 애니메이션 튜닝.
 
 ## Phase 10: Store Delivery
@@ -29,4 +31,4 @@
 - [ ] **M31. Build-Verified Release**: Proguard(R8) 적용 및 AAB 빌드 검증 후 배포.
 
 ---
-*Last Updated: 2026-05-07*
+*Last Updated: 2026-05-24*

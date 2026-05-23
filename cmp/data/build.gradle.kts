@@ -56,5 +56,5 @@ compose.resources {
 
 android {
     namespace = "com.kero.idiom.data"
-    compileSdk = 35
+    compileSdk = 36
 }

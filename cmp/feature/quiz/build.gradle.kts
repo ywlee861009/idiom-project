@@ -41,5 +41,5 @@ kotlin {
 
 android {
     namespace = "com.kero.idiom.feature.quiz"
-    compileSdk = 35
+    compileSdk = 36
 }

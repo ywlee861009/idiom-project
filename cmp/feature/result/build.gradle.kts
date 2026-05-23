@@ -36,5 +36,5 @@ kotlin {
 
 android {
     namespace = "com.kero.idiom.feature.result"
-    compileSdk = 35
+    compileSdk = 36
 }

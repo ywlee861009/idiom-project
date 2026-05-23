@@ -47,7 +47,7 @@
 4.  **개발 및 검증**: 개발자가 코드를 작성하면 PM은 `REQUIREMENTS.md`의 체크박스를 업데이트합니다.
 
 ## 6. 결정 완료 사항 (Resolved Decisions)
-- [x] **퀴즈 UI/UX**: 3종 혼합 출제 (객관식, 빈칸 2/4칸 채우기, 순서 맞히기) — `TextFieldValue` 기반 한글 조합 처리.
+- [x] **퀴즈 UI/UX**: 6종 혼합 출제 (객관식 3종, 주관식 2종, 순서 맞히기 1종(구현 예정)) — `TextFieldValue` 기반 한글 조합 처리.
 - [x] **기술 스택**: Kotlin 2.0.21 + Compose Multiplatform (CMP) + Realm Kotlin 3.0.0.
 - [x] **데이터 관리**: `idioms.json` 로컬 에셋 + Realm DB 동기화. Python 스크립트로 데이터 검증/업데이트.
 
@@ -57,5 +57,5 @@
 - [ ] 스토어 출시 일정
 
 ---
-*Last Updated: 2026-05-07*
+*Last Updated: 2026-05-24*
 *Author: Project Manager Mark*
