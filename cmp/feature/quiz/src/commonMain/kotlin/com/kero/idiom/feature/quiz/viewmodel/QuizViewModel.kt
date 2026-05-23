@@ -52,6 +52,8 @@ class QuizViewModel(
             is QuizIntent.InputAnswer -> _state.update { it.copy(inputText = intent.input) }
             QuizIntent.SubmitAnswer -> checkAnswer(state.value.inputText)
             QuizIntent.NextQuiz -> onNextQuiz()
+            is QuizIntent.SelectPoolLetter -> onSelectPoolLetter(intent.index)
+            is QuizIntent.UndoSelectedLetter -> onUndoSelectedLetter(intent.position)
             QuizIntent.ShowHint -> {
                 val isShown = adController.showRewardedAd {
                     _state.update { it.copy(isHintRevealed = true) }
@@ -90,10 +92,52 @@ class QuizViewModel(
                     inputText = "", // 입력값 초기화
                     isCorrect = null,
                     isHintRevealed = false,
-                    quizCount = it.quizCount + 1
+                    quizCount = it.quizCount + 1,
+                    selectedLetters = emptyList(),
+                    usedPoolIndices = emptySet()
                 )
             }
         }
+    }
+
+    private fun onSelectPoolLetter(poolIndex: Int) {
+        if (state.value.isCorrect != null) return
+        if (poolIndex in state.value.usedPoolIndices) return
+
+        val quiz = state.value.currentQuiz ?: return
+        val charPool = quiz.charPool
+        if (poolIndex !in charPool.indices) return
+
+        val newSelected = state.value.selectedLetters + charPool[poolIndex]
+        val newUsed = state.value.usedPoolIndices + poolIndex
+
+        _state.update { it.copy(selectedLetters = newSelected, usedPoolIndices = newUsed) }
+
+        // 4글자가 채워지면 자동으로 정답 판정
+        if (newSelected.size == quiz.originalIdiom.word.length) {
+            checkAnswer(newSelected.joinToString(""))
+        }
+    }
+
+    private fun onUndoSelectedLetter(position: Int) {
+        if (state.value.isCorrect != null) return
+
+        val quiz = state.value.currentQuiz ?: return
+        val selected = state.value.selectedLetters
+        if (position !in selected.indices) return
+
+        // 해당 위치의 글자에 대응하는 풀 인덱스를 찾아서 되돌리기
+        val letterToUndo = selected[position]
+        val usedIndices = state.value.usedPoolIndices.toMutableSet()
+
+        // usedPoolIndices에서 position 순서에 맞는 인덱스를 제거
+        val sortedUsed = usedIndices.sorted()
+        if (position < sortedUsed.size) {
+            usedIndices.remove(sortedUsed[position])
+        }
+
+        val newSelected = selected.toMutableList().apply { removeAt(position) }
+        _state.update { it.copy(selectedLetters = newSelected, usedPoolIndices = usedIndices) }
     }
 
     // 연속 정답 XP 보너스: combo 2→+1, 3→+2, 4→+3, 5→+4, 6+→+5 (최대)

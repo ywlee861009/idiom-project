@@ -5,7 +5,8 @@ enum class QuizType {
     MEANING_TO_WORD, // B타입: 뜻 보고 단어 맞히기 (객관식)
     HANJA_TO_HANGUL, // C타입: 한자 보고 음독 맞히기 (객관식)
     FILL_BLANKS_2,   // ID-29: 주관식 2칸 채우기
-    FILL_BLANKS_4    // ID-30: 주관식 4칸 채우기
+    FILL_BLANKS_4,   // ID-30: 주관식 4칸 채우기
+    ORDER_MATCH      // M28-1: 순서 맞히기 (12개 글자 풀에서 4글자 선택)
 }
 
 data class Quiz(
@@ -15,5 +16,6 @@ data class Quiz(
     val hintText: String,      // 보조 힌트 텍스트 (뜻 또는 한자 등)
     val answer: String,        // 정답 (문자 또는 단어 전체)
     val options: List<String>, // 4개의 선택지
-    val blankIndices: List<Int> = emptyList() // 주관식일 때 빈칸의 위치 (0, 1, 2, 3)
+    val blankIndices: List<Int> = emptyList(), // 주관식일 때 빈칸의 위치 (0, 1, 2, 3)
+    val charPool: List<String> = emptyList() // 순서 맞히기: 12개 글자 풀 (정답 4 + 더미 8)
 )

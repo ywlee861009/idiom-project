@@ -147,4 +147,25 @@ class GetRandomQuizUseCaseTest {
             }
         }
     }
+
+    /** ORDER_MATCH(순서 맞히기): charPool 12개, 정답 글자 4개 포함, 보기 없음 검증 */
+    @Test
+    fun invoke_orderMatch_hasCorrectStructure() = runTest {
+        fakeRepo.idioms.addAll(sampleIdioms)
+
+        repeat(100) {
+            val quiz = useCase()
+            if (quiz.type == QuizType.ORDER_MATCH) {
+                assertEquals(12, quiz.charPool.size)
+                assertTrue(quiz.options.isEmpty())
+                assertEquals(quiz.originalIdiom.word, quiz.answer)
+                // 정답 글자가 모두 풀에 포함되어 있는지 검증
+                val answerChars = quiz.originalIdiom.word.map { it.toString() }
+                answerChars.forEach { char ->
+                    assertTrue(quiz.charPool.contains(char), "charPool에 정답 글자 '$char'가 없음")
+                }
+                return@runTest
+            }
+        }
+    }
 }

@@ -159,7 +159,8 @@ fun QuizScreen(
     val focusRequester = remember { FocusRequester() }
 
     LaunchedEffect(state.currentQuiz) {
-        if (state.currentQuiz != null && state.currentQuiz?.options?.isEmpty() == true) {
+        val quiz = state.currentQuiz
+        if (quiz != null && quiz.options.isEmpty() && quiz.type != QuizType.ORDER_MATCH) {
             delay(300)
             focusRequester.requestFocus()
             keyboardController?.show()
@@ -274,6 +275,9 @@ fun QuizScreen(
                     ) {
                         Spacer(Modifier.height(24.dp))
 
+                        val isSubjective = quiz.options.isEmpty() && quiz.type != QuizType.ORDER_MATCH
+                        val isOrderMatch = quiz.type == QuizType.ORDER_MATCH
+
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -294,6 +298,7 @@ fun QuizScreen(
                                         QuizType.HANJA_TO_HANGUL -> "한자를 읽어보세요"
                                         QuizType.FILL_BLANKS_2 -> "빈칸 두 개를 채워보세요"
                                         QuizType.FILL_BLANKS_4 -> "사자성어를 완성해 보세요"
+                                        QuizType.ORDER_MATCH -> "글자를 순서대로 골라보세요"
                                     },
                                     fontSize = 12.sp,
                                     fontWeight = FontWeight.Medium,
@@ -318,12 +323,12 @@ fun QuizScreen(
                                     )
                                 }
                             }
-                            val isSubjective = quiz.options.isEmpty()
                             val showFullAnswer = state.isCorrect != null
-                            
+
                             Text(
                                 text = when {
                                     showFullAnswer -> quiz.originalIdiom.word // 🌟 정답 확인 후에는 항상 전체 성어(한글) 표시
+                                    isOrderMatch -> quiz.questionText // 순서 맞히기: 뜻을 보여줌
                                     isSubjective -> quiz.originalIdiom.hanja // 주관식 정답 전에는 한자 표시
                                     else -> quiz.questionText // 객관식은 질문 텍스트(예: 백전백_) 표시
                                 },
@@ -348,12 +353,150 @@ fun QuizScreen(
                             Spacer(Modifier.height(12.dp))
                         }
 
-                        if (state.isHintRevealed && quiz.options.isEmpty()) {
+                        if (state.isHintRevealed && quiz.options.isEmpty() && !isOrderMatch) {
                             HintRevealCard(word = quiz.originalIdiom.word, blankIndices = quiz.blankIndices)
                             Spacer(Modifier.height(12.dp))
                         }
 
-                        if (quiz.options.isNotEmpty()) {
+                        if (state.isHintRevealed && isOrderMatch) {
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clip(RoundedCornerShape(16.dp))
+                                    .background(HintBg)
+                                    .border(1.5.dp, HintOrange, RoundedCornerShape(16.dp))
+                                    .padding(20.dp),
+                                verticalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                                ) {
+                                    Text("💡", fontSize = 16.sp)
+                                    Text(
+                                        text = "힌트 — 한자",
+                                        fontSize = 13.sp,
+                                        fontWeight = FontWeight.SemiBold,
+                                        color = HintDarkOrange
+                                    )
+                                }
+                                Text(
+                                    text = quiz.originalIdiom.hanja,
+                                    style = MaterialTheme.typography.headlineSmall,
+                                    fontWeight = FontWeight.Bold,
+                                    color = TextPrimary,
+                                    letterSpacing = 4.sp
+                                )
+                            }
+                            Spacer(Modifier.height(12.dp))
+                        }
+
+                        if (isOrderMatch) {
+                            // ── 순서 맞히기 UI ──
+                            val wordLength = quiz.originalIdiom.word.length
+
+                            // 정답 슬롯 (4칸)
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally)
+                            ) {
+                                for (i in 0 until wordLength) {
+                                    val letter = state.selectedLetters.getOrNull(i)
+                                    val slotBorder = when {
+                                        state.isCorrect == true -> CorrectGreen
+                                        state.isCorrect == false -> WrongRed
+                                        letter != null -> BgDark
+                                        i == state.selectedLetters.size -> BgDark // 현재 입력할 위치
+                                        else -> BorderColor
+                                    }
+                                    val slotBg = when {
+                                        state.isCorrect == true -> CorrectBg
+                                        state.isCorrect == false -> WrongBg
+                                        letter != null -> BgSurface
+                                        else -> BgSurface
+                                    }
+                                    Box(
+                                        modifier = Modifier
+                                            .size(width = 64.dp, height = 72.dp)
+                                            .clip(RoundedCornerShape(12.dp))
+                                            .background(slotBg)
+                                            .border(
+                                                if (i == state.selectedLetters.size && state.isCorrect == null) 2.dp else 1.dp,
+                                                slotBorder,
+                                                RoundedCornerShape(12.dp)
+                                            )
+                                            .then(
+                                                if (letter != null && state.isCorrect == null)
+                                                    Modifier.clickable { viewModel.handleIntent(QuizIntent.UndoSelectedLetter(i)) }
+                                                else Modifier
+                                            ),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Text(
+                                            text = letter ?: "",
+                                            style = MaterialTheme.typography.headlineSmall,
+                                            fontWeight = FontWeight.Bold,
+                                            color = TextPrimary
+                                        )
+                                    }
+                                }
+                            }
+
+                            if (state.isCorrect == false) {
+                                Spacer(Modifier.height(12.dp))
+                                Text(
+                                    text = "정답은 '${quiz.answer}' 입니다.",
+                                    color = WrongRed,
+                                    fontWeight = FontWeight.Medium,
+                                    fontSize = 16.sp,
+                                    modifier = Modifier.fillMaxWidth(),
+                                    textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                                )
+                            }
+
+                            Spacer(Modifier.height(24.dp))
+
+                            // 글자 풀 (6x2 그리드)
+                            val charPool = quiz.charPool
+                            for (row in 0 until 2) {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally)
+                                ) {
+                                    for (col in 0 until 6) {
+                                        val poolIndex = row * 6 + col
+                                        if (poolIndex < charPool.size) {
+                                            val isUsed = poolIndex in state.usedPoolIndices
+                                            Box(
+                                                modifier = Modifier
+                                                    .size(52.dp)
+                                                    .clip(RoundedCornerShape(10.dp))
+                                                    .background(if (isUsed) BorderColor else BgSurface)
+                                                    .border(
+                                                        1.dp,
+                                                        if (isUsed) BorderColor else BgDark.copy(alpha = 0.3f),
+                                                        RoundedCornerShape(10.dp)
+                                                    )
+                                                    .then(
+                                                        if (!isUsed && state.isCorrect == null)
+                                                            Modifier.clickable { viewModel.handleIntent(QuizIntent.SelectPoolLetter(poolIndex)) }
+                                                        else Modifier
+                                                    ),
+                                                contentAlignment = Alignment.Center
+                                            ) {
+                                                Text(
+                                                    text = charPool[poolIndex],
+                                                    fontSize = 20.sp,
+                                                    fontWeight = FontWeight.Bold,
+                                                    color = if (isUsed) TextMuted.copy(alpha = 0.3f) else TextPrimary
+                                                )
+                                            }
+                                        }
+                                    }
+                                }
+                                if (row == 0) Spacer(Modifier.height(8.dp))
+                            }
+                        } else if (quiz.options.isNotEmpty()) {
                             quiz.options.forEachIndexed { index, option ->
                                 val isSelected = state.selectedOption == option
                                 val isCorrect = option == quiz.answer
@@ -536,25 +679,27 @@ fun QuizScreen(
                         Spacer(Modifier.height(16.dp))
                     }
 
-                    val isSubjective = quiz.options.isEmpty()
+                    val isSubjectiveBtn = quiz.options.isEmpty() && quiz.type != QuizType.ORDER_MATCH
+                    val isOrderMatchBtn = quiz.type == QuizType.ORDER_MATCH
                     val hasSubmittedSubjective = state.isCorrect != null
                     val hasSelectedObjective = state.selectedOption != null
                     val isLastQuestion = state.quizCount >= TOTAL
-                    
+
                     val buttonText = when {
-                        isSubjective && !hasSubmittedSubjective -> "정답 확인"
+                        isSubjectiveBtn && !hasSubmittedSubjective -> "정답 확인"
                         isLastQuestion -> "결과 보기 →"
                         else -> "다음 문제 →"
                     }
 
                     val buttonEnabled = when {
-                        isSubjective && !hasSubmittedSubjective -> state.inputText.length == quiz.blankIndices.size
+                        isSubjectiveBtn && !hasSubmittedSubjective -> state.inputText.length == quiz.blankIndices.size
+                        isOrderMatchBtn -> state.isCorrect != null && animationFile == null
                         else -> (hasSelectedObjective || hasSubmittedSubjective) && animationFile == null
                     }
 
                     Button(
-                        onClick = { 
-                            if (isSubjective && !hasSubmittedSubjective) {
+                        onClick = {
+                            if (isSubjectiveBtn && !hasSubmittedSubjective) {
                                 viewModel.handleIntent(QuizIntent.SubmitAnswer)
                             } else {
                                 viewModel.handleIntent(QuizIntent.NextQuiz)

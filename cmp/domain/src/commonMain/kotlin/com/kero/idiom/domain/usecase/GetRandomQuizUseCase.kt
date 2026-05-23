@@ -43,6 +43,7 @@ class GetRandomQuizUseCase(
             QuizType.HANJA_TO_HANGUL -> createHanjaToHangulQuiz(idiom, dummyIdioms)
             QuizType.FILL_BLANKS_2 -> createFillMultipleBlanksQuiz(idiom, 2)
             QuizType.FILL_BLANKS_4 -> createFillMultipleBlanksQuiz(idiom, 4)
+            QuizType.ORDER_MATCH -> createOrderMatchQuiz(idiom, dummyIdioms)
         }
     }
 
@@ -133,6 +134,39 @@ class GetRandomQuizUseCase(
      * @param samples 오답 보기를 생성하기 위한 사자성어 리스트
      * @return 생성된 [Quiz] 객체
      */
+    /**
+     * 순서 맞히기 퀴즈를 생성합니다.
+     * 정답 4글자 + 다른 성어에서 뽑은 더미 8글자 = 총 12글자를 셔플하여 제공합니다.
+     *
+     * @param idiom 출제할 사자성어
+     * @param samples 더미 글자를 생성하기 위한 사자성어 리스트
+     * @return 생성된 [Quiz] 객체
+     */
+    private fun createOrderMatchQuiz(idiom: Idiom, samples: List<Idiom>): Quiz {
+        val answerChars = idiom.word.map { it.toString() }
+
+        // 정답 글자와 중복되지 않는 더미 글자 8개 생성
+        val dummyChars = mutableSetOf<String>()
+        while (dummyChars.size < 8) {
+            val randomChar = samples.random().word.random().toString()
+            if (randomChar !in answerChars) {
+                dummyChars.add(randomChar)
+            }
+        }
+
+        val charPool = (answerChars + dummyChars.toList()).shuffled()
+
+        return Quiz(
+            type = QuizType.ORDER_MATCH,
+            originalIdiom = idiom,
+            questionText = idiom.meaning,
+            hintText = idiom.hanja,
+            answer = idiom.word,
+            options = emptyList(),
+            charPool = charPool
+        )
+    }
+
     private fun createHanjaToHangulQuiz(idiom: Idiom, samples: List<Idiom>): Quiz {
         val options = mutableSetOf<String>()
         options.add(idiom.word)

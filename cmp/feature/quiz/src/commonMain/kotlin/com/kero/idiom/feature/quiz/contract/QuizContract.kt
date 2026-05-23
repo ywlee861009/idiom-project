@@ -12,7 +12,9 @@ data class QuizState(
     val totalXpGained: Int = 0,
     val comboCount: Int = 0, // 연속 정답 횟수 추가
     val quizCount: Int = 0,
-    val isHintRevealed: Boolean = false
+    val isHintRevealed: Boolean = false,
+    val selectedLetters: List<String> = emptyList(), // 순서 맞히기: 선택된 글자들
+    val usedPoolIndices: Set<Int> = emptySet() // 순서 맞히기: 사용된 풀 인덱스
 )
 
 sealed interface QuizIntent {
@@ -21,6 +23,8 @@ sealed interface QuizIntent {
     data object SubmitAnswer : QuizIntent // 주관식 정답 제출
     data object NextQuiz : QuizIntent
     data object ShowHint : QuizIntent
+    data class SelectPoolLetter(val index: Int) : QuizIntent // 순서 맞히기: 글자 풀에서 선택
+    data class UndoSelectedLetter(val position: Int) : QuizIntent // 순서 맞히기: 선택한 글자 되돌리기
 }
 sealed interface QuizSideEffect {
     data class NavigateToResult(val score: Int, val total: Int, val xpGained: Int) : QuizSideEffect

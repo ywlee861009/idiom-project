@@ -2,6 +2,7 @@ package com.kero.idiom.feature.quiz.viewmodel
 
 import app.cash.turbine.test
 import com.kero.idiom.domain.model.Quiz
+import com.kero.idiom.domain.model.QuizType
 import com.kero.idiom.domain.model.UserStats
 import com.kero.idiom.feature.quiz.contract.QuizIntent
 import com.kero.idiom.feature.quiz.contract.QuizSideEffect
@@ -48,9 +49,16 @@ class QuizViewModelTest {
         )
     }
 
-    /** 퀴즈 유형(객관식/주관식)에 관계없이 정답을 제출하는 헬퍼 */
+    /** 퀴즈 유형(객관식/주관식/순서맞히기)에 관계없이 정답을 제출하는 헬퍼 */
     private fun QuizViewModel.submitCorrectAnswer(quiz: Quiz) {
-        if (quiz.options.isNotEmpty()) {
+        if (quiz.type == QuizType.ORDER_MATCH) {
+            quiz.answer.forEach { answerChar ->
+                val actualIndex = quiz.charPool.indices.first { idx ->
+                    quiz.charPool[idx] == answerChar.toString() && idx !in state.value.usedPoolIndices
+                }
+                handleIntent(QuizIntent.SelectPoolLetter(actualIndex))
+            }
+        } else if (quiz.options.isNotEmpty()) {
             handleIntent(QuizIntent.SelectOption(quiz.answer))
         } else {
             val blankChars = quiz.blankIndices.map { quiz.answer[it] }.joinToString("")
@@ -59,9 +67,15 @@ class QuizViewModelTest {
         }
     }
 
-    /** 퀴즈 유형(객관식/주관식)에 관계없이 오답을 제출하는 헬퍼 */
+    /** 퀴즈 유형(객관식/주관식/순서맞히기)에 관계없이 오답을 제출하는 헬퍼 */
     private fun QuizViewModel.submitWrongAnswer(quiz: Quiz) {
-        if (quiz.options.isNotEmpty()) {
+        if (quiz.type == QuizType.ORDER_MATCH) {
+            // 순서 맞히기: 오답 글자 4개를 순서대로 선택 (정답이 아닌 글자들)
+            val wrongIndices = quiz.charPool.indices.filter { quiz.charPool[it] !in quiz.answer.map { c -> c.toString() } }
+            wrongIndices.take(quiz.answer.length).forEach { idx ->
+                handleIntent(QuizIntent.SelectPoolLetter(idx))
+            }
+        } else if (quiz.options.isNotEmpty()) {
             val wrongOption = quiz.options.first { it != quiz.answer }
             handleIntent(QuizIntent.SelectOption(wrongOption))
         } else {
@@ -252,6 +266,43 @@ class QuizViewModelTest {
         assertEquals(1, vm.state.value.comboCount)
         assertTrue(vm.state.value.totalXpGained > 0)
         collector.cancel()
+    }
+
+    /** ORDER_MATCH 퀴즈가 나올 때까지 새 VM을 생성하는 헬퍼 */
+    private suspend fun createViewModelWithOrderMatch(dispatcher: kotlinx.coroutines.test.TestCoroutineScheduler): QuizViewModel {
+        repeat(100) {
+            val vm = createViewModel()
+            dispatcher.advanceUntilIdle()
+            if (vm.state.value.currentQuiz?.type == QuizType.ORDER_MATCH) return vm
+        }
+        throw IllegalStateException("ORDER_MATCH 퀴즈가 생성되지 않음")
+    }
+
+    /** ORDER_MATCH: 글자를 선택하면 selectedLetters에 추가되는지 검증 */
+    @Test
+    fun orderMatch_selectPoolLetter_addsToSelectedLetters() = runTest(testDispatcher) {
+        val vm = createViewModelWithOrderMatch(testScheduler)
+
+        val quiz = vm.state.value.currentQuiz!!
+        val firstPoolIndex = 0
+        vm.handleIntent(QuizIntent.SelectPoolLetter(firstPoolIndex))
+
+        assertEquals(1, vm.state.value.selectedLetters.size)
+        assertEquals(quiz.charPool[firstPoolIndex], vm.state.value.selectedLetters[0])
+        assertTrue(firstPoolIndex in vm.state.value.usedPoolIndices)
+    }
+
+    /** ORDER_MATCH: 선택한 글자를 되돌리면 selectedLetters에서 제거되는지 검증 */
+    @Test
+    fun orderMatch_undoSelectedLetter_removesFromSelectedLetters() = runTest(testDispatcher) {
+        val vm = createViewModelWithOrderMatch(testScheduler)
+
+        vm.handleIntent(QuizIntent.SelectPoolLetter(0))
+        vm.handleIntent(QuizIntent.SelectPoolLetter(1))
+        assertEquals(2, vm.state.value.selectedLetters.size)
+
+        vm.handleIntent(QuizIntent.UndoSelectedLetter(0))
+        assertEquals(1, vm.state.value.selectedLetters.size)
     }
 
     /** 콤보 2 이상일 때 XP 보너스가 (combo-1) 만큼 추가되는지 검증 (콤보 보상 공식) */
