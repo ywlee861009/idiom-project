@@ -15,6 +15,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.kero.idiom.stripHtml
 import com.kero.idiom.core.theme.*
 import com.kero.idiom.domain.model.Idiom
 import com.kero.idiom.domain.repository.IdiomRepository
@@ -139,7 +140,7 @@ fun RewardScreen(
                         letterSpacing = 2.sp
                     )
                     Text(
-                        text = idiom.meaning,
+                        text = idiom.meaning.stripHtml(),
                         style = MaterialTheme.typography.bodySmall,
                         color = Color.White.copy(alpha = 0.5f),
                         textAlign = TextAlign.Center

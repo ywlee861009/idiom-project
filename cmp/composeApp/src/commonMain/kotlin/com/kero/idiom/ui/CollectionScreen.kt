@@ -1,5 +1,6 @@
 package com.kero.idiom.ui
 
+import com.kero.idiom.stripHtml
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -247,7 +248,7 @@ private fun IdiomCollectionCard(idiom: Idiom, onClick: () -> Unit) {
         )
         Spacer(Modifier.height(4.dp))
         Text(
-            text = idiom.meaning,
+            text = idiom.meaning.stripHtml(),
             style = MaterialTheme.typography.bodySmall,
             color = Color.White.copy(alpha = 0.75f),
             lineHeight = 18.sp
@@ -359,7 +360,7 @@ private fun IdiomDetailBottomSheet(idiom: Idiom, onDismiss: () -> Unit) {
                     color = TextPrimary
                 )
                 Text(
-                    text = idiom.meaning,
+                    text = idiom.meaning.stripHtml(),
                     style = MaterialTheme.typography.bodyLarge,
                     color = TextMuted,
                     lineHeight = 26.sp

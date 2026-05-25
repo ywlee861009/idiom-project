@@ -1,5 +1,6 @@
 package com.kero.idiom.ui
 
+import com.kero.idiom.stripHtml
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -227,7 +228,7 @@ private fun TodayIdiomCard(idiom: Idiom) {
             letterSpacing = 2.sp
         )
         Text(
-            text = idiom.meaning,
+            text = idiom.meaning.stripHtml(),
             style = MaterialTheme.typography.bodyMedium,
             color = TextSecondary
         )
