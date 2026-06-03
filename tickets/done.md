@@ -1,3 +1,27 @@
+# 🎫 Ticket: [Quiz] 순서 맞히기 퀴즈 타입 구현
+
+## 📌 상태 (Status)
+- **ID**: TKT-M28-1
+- **담당자**: Kero (Android Dev)
+- **우선순위**: Medium
+- **상태**: Done (Build-Verified)
+
+## 📖 요구사항 (Requirements)
+- 성어의 글자를 셔플하여 올바른 순서로 배열하는 ORDER_MATCH 퀴즈 타입 구현.
+
+## 🛠️ 작업 내역 (Tasks)
+- [x] QuizType enum에 ORDER_MATCH 타입 추가
+- [x] GetRandomQuizUseCase에 순서 맞히기 생성 로직 추가 (정답 4글자 + 더미 8글자 풀)
+- [x] 탭 기반 순서 배열 UI 구현
+- [x] 정답 판정 로직 구현
+- [x] 기존 테스트에 ORDER_MATCH 케이스 추가
+
+## ✅ 검증 결과 (Verification)
+- Commit `b722b67`에서 구현 완료.
+- Quiz.kt, QuizViewModel.kt, GetRandomQuizUseCase.kt, QuizScreen.kt 수정.
+
+---
+
 # 🎫 Ticket: [Quiz] 주관식 입력 포커스 UX 개선
 
 ## 📌 상태 (Status)

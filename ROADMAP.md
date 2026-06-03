@@ -23,7 +23,7 @@
 - [ ] **M26. Google Play Billing**: 인앱 결제 모듈 연동 및 테마 구매 로직 구현.
 - [ ] **M27. Theme Locking**: 유료 테마 잠금 처리 및 구매 후 해제 로직.
 - [ ] **M28. TTS Support**: '서고' 상세 바텀시트에 음성(TTS) 지원 추가.
-- [ ] **M28-1. Order Quiz Type**: "순서 맞히기" 퀴즈 타입 구현 (성어 글자 순서 배열).
+- [x] **M28-1. Order Quiz Type**: "순서 맞히기" 퀴즈 타입 구현 (성어 글자 순서 배열). (2026-05)
 - [ ] **M29. Visual Polish**: 전반적인 폰트 가독성(20sp 이상) 최종 검수 및 애니메이션 튜닝.
 
 ## Phase 10: Store Delivery
@@ -31,4 +31,4 @@
 - [ ] **M31. Build-Verified Release**: Proguard(R8) 적용 및 AAB 빌드 검증 후 배포.
 
 ---
-*Last Updated: 2026-05-24*
+*Last Updated: 2026-06-03*

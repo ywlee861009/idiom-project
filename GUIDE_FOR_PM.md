@@ -8,7 +8,7 @@
 - **프로젝트 명**: 사자성어 퀴즈 (Idiom Quiz Project) — "The Calm Ink"
 - **핵심 목표**: 40대 이상 사용자를 위한 사자성어 학습 앱. 퀴즈·수집·분석 기능 제공.
 - **현재 단계**: Phase 9 — Monetization & Polish (Final Sprint). 핵심 기능 구현 완료, 수익화 및 스토어 배포 준비 중.
-- **현재 버전**: v1.0.13 (versionCode 17)
+- **현재 버전**: v1.0.15 (versionCode 19)
 
 ## 2. 업무 수행 주체 (Roles)
 - **PM (AI)**: 아이디어 구체화, `REQUIREMENTS.md` 관리, `ROADMAP.md` 일정 관리, `TICKETS.md` 발행.
@@ -47,7 +47,7 @@
 4.  **개발 및 검증**: 개발자가 코드를 작성하면 PM은 `REQUIREMENTS.md`의 체크박스를 업데이트합니다.
 
 ## 6. 결정 완료 사항 (Resolved Decisions)
-- [x] **퀴즈 UI/UX**: 6종 혼합 출제 (객관식 3종, 주관식 2종, 순서 맞히기 1종(구현 예정)) — `TextFieldValue` 기반 한글 조합 처리.
+- [x] **퀴즈 UI/UX**: 6종 혼합 출제 (객관식 3종, 주관식 2종, 순서 맞히기 1종) — `TextFieldValue` 기반 한글 조합 처리.
 - [x] **기술 스택**: Kotlin 2.0.21 + Compose Multiplatform (CMP) + Realm Kotlin 3.0.0.
 - [x] **데이터 관리**: `idioms.json` 로컬 에셋 + Realm DB 동기화. Python 스크립트로 데이터 검증/업데이트.
 
@@ -57,5 +57,5 @@
 - [ ] 스토어 출시 일정
 
 ---
-*Last Updated: 2026-05-24*
+*Last Updated: 2026-06-03*
 *Author: Project Manager Mark*

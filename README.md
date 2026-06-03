@@ -50,11 +50,10 @@
 ### 📊 Smart Revisit Algorithm (지능적 복습)
 - 단순 무작위 추출이 아닌, `exposureCount`(노출 빈도)와 `correctCount`(정답 횟수)를 실시간 분석하여 유저가 완벽하게 암기할 때까지 지능적으로 문제를 출제합니다.
 
-### 📜 5-Level Multi-Tier Quiz
-- **Level 1**: 객관식 3종 (입문)
-- **Level 2**: 주관식 2칸 채우기 (중급)
-- **Level 3**: 주관식 전체 채우기 (고급)
-- **Level 4-5**: 상황 매칭 및 단기 기억력 테스트 (준비 중)
+### 📜 6종 혼합 퀴즈 (Mixed Quiz Types)
+- **객관식 3종**: 빈칸 1글자(FILL_BLANK), 뜻→한자(MEANING_TO_WORD), 한자→한글(HANJA_TO_HANGUL)
+- **주관식 2종**: 빈칸 2칸(FILL_BLANKS_2), 빈칸 4칸(FILL_BLANKS_4)
+- **순서 맞히기**: 성어 글자 순서 배열(ORDER_MATCH) — 12개 글자 풀에서 4글자 선택
 
 ### 🔥 콤보 & 보상 시스템
 - 2개 이상 연속 정답 시 콤보 활성화, 최대 **+5 XP** 보너스 (6연속 이상 시 캡).
@@ -69,5 +68,5 @@
 - 수집한 성어 터치 시 **바텀시트**로 한자, 독음, 뜻풀이, 난이도 별점, 네이버 사전 외부 링크 제공.
 
 ---
-*Last Updated: 2026-05-07*  
+*Last Updated: 2026-06-03*  
 *Architected & Documented by PM Mark*

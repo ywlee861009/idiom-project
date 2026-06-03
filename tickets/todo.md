@@ -63,25 +63,6 @@ Medium
 
 ---
 
-# [TKT-M28-1] 순서 맞히기 퀴즈 타입 구현
-
-## Description
-성어의 글자를 셔플하여 올바른 순서로 배열하는 "순서 맞히기" 퀴즈 타입을 구현한다.
-
-## Acceptance Criteria
-- [ ] QuizType enum에 ORDER_MATCH 타입 추가
-- [ ] GetRandomQuizUseCase에 순서 맞히기 생성 로직 추가
-- [ ] 드래그 또는 탭 기반 순서 배열 UI 구현
-- [ ] 정답 판정 로직 구현
-- [ ] 기존 테스트에 ORDER_MATCH 케이스 추가
-
-## Technical Notes
-- 4글자 성어 기준 셔플 → 사용자가 올바른 순서로 재배열
-- UI: 드래그앤드롭 또는 탭하여 순서 선택 방식 중 택 1
-
-## Priority
-Medium
-
 ---
 
 # [TKT-M29] Visual Polish 최종 검수
