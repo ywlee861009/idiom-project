@@ -1,6 +1,6 @@
 [versions]
 # Build Stack (CMP Optimized 2025-03)
-agp = "8.7.3"
+agp = "8.11.1"
 kotlin = "2.0.21"
 ksp = "2.0.21-1.0.28"
 jetbrains-compose = "1.7.3"
