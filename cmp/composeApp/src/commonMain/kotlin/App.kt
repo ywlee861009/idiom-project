@@ -4,40 +4,77 @@ import androidx.compose.runtime.*
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.NavHostController
 import androidx.navigation.toRoute
 import com.kero.idiom.core.components.CultureLoadingScreen
 import com.kero.idiom.core.components.IdiomTab
 import com.kero.idiom.core.navigation.Screen
 import com.kero.idiom.core.theme.IdiomQuizTheme
+import com.kero.idiom.core.util.Logger
 import com.kero.idiom.domain.repository.IdiomRepository
+import com.kero.idiom.domain.repository.TodayLessonRepository
 import com.kero.idiom.feature.quiz.ui.QuizScreen
 import com.kero.idiom.ui.CollectionScreen
 import com.kero.idiom.ui.HomeScreen
 import com.kero.idiom.ui.ProfileScreen
 import com.kero.idiom.ui.RewardScreen
-import kotlinx.coroutines.delay
+import com.kero.idiom.ui.today.TodayLessonScreen
+import com.kero.idiom.ui.today.TodayLessonUnavailable
+import com.kero.idiom.ui.today.currentLessonDay
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.launch
 import org.koin.compose.KoinContext
 import org.koin.compose.koinInject
 
 @Composable
-fun App() {
+fun App(
+    openTodayLesson: Boolean = false,
+    onTodayLessonOpened: () -> Unit = {}
+) {
     IdiomQuizTheme {
         KoinContext {
             val repository: IdiomRepository = koinInject()
-            var isSyncing by remember { mutableStateOf(true) }
-            var syncMessage by remember { mutableStateOf("서책을 정리 중입니다...") }
+            var localReady by remember { mutableStateOf(false) }
+            var localFailed by remember { mutableStateOf(false) }
+            var localAttempt by remember { mutableIntStateOf(0) }
 
-            LaunchedEffect(Unit) {
-                repository.syncIfNeeded { message ->
-                    syncMessage = message
+            LaunchedEffect(localAttempt) {
+                try {
+                    repository.initializeLocal()
+                    localReady = true
+                } catch (cancelled: CancellationException) {
+                    throw cancelled
+                } catch (_: Exception) {
+                    localFailed = true
                 }
-                isSyncing = false
             }
 
-            if (isSyncing) {
-                CultureLoadingScreen(message = syncMessage)
+            if (!localReady) {
+                if (localFailed) {
+                    TodayLessonUnavailable(
+                        message = "학습 자료를 열지 못했어요.",
+                        onRetry = {
+                            localFailed = false
+                            localAttempt++
+                        }
+                    )
+                } else {
+                    CultureLoadingScreen(message = "서책을 정리 중입니다...")
+                }
             } else {
                 val navController = rememberNavController()
+                val navigationScope = rememberCoroutineScope()
+                val lessons: TodayLessonRepository = koinInject()
+
+                LaunchedEffect(Unit) {
+                    try {
+                        repository.syncIfNeeded()
+                    } catch (cancelled: CancellationException) {
+                        throw cancelled
+                    } catch (error: Exception) {
+                        Logger.e("Failed to refresh the idiom catalog", error)
+                    }
+                }
 
                 NavHost(
                     navController = navController,
@@ -59,7 +96,9 @@ fun App() {
                                 }
                             },
                             onStartQuiz = { navController.navigate(Screen.Quiz) },
-                            onNavigateToProfile = { navController.navigate(Screen.Profile) }
+                            onOpenTodayLesson = {
+                                navigationScope.launch { navController.openTodayLesson(lessons) }
+                            }
                         )
                     }
 
@@ -114,6 +153,19 @@ fun App() {
                         )
                     }
 
+                    composable<Screen.TodayLesson> { backStackEntry ->
+                        TodayLessonScreen(
+                            day = backStackEntry.toRoute<Screen.TodayLesson>().day,
+                            onBack = { navController.popBackStack() },
+                            onCollection = {
+                                navController.navigate(Screen.Collection) {
+                                    popUpTo(Screen.Home) { inclusive = false }
+                                    launchSingleTop = true
+                                }
+                            }
+                        )
+                    }
+
                     composable<Screen.Reward> { backStackEntry ->
                         val reward = backStackEntry.toRoute<Screen.Reward>()
                         RewardScreen(
@@ -134,8 +186,35 @@ fun App() {
                         )
                     }
                 }
+
+                LaunchedEffect(openTodayLesson) {
+                    if (openTodayLesson) {
+                        navController.openTodayLesson(lessons)
+                        onTodayLessonOpened()
+                    }
+                }
             }
         }
+    }
+}
+
+private suspend fun NavHostController.openTodayLesson(lessons: TodayLessonRepository) {
+    val day = currentLessonDay()
+    try {
+        val lesson = lessons.get(day)
+        // An explicit re-entry after completion opens the record. The live quiz still shows its final explanation.
+        if (lesson != null && lesson.isCompleted && !lesson.isResultVisible) {
+            lessons.advance(day, lesson.currentIndex)
+        }
+    } catch (cancelled: CancellationException) {
+        throw cancelled
+    } catch (error: Exception) {
+        Logger.e("Failed to open the saved daily lesson result", error)
+    }
+
+    navigate(Screen.TodayLesson(day)) {
+        popUpTo(Screen.Home) { inclusive = false }
+        launchSingleTop = true
     }
 }
 

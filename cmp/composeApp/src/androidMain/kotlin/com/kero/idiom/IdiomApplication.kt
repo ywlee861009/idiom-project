@@ -14,6 +14,7 @@ import com.kero.idiom.feature.quiz.di.featureQuizModule
 import com.kero.idiom.feature.result.di.featureResultModule
 import com.kero.idiom.ui.home.HomeViewModel
 import com.kero.idiom.ui.profile.ProfileViewModel
+import com.kero.idiom.ui.today.TodayLessonViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -39,6 +40,7 @@ class IdiomApplication : Application() {
 
             // ViewModels
             viewModel { HomeViewModel(get(), get()) }
+            viewModel { (day: Long) -> TodayLessonViewModel(day, get(), get()) }
             viewModel { ProfileViewModel(get(), get(), get(), get()) }
         }
 

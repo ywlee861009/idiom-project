@@ -1,15 +1,13 @@
 package com.kero.idiom.ui.home.contract
 
-import com.kero.idiom.domain.model.Idiom
 import com.kero.idiom.domain.model.UserStats
 
 data class HomeState(
     val userStats: UserStats = UserStats(),
-    val todayIdiom: Idiom? = null,
-    val isLoading: Boolean = true
+    val dateLabel: String? = null,
+    val lessonTheme: String? = null,
+    val started: Boolean = false,
+    val answeredCount: Int = 0,
+    val completed: Boolean = false,
+    val completedDays: Int? = null
 )
-
-sealed interface HomeIntent {
-    data object LoadTodayIdiom : HomeIntent
-    data object Refresh : HomeIntent
-}

@@ -1,5 +1,6 @@
 package com.kero.idiom
 
+import androidx.compose.runtime.Composable
 import platform.Foundation.NSBundle
 import platform.Foundation.NSDate
 import platform.Foundation.date
@@ -30,7 +31,14 @@ actual fun updateReminderSettings(enabled: Boolean) {
     // No-op for iOS
 }
 
-actual fun isSystemNotificationEnabled(): Boolean = true
+actual fun clearStudyReminder() = Unit
+
+@Composable
+actual fun rememberStudyReminderPermissionRequest(onResult: (Boolean) -> Unit): () -> Unit =
+    { onResult(false) }
+
+@Composable
+actual fun rememberSystemNotificationEnabled(): Boolean = false
 
 actual fun openNotificationSettings() {
     // No-op for iOS

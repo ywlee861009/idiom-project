@@ -38,7 +38,7 @@ class UserStatsRepositoryImpl(
                 currentStreak = prefs[Keys.CURRENT_STREAK] ?: 0,
                 maxStreak = prefs[Keys.MAX_STREAK] ?: 0,
                 lastSolvedDateMillis = prefs[Keys.LAST_SOLVED_DATE] ?: 0L,
-                isNotificationEnabled = prefs[Keys.NOTIFICATION_ENABLED] ?: true,
+                isNotificationEnabled = prefs[Keys.NOTIFICATION_ENABLED] ?: false,
                 dataVersion = prefs[Keys.DATA_VERSION] ?: 0,
                 level = prefs[Keys.LEVEL] ?: 1,
                 currentXp = prefs[Keys.CURRENT_XP] ?: 0,

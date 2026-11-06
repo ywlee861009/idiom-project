@@ -1,12 +1,27 @@
 package com.kero.idiom
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.provider.Settings
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
-import androidx.core.app.NotificationManagerCompat
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
 import com.kero.idiom.notification.ReminderManager
 import kotlin.system.exitProcess
 
@@ -81,7 +96,7 @@ actual fun openBrowser(url: String) {
 
 actual fun updateReminderSettings(enabled: Boolean) {
     IdiomApplication.instance?.let { context ->
-        if (enabled) {
+        if (enabled && ReminderManager.canDeliver(context)) {
             ReminderManager.scheduleReminder(context)
         } else {
             ReminderManager.cancelReminder(context)
@@ -89,10 +104,47 @@ actual fun updateReminderSettings(enabled: Boolean) {
     }
 }
 
-actual fun isSystemNotificationEnabled(): Boolean {
-    return IdiomApplication.instance?.let {
-        NotificationManagerCompat.from(it).areNotificationsEnabled()
-    } ?: false
+actual fun clearStudyReminder() {
+    IdiomApplication.instance?.let(ReminderManager::clearNotification)
+}
+
+@Composable
+actual fun rememberStudyReminderPermissionRequest(onResult: (Boolean) -> Unit): () -> Unit {
+    val context = LocalContext.current
+    val handleResult by rememberUpdatedState(onResult)
+    var requesting by remember { mutableStateOf(false) }
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { allowed ->
+        requesting = false
+        handleResult(allowed && ReminderManager.canDeliver(context))
+    }
+    return {
+        if (!requesting) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+                ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) !=
+                    PackageManager.PERMISSION_GRANTED
+            ) {
+                requesting = true
+                launcher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            } else {
+                handleResult(ReminderManager.canDeliver(context))
+            }
+        }
+    }
+}
+
+@Composable
+actual fun rememberSystemNotificationEnabled(): Boolean {
+    val context = LocalContext.current
+    val lifecycle = (context as? LifecycleOwner)?.lifecycle ?: MainActivity.currentActivity?.lifecycle
+    var enabled by remember(context) { mutableStateOf(ReminderManager.canDeliver(context)) }
+    DisposableEffect(context, lifecycle) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) enabled = ReminderManager.canDeliver(context)
+        }
+        lifecycle?.addObserver(observer)
+        onDispose { lifecycle?.removeObserver(observer) }
+    }
+    return enabled
 }
 
 actual fun openNotificationSettings() {

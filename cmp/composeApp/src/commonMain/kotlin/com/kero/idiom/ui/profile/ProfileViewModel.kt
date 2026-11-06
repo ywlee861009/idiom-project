@@ -7,8 +7,6 @@ import com.kero.idiom.domain.repository.UserStatsRepository
 import com.kero.idiom.domain.usecase.GetMonthlyStatsUseCase
 import com.kero.idiom.domain.usecase.GetUserStatsUseCase
 import com.kero.idiom.domain.usecase.GetWeeklyStatsUseCase
-import com.kero.idiom.isSystemNotificationEnabled
-import com.kero.idiom.openNotificationSettings
 import com.kero.idiom.ui.profile.contract.ProfileIntent
 import com.kero.idiom.ui.profile.contract.ProfileState
 import com.kero.idiom.updateReminderSettings
@@ -36,35 +34,14 @@ class ProfileViewModel(
         observeStats()
         loadWeeklyStats()
         loadMonthlyStats()
-        syncSystemNotificationStatus()
-    }
-
-    private fun syncSystemNotificationStatus() {
-        viewModelScope.launch {
-            val isSystemEnabled = isSystemNotificationEnabled()
-            // 시스템 권한이 꺼져 있는데 앱 설정이 켜져 있다면 동기화
-            // (사용자가 시스템 설정에서 직접 끈 경우를 대비)
-            userStatsRepository.getUserStats().onEach { stats ->
-                if (stats.isNotificationEnabled && !isSystemEnabled) {
-                    userStatsRepository.updateNotificationEnabled(false)
-                    updateReminderSettings(false)
-                }
-            }.launchIn(this)
-        }
     }
 
     fun onIntent(intent: ProfileIntent) {
         when (intent) {
             is ProfileIntent.ToggleNotification -> {
                 viewModelScope.launch {
-                    if (intent.enabled && !isSystemNotificationEnabled()) {
-                        // 사용자가 켜려고 하지만 시스템 권한이 없는 경우 설정 화면으로 이동
-                        openNotificationSettings()
-                    } else {
-                        // 권한이 있거나 끄는 경우 정상적으로 DB 및 시스템 리마인더 업데이트
-                        userStatsRepository.updateNotificationEnabled(intent.enabled)
-                        updateReminderSettings(intent.enabled)
-                    }
+                    userStatsRepository.updateNotificationEnabled(intent.enabled)
+                    updateReminderSettings(intent.enabled)
                 }
             }
             ProfileIntent.Refresh -> {

@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -15,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -23,7 +25,10 @@ import com.kero.idiom.core.components.IdiomTabBar
 import com.kero.idiom.core.theme.*
 import com.kero.idiom.getAppVersion
 import com.kero.idiom.openFontSizeSettings
+import com.kero.idiom.openNotificationSettings
 import com.kero.idiom.openStorePage
+import com.kero.idiom.rememberStudyReminderPermissionRequest
+import com.kero.idiom.rememberSystemNotificationEnabled
 import com.kero.idiom.ui.profile.ProfileViewModel
 import com.kero.idiom.ui.profile.components.MonthlyStreakCalendar
 import com.kero.idiom.ui.profile.components.WeeklyActivityChart
@@ -37,6 +42,12 @@ fun ProfileScreen(
 ) {
     val state by viewModel.state.collectAsState()
     val stats = state.userStats
+    val systemNotificationEnabled = rememberSystemNotificationEnabled()
+    var reminderPermissionDenied by remember { mutableStateOf(false) }
+    val requestReminderPermission = rememberStudyReminderPermissionRequest { allowed ->
+        reminderPermissionDenied = !allowed
+        if (allowed) viewModel.onIntent(ProfileIntent.ToggleNotification(true))
+    }
 
     Column(
         modifier = Modifier
@@ -306,24 +317,31 @@ fun ProfileScreen(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
+                            .toggleable(
+                                value = stats.isNotificationEnabled,
+                                role = Role.Switch,
+                                onValueChange = { enabled ->
+                                    if (enabled) {
+                                        requestReminderPermission()
+                                    } else {
+                                        reminderPermissionDenied = false
+                                        viewModel.onIntent(ProfileIntent.ToggleNotification(false))
+                                    }
+                                }
+                            )
                             .padding(horizontal = 16.dp, vertical = 14.dp),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(10.dp)
-                        ) {
-                            Text("🔔", fontSize = 16.sp)
-                            Text(
-                                text = "알림 설정",
-                                style = MaterialTheme.typography.bodyLarge,
-                                color = TextPrimary
-                            )
-                        }
+                        Text(
+                            text = "학습 알림",
+                            modifier = Modifier.weight(1f).padding(end = 8.dp),
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = TextPrimary
+                        )
                         Switch(
                             checked = stats.isNotificationEnabled,
-                            onCheckedChange = { viewModel.onIntent(ProfileIntent.ToggleNotification(it)) },
+                            onCheckedChange = null,
                             colors = SwitchDefaults.colors(
                                 checkedThumbColor = Color.White,
                                 checkedTrackColor = BgDark,
@@ -331,6 +349,16 @@ fun ProfileScreen(
                                 uncheckedTrackColor = BorderColor
                             )
                         )
+                    }
+                    if (!systemNotificationEnabled &&
+                        (stats.isNotificationEnabled || reminderPermissionDenied)
+                    ) {
+                        TextButton(
+                            onClick = ::openNotificationSettings,
+                            modifier = Modifier.padding(horizontal = 16.dp)
+                        ) {
+                            Text("기기에서 알림 허용")
+                        }
                     }
                     HorizontalDivider(color = BorderColor, thickness = 1.dp)
 

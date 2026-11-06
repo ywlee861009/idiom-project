@@ -18,6 +18,7 @@ class IdiomEntity : RealmObject {
     var level: Int = 0
     var exposureCount: Int = 0
     var correctCount: Int = 0
+    var isArchived: Boolean = false
 }
 
 /**

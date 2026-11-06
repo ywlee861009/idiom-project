@@ -2,7 +2,8 @@ package com.kero.idiom.core.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -22,6 +23,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.semantics.Role
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -31,12 +34,12 @@ import com.kero.idiom.core.theme.BgPrimary
 import com.kero.idiom.core.theme.BorderColor
 import com.kero.idiom.core.theme.IdiomQuizTheme
 import com.kero.idiom.core.theme.TextOnDark
-import com.kero.idiom.core.theme.TextSecondary
+import com.kero.idiom.core.theme.TextMuted
 
-enum class IdiomTab(val label: String, val icon: ImageVector) {
-    Home("HOME", Icons.Filled.Home),
-    Study("STUDY", Icons.Filled.MenuBook),
-    Profile("PROFILE", Icons.Filled.Person)
+enum class IdiomTab(val label: String, val compactLabel: String, val icon: ImageVector) {
+    Home("HOME", "서당", Icons.Filled.Home),
+    Study("STUDY", "서고", Icons.Filled.MenuBook),
+    Profile("PROFILE", "정보", Icons.Filled.Person)
 }
 
 @Composable
@@ -45,6 +48,7 @@ fun IdiomTabBar(
     onTabSelected: (IdiomTab) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val useCompactLabels = LocalDensity.current.fontScale >= 1.5f
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -57,20 +61,26 @@ fun IdiomTabBar(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(62.dp),
+                .height(62.dp)
+                .selectableGroup(),
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically
         ) {
             IdiomTab.entries.forEach { tab ->
                 val isSelected = tab == selectedTab
+                val color = if (isSelected) TextOnDark else TextMuted
                 Box(
                     modifier = Modifier
                         .weight(1f)
-                        .height(52.dp)
+                        .height(56.dp)
                         .padding(4.dp)
                         .clip(RoundedCornerShape(26.dp))
                         .background(if (isSelected) BgDark else Color.Transparent)
-                        .clickable { onTabSelected(tab) },
+                        .selectable(
+                            selected = isSelected,
+                            role = Role.Tab,
+                            onClick = { onTabSelected(tab) }
+                        ),
                     contentAlignment = Alignment.Center
                 ) {
                     Row(
@@ -79,15 +89,15 @@ fun IdiomTabBar(
                     ) {
                         Icon(
                             imageVector = tab.icon,
-                            contentDescription = tab.label,
-                            tint = if (isSelected) TextOnDark else TextSecondary
+                            contentDescription = null,
+                            tint = color
                         )
                         Text(
-                            text = tab.label,
+                            text = if (useCompactLabels) tab.compactLabel else tab.label,
                             fontSize = 10.sp,
                             fontWeight = FontWeight.Medium,
                             letterSpacing = 0.5.sp,
-                            color = if (isSelected) TextOnDark else TextSecondary
+                            color = color
                         )
                     }
                 }

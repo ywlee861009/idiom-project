@@ -1,5 +1,11 @@
 # 🗺️ Idiom Quiz Project Roadmap (v3.0)
 
+## 오늘의 서당
+
+- [E-01 · 매일 한 번 들르는 사자성어 공부](tickets/today-lesson-epic.md)
+- [S1–S5 상세 설계 및 검증 기준](design/today-lesson-spec.md)
+- [Android QA 결과](design/today-lesson-qa.md)
+
 ## Phase 1 ~ 7: Foundation & Core UX (100% 완료)
 - [x] **M1~M10**: 퀴즈 엔진 및 미니멀 UI 초기 버전 구현.
 - [x] **M11. Ink-Spread**: 정답 시 먹물 효과 애니메이션 구현 (Lottie).

@@ -6,7 +6,7 @@ data class UserStats(
     val maxStreak: Int = 0,
     val lastSolvedDateMillis: Long = 0,
     val totalCorrectCount: Int = 0,
-    val isNotificationEnabled: Boolean = true,
+    val isNotificationEnabled: Boolean = false,
     val dataVersion: Int = 0, // 📜 서책(데이터) 버전 추가
     val level: Int = 1, // 🌟 현재 레벨 (개편: 영구 저장)
     val currentXp: Int = 0, // 🌟 현재 레벨에서의 경험치 (개편: 영구 저장)

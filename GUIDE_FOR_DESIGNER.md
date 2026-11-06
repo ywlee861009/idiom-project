@@ -33,6 +33,8 @@
 - **피드백의 명확성**: 퀴즈 정답 시에는 '온화한' 강조, 오답 시에는 '차분한' 경고를 지향 (자극적인 색상 지양).
 
 ## 3. 주요 자산 위치 (Assets)
+- **PD 스킬**: [product-design-and-ux](.agents/skills/product-design-and-ux/SKILL.md). 상태 전이, 인터페이스 계약 및 개발 인계에 사용한다. [MIT 라이선스](.agents/skills/product-design-and-ux/LICENSE.md) · [고정한 원본](https://github.com/magnus919/agent-skills/tree/4f03205616b01360374f458f471791188f448591/product-design-and-ux)
+- **오늘의 서당**: [PD 상세 설계 및 개발 인계](design/today-lesson-spec.md)
 - **Wireframes/Design**: `design/idiom.pen`
 - **Lottie Animations**: `design/success.lottie`, `design/wrong.lottie`
 - **Theme Definition**: `cmp/core/src/commonMain/kotlin/com/kero/idiom/core/theme/` (케로와 협업 지점)

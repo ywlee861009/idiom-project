@@ -13,4 +13,11 @@ class AssetIdiomDataSource {
         val bytes = Res.readBytes("files/idioms.json")
         return json.decodeFromString(bytes.decodeToString())
     }
+
+    @OptIn(ExperimentalResourceApi::class)
+    internal suspend fun getTodayLessonContent(): TodayLessonContent {
+        val bytes = Res.readBytes("files/today_lessons.json")
+        val lessons = json.decodeFromString<List<CuratedTodayLesson>>(bytes.decodeToString())
+        return TodayLessonContent(lessons, getIdiomsFromAssets())
+    }
 }

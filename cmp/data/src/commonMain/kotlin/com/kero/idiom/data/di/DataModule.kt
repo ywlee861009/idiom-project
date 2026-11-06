@@ -5,11 +5,12 @@ import com.kero.idiom.data.datasource.remote.RemoteIdiomDataSource
 import com.kero.idiom.data.local.RealmDatabase
 import com.kero.idiom.data.repository.DailyRecordRepositoryImpl
 import com.kero.idiom.data.repository.IdiomRepositoryImpl
+import com.kero.idiom.data.repository.TodayLessonRepositoryImpl
 import com.kero.idiom.data.repository.UserStatsRepositoryImpl
 import com.kero.idiom.domain.repository.DailyRecordRepository
 import com.kero.idiom.domain.repository.IdiomRepository
+import com.kero.idiom.domain.repository.TodayLessonRepository
 import com.kero.idiom.domain.repository.UserStatsRepository
-import io.realm.kotlin.Realm
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
@@ -28,6 +29,7 @@ val dataModule = module {
 
     // Repository implementation
     singleOf(::IdiomRepositoryImpl) bind IdiomRepository::class
+    single { TodayLessonRepositoryImpl(get(), get<AssetIdiomDataSource>()::getTodayLessonContent) } bind TodayLessonRepository::class
     singleOf(::UserStatsRepositoryImpl) bind UserStatsRepository::class
     singleOf(::DailyRecordRepositoryImpl) bind DailyRecordRepository::class
 }

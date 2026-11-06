@@ -119,7 +119,7 @@ class UserStatsTest {
         assertEquals(0, stats.levelsUntilNextTitle)
     }
 
-    /** UserStats 기본 생성 시 초기값이 올바른지 검증 (Lv1, XP 0, 알림 켜짐 등) */
+    /** UserStats 기본 생성 시 초기값이 올바른지 검증 (Lv1, XP 0, 알림 꺼짐 등) */
     @Test
     fun defaultValues() {
         val stats = UserStats()
@@ -127,6 +127,6 @@ class UserStatsTest {
         assertEquals(1, stats.level)
         assertEquals(0, stats.currentXp)
         assertEquals(0, stats.globalCombo)
-        assertEquals(true, stats.isNotificationEnabled)
+        assertEquals(false, stats.isNotificationEnabled)
     }
 }

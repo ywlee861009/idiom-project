@@ -6,7 +6,7 @@ import java.util.Locale
 import java.util.TimeZone
 
 actual object DateUtils {
-    private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+    private val dateFormat get() = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
     actual fun getCurrentTimeMillis(): Long = System.currentTimeMillis()
 

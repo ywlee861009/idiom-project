@@ -5,6 +5,7 @@ import com.kero.idiom.domain.model.Idiom
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
+import kotlinx.coroutines.CancellationException
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -23,6 +24,8 @@ class RemoteIdiomDataSource(
             val response: IdiomVersion = httpClient.get("$GITHUB_BASE_URL/version.json").body()
             Logger.d("Remote version fetch success: ${response.version}")
             response.version
+        } catch (e: CancellationException) {
+            throw e
         } catch (e: Exception) {
             // 💡 여기서 왜 실패하는지 로그를 찍어야 합니다!
             Logger.e("Remote version check failed: ${e.message}", e)
@@ -38,6 +41,8 @@ class RemoteIdiomDataSource(
             val response: List<Idiom> = httpClient.get("$GITHUB_BASE_URL/idioms.json").body()
             Logger.d("Remote idioms fetch success: ${response.size} items")
             response
+        } catch (e: CancellationException) {
+            throw e
         } catch (e: Exception) {
             Logger.e("Remote idioms fetch failed: ${e.message}", e)
             emptyList()

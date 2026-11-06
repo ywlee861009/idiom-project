@@ -15,7 +15,13 @@ expect fun openBrowser(url: String)
 
 expect fun updateReminderSettings(enabled: Boolean)
 
-expect fun isSystemNotificationEnabled(): Boolean
+expect fun clearStudyReminder()
+
+@Composable
+expect fun rememberStudyReminderPermissionRequest(onResult: (Boolean) -> Unit): () -> Unit
+
+@Composable
+expect fun rememberSystemNotificationEnabled(): Boolean
 
 expect fun openNotificationSettings()
 
